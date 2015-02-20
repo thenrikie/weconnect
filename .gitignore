@@ -1,4 +1,4 @@
-./weconnect/settings.py
+weconnect/settings.py
 *.pyc
 *.pyo
-./weconnect/__pycache__
+weconnect/__pycache__
