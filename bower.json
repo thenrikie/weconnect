@@ -1,0 +1,21 @@
+{
+  "name": "weconnect",
+  "version": "0.0.0",
+  "homepage": "https://github.com/thenrikie/weconnect",
+  "authors": [
+    "Henry Liu <thenrikie@hotmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "weconnect/static/bower_components/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.2"
+  }
+}
