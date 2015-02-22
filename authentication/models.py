@@ -1,47 +1,74 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import (BaseUserManager, AbstractBaseUser)
 # Create your models here.
 
-class UserProfile(models.Model):
-	user = models.OneToOneField(User)
+class UserManager(BaseUserManager):
+	def create_user(self, email, first_name, last_name, password=None):
 
-	DISTANCE = (
-		('10', '10 miles'),
-		('15', '15 miles'),
-		('20', '20 miles'),
-		('30', '30+ miles')
-	)
+		if not email:
+			raise ValueError('Users must have an email address')
 
-	ROLE = (
-		('CUSTOMER', 'Customer'),
-		('COMPANY', 'Company')
-	)
+		user = self.model(
+			email=self.normalize_email(email),
+			first_name=first_name,
+			last_name=last_name
+		)
 
-	#user profile goes here
-	role = models.CharField(max_length=25, choices=ROLE, editable=False)
-	business_name = models.CharField(max_length=256)
-	mobile_number = models.CharField(max_length=100)
-	website = models.URLField(max_length=512)
-	desc = models.CharField(max_length=1024)
-	get_sms = models.BooleanField(default=False)
-	address_1 = models.CharField(max_length=512)
-	address_2 = models.CharField(max_length=512)
-	address_3 = models.CharField(max_length=512)
-	address_4 = models.CharField(max_length=512)
+		user.set_password(password)
+		user.save(using=self._db)
+		return user
 
-	can_travel = models.BooleanField(default=False)
-	travel_distance = models.CharField(max_length=25,
-			choices=DISTANCE,
-			default=10
-	)
-	only_remote = models.BooleanField(default=False)
-	customer_travel = models.BooleanField(default=False)
-	employees = models.IntegerField()
+	def create_superuser(self, email, first_name, last_name, password):
 
-	created_at = models.DateTimeField(auto_now_add=True)
-	updated_at = models.DateTimeField(auto_now=True)
+		user = self.create_user(email,
+			password=password,
+			first_name=first_name,
+			last_name=last_name
+		)
+		user.is_admin = True
+		user.save(using=self._db)
+		return user
 
-	def __str__(self):
-		return self.user
+class User(AbstractBaseUser):
+	email = models.EmailField(max_length=255, unique=True, verbose_name='email address')
+	first_name = models.CharField(max_length=100)
+	last_name = models.CharField(max_length=100)
+	is_active = models.BooleanField(default=True)
+	is_admin = models.BooleanField(default=False)
+
+	objects = UserManager()
+
+	USERNAME_FIELD = 'email'
+	REQUIRED_FIELDS = ['first_name', 'last_name']
+
+	def get_full_name(self):
+	    # The user is identified by their email address
+	    return self.email
+
+	def get_short_name(self):
+	    # The user is identified by their email address
+	    return self.email
+
+	def __str__(self):              # __unicode__ on Python 2
+	    return self.email
+
+	def has_perm(self, perm, obj=None):
+	    "Does the user have a specific permission?"
+	    # Simplest possible answer: Yes, always
+	    return True
+
+	def has_module_perms(self, app_label):
+	    "Does the user have permissions to view the app `app_label`?"
+	    # Simplest possible answer: Yes, always
+	    return True
+
+	@property
+	def is_staff(self):
+	    "Is the user a member of staff?"
+	    # Simplest possible answer: All admins are staff
+	    return self.is_admin
+
+
+
 
 

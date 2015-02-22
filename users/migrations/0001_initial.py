@@ -2,38 +2,43 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import django.utils.timezone
 from django.conf import settings
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='User',
+            name='Business',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
-                ('password', models.CharField(max_length=128, verbose_name='password')),
-                ('last_login', models.DateTimeField(default=django.utils.timezone.now, verbose_name='last login')),
-                ('email', models.EmailField(max_length=255, unique=True, verbose_name='email address')),
-                ('first_name', models.CharField(max_length=100)),
-                ('last_name', models.CharField(max_length=100)),
-                ('is_active', models.BooleanField(default=True)),
-                ('is_admin', models.BooleanField(default=False)),
+                ('id', models.AutoField(primary_key=True, auto_created=True, serialize=False, verbose_name='ID')),
+                ('name', models.CharField(max_length=255)),
+                ('desc', models.CharField(max_length=255)),
             ],
             options={
-                'abstract': False,
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='SubBusiness',
+            fields=[
+                ('id', models.AutoField(primary_key=True, auto_created=True, serialize=False, verbose_name='ID')),
+                ('name', models.CharField(max_length=255)),
+                ('desc', models.CharField(max_length=255)),
+            ],
+            options={
             },
             bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='UserProfile',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
-                ('role', models.CharField(choices=[('CUSTOMER', 'Customer'), ('COMPANY', 'Company')], max_length=25, editable=False)),
+                ('id', models.AutoField(primary_key=True, auto_created=True, serialize=False, verbose_name='ID')),
+                ('role', models.CharField(editable=False, max_length=25, choices=[('CUSTOMER', 'Customer'), ('COMPANY', 'Company')])),
                 ('business_name', models.CharField(max_length=256)),
                 ('mobile_number', models.CharField(max_length=100)),
                 ('website', models.URLField(max_length=512)),
@@ -50,10 +55,17 @@ class Migration(migrations.Migration):
                 ('employees', models.IntegerField()),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
+                ('business', models.ManyToManyField(to='users.Business')),
                 ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
             ],
             options={
             },
             bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='business',
+            name='sub_business',
+            field=models.ManyToManyField(to='users.SubBusiness'),
+            preserve_default=True,
         ),
     ]

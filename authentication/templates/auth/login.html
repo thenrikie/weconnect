@@ -1,5 +1,9 @@
-<form action="/auth/" method="post">
-	Email: <input type="text" name="email">
-	Password: <input type="password" name="password">
-	<input type="submit" value="Login">
+<form action="{% url 'auth:login' %}" method="post">
+	{% csrf_token %}
+	<ul>
+		{{ form.as_ul }}
+		<li>
+			<input type="submit" value="login">
+		</li>
+	</ul>
 </form>
