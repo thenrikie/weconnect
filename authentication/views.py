@@ -4,7 +4,7 @@ from django.views.generic import View
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import auth
 from django.shortcuts import redirect
-
+from authentication import forms
 # Create your views here.
 
 def login(r):
@@ -27,3 +27,7 @@ def login(r):
 def logout(r):
 	auth.logout(r)
 	return redirect('/');
+
+def register_business(r):
+	form = forms.RegisterBusiness({}, label_suffix='');
+	return render(r, 'auth/register_business.html', {'form' : form})
