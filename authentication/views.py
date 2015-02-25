@@ -36,6 +36,9 @@ def register(r):
 
 	if r.method == 'POST':
 		form = forms.Register(r.POST, label_suffix='');
+		if form.is_valid():
+			user = form.save()
+
 	else:
 		form = forms.Register(label_suffix='');
 
