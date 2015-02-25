@@ -28,6 +28,21 @@ def logout(r):
 	auth.logout(r)
 	return redirect('/');
 
+def register(r):
+	if r.user.is_authenticated():
+		return redirect('/')
+
+	
+
+	if r.method == 'POST':
+		form = forms.Register(r.POST, label_suffix='');
+	else:
+		form = forms.Register(label_suffix='');
+
+	return render(r, 'auth/register.html', {'form' : form})
+
 def register_business(r):
-	form = forms.RegisterBusiness({}, label_suffix='');
-	return render(r, 'auth/register_business.html', {'form' : form})
+
+	form = forms.Register({}, label_suffix='');
+	businessForm = forms.RegisterBusiness(label_suffix='');
+	return render(r, 'auth/register_business.html', {'businessForm' : businessForm, 'form' : form})
