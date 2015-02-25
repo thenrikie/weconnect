@@ -24,7 +24,10 @@ class Register(ModelForm):
 class RegisterBusiness(ModelForm):
 	class Meta:
 		model = UserProfile
-		fields = ['business_name', 'website', 'mobile_number', 'desc', 'get_sms']
+		fields = ['business_name', 'website', 'mobile_number', 'desc', 'get_sms',
+		 'address_1', 'address_2', 'address_3', 'address_4',
+		 'can_travel', 'travel_distance', 'customer_travel', 'only_remote'
+		]
 		widgets = {
 			'desc': Textarea()
 		}
