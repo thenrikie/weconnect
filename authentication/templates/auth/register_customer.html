@@ -1,0 +1,10 @@
+<form action="{% url 'auth:register_customer' %}" method="post">
+	{% csrf_token %}
+	<ul>
+		{{ form.as_ul }}
+		<li> I have read and agree to the terms of use</li>
+		<li>
+			<input type="submit" value="Sign Up">
+		</li>
+	</ul>
+</form>

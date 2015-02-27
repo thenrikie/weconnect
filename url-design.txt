@@ -1,0 +1,17 @@
+#customer view
+/projects => show projects
+/projects/new
+/projects/:id
+/profile => /customer/profile
+
+
+#public concern
+/companies/:id
+
+#business
+/profile => /business/profile
+/pitches => /pitches/request
+/pitches/quotes
+/pitches/hired
+/pitches/archive
+/ptiches/:id

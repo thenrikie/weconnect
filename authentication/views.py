@@ -35,6 +35,12 @@ def register(r):
 	#redirect if logged in
 	if r.user.is_authenticated():
 		return redirect('/')
+	return render(r, 'auth/register.html')
+
+def register_customer(r):
+	#redirect if logged in
+	if r.user.is_authenticated():
+		return redirect('/')
 
 
 	if r.method == 'POST':
@@ -55,7 +61,7 @@ def register(r):
 	else:
 		form = forms.Register(label_suffix='')
 
-	return render(r, 'auth/register.html', {'form' : form})
+	return render(r, 'auth/register_customer.html', {'form' : form})
 
 
 

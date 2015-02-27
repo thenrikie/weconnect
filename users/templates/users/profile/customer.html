@@ -1,0 +1,9 @@
+<form action="{% url 'users:profile' %}" method="post">
+	{% csrf_token %}
+	<ul>
+		{{ form.as_ul }}
+		<li>
+			<input type="submit" value="Save">
+		</li>
+	</ul>
+</form>
