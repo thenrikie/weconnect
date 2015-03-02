@@ -1,3 +1,4 @@
 Django==1.7.4
-PyMySQL==0.6.3
 django-audit-log==0.7.0
+Pillow==2.7.0
+PyMySQL==0.6.3

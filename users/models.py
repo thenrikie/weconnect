@@ -1,6 +1,7 @@
 from django.db import models
 from authentication.models import User
 
+
 # Create your models here.
 class SubBusiness(models.Model):
 	name = models.CharField(max_length=255)
@@ -12,6 +13,15 @@ class Business(models.Model):
 	sub_business = models.ManyToManyField(SubBusiness)
 
 
+def upload_filename(path, model, filename):
+	nameparts = filename.split(".")
+	return path + str(model.user.id) + '.' + nameparts[len(nameparts) - 1]
+
+def logo_filename(model, filename):
+	return upload_filename('photos/orgs/', model, filename)
+
+def person_filename(model, filename):
+	return upload_filename('photos/peoples/', model, filename)
 
 class UserProfile(models.Model):
 
@@ -59,6 +69,8 @@ class UserProfile(models.Model):
 	pinterest = models.CharField(max_length=255, blank=True, default='')
 	instagram = models.CharField(max_length=255, blank=True, default='')
 
+	photo = models.ImageField(upload_to=person_filename, null=True, blank=True)
+	logo = models.ImageField(upload_to=logo_filename, null=True, blank=True)
 
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)

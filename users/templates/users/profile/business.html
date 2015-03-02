@@ -1,4 +1,4 @@
-<form action="{% url 'users:profile' %}" method="post">
+<form action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data">
 	{% csrf_token %}
 	<ul>
 		{{ form.as_ul }}

@@ -1,7 +1,8 @@
-<form action="{% url 'users:profile' %}" method="post">
+<form action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data">
 	{% csrf_token %}
 	<ul>
 		{{ form.as_ul }}
+		{{ profileForm.as_ul }}
 		<li>
 			<input type="submit" value="Save">
 		</li>
