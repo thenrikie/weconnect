@@ -15,3 +15,42 @@
 /pitches/hired
 /pitches/archive
 /ptiches/:id
+
+
+##Models
+
+#projects
+foreignkey users
+manytomany subbusiness
+manytomany business
+flexible true/false
+deadline date
+canTravel true/false
+customer_travel true/false
+desc
+budget_lower
+budget_upper
+create_at
+mod_at
+
+
+
+#pitches
+foreignkey projects
+foreignkey business(users)
+desc
+price blank
+rate (hourly, est) null
+state (waiting, accepted, hired, rejected)
+state_changed_at date
+
+
+#message
+foreignkey pitch
+from forrignkey user
+create_at
+
+#message_attachment
+file
+foreignkey message
+
