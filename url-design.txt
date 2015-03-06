@@ -37,7 +37,7 @@ mod_at
 
 #pitches
 foreignkey projects
-foreignkey business(users)
+foreignkey company(users)
 desc
 price blank
 rate (hourly, est) null
