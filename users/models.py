@@ -7,10 +7,16 @@ class SubBusiness(models.Model):
 	name = models.CharField(max_length=255)
 	desc = models.CharField(max_length=255)
 
+	def __str__(self):
+		return self.name
+
 class Business(models.Model):
 	name = models.CharField(max_length=255)
 	desc = models.CharField(max_length=255)
 	sub_business = models.ManyToManyField(SubBusiness)
+
+	def __str__(self):
+		return self.name
 
 
 def upload_filename(path, model, filename):

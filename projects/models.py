@@ -22,6 +22,26 @@ class Project(models.Model):
 		('30', '30+ miles')
 	)
 
+	DISTRICT = (
+		('Islands', 'Islands'),
+		('Kwai Tsing', 'Kwai Tsing') ,
+		('North', 'North'),
+		('Sha Tin', 'Sha Tin'),
+		('Tai Po', 'Tai Po'),
+		('Tsuen Wan', 'Tsuen Wan'),
+		('Tuen Mun', 'Tuen Mun'),
+		('Yuen Long', 'Yuen Long'),
+		('Kowloon City', 'Kowloon City'),
+		('Kwun Tong', 'Kwun Tong'),
+		('Sham Shui Po', 'Sham Shui Po'),
+		('Wong Tai Sin', 'Wong Tai Sin'),
+		('Yau Tsim Mong', 'Yau Tsim Mong'),
+		('Central & Western', 'Central & Western'),
+		('Eastern', 'Eastern'),
+		('Southern', 'Southern'),
+		('Wan Chai', 'Wan Chai')
+	)
+
 	business = models.ManyToManyField(Business)
 	sub_business = models.ManyToManyField(SubBusiness)
 
@@ -40,9 +60,11 @@ class Project(models.Model):
 	company_travel = models.BooleanField(default=False, verbose_name='They travel to me')
 	travel_distance = models.CharField(max_length=25,
 			verbose_name='How far will you travel',
-			choices=DISTANCE,
-			default=10
+			choices=DISTRICT,
+			default='Central & Western'
 	)
+
+	my_place = models.CharField(max_length=25, verbose_name='', choices=DISTRICT, default='Central & Western')
 
 	desc = models.CharField(max_length=1024, blank=True, verbose_name='description')
 	
