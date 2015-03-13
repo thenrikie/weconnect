@@ -1,8 +1,10 @@
-<form action="{% url 'projects:create' %}" method="post">
+<form action="{% url 'projects:create_details' %}" method="post">
 	{% csrf_token %}
 	<ul>
+		{{ businessForm.as_ul }}
 		{{ form.as_ul }}
 		<li>
+
 			<input type="submit" value="Send Request">
 		</li>
 	</ul>

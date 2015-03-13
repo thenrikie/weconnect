@@ -16,8 +16,9 @@ class Project(forms.ModelForm):
 
 	class Meta:
 		model = Project
-		fields = ['business', 'sub_business', 'urgency', 'can_travel', 'travel_distance', 'company_travel', 'my_place']
+		fields = ['sub_business', 'urgency', 'can_travel', 'travel_distance', 'company_travel', 'my_place']
 		widgets = {
-			'business' : forms.Select,
 			'sub_business' : forms.CheckboxSelectMultiple
 		}
+
+

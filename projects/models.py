@@ -50,7 +50,7 @@ class Project(models.Model):
 			choices=URGENCY,
 			default='flexible'
 	)
-	deadline = models.DateTimeField()
+	deadline = models.DateTimeField(null=True)
 	user = models.ForeignKey(User)
 
 	budget_lower = models.FloatField(blank=True)
