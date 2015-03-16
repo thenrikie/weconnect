@@ -1,0 +1,19 @@
+Your Projects
+<br>
+
+<ul>
+ {% for project in projects %}
+ 	<li>
+ 		<h2>{{ project.pitch_count }} Service Providers</h2>
+ 		<p> {{ project.business.all.first.name }}</p>
+ 		<p> 
+ 			{% for sub in project.sub_business.all %}
+ 				{{ sub.name}}
+ 				{% if not forloop.last %}
+ 				,
+ 				{% endif %}
+ 			{% endfor %}
+ 		</p>
+ 	</li>
+ {% endfor %}
+</ul>

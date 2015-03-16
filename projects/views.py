@@ -43,17 +43,28 @@ def create_project_select_details(r):
 			}
 
 			project = Project(user=r.user, **whiteListProject)
-			project.business.add(1);
-			project.sub_business.add(r.POST['sub_business'])
 			project.save()
-			return redirect('/')
-		print("post not passed")
 
-	else:
-		print("Not post")
+			project.business.add(businessForm.cleaned_data['business'])
+
+			for var in form.cleaned_data['sub_business']:
+				project.sub_business.add(var)
+
+			
+			return redirect('/')
+		#print("post not passed")
+
+
 
 
 	return render(r, 'projects/create_project_select_details.html', {'form' : form, 'businessForm' : businessForm})
 
+def list(r):
+
+	if not r.user.is_authenticated():
+		return redirect('/')
+
+	projects = Project.objects.all().filter(user=r.user)
+	return render(r, 'projects/list.html', {'projects' : projects})
 
 

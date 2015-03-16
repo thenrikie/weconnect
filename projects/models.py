@@ -53,8 +53,8 @@ class Project(models.Model):
 	deadline = models.DateTimeField(null=True)
 	user = models.ForeignKey(User)
 
-	budget_lower = models.FloatField(blank=True)
-	budget_upper = models.FloatField(blank=True)
+	budget_lower = models.FloatField(blank=True, null=True)
+	budget_upper = models.FloatField(blank=True, null=True)
 
 	can_travel = models.BooleanField(default=False, verbose_name='I can travel to them')
 	company_travel = models.BooleanField(default=False, verbose_name='They travel to me')
@@ -71,3 +71,5 @@ class Project(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 
+	def pitch_count(self):
+		return self.pitch_set.exclude(state='waiting').count()

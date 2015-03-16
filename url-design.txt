@@ -1,8 +1,9 @@
 #customer view
 /projects => show projects
 /projects/new
-/projects/:id
+/projects/:id (creator view)
 /profile => /customer/profile
+/pitches/:id (customer view)
 
 
 #public concern
@@ -14,8 +15,8 @@
 /pitches/quotes
 /pitches/hired
 /pitches/archive
-/ptiches/:id
-
+/ptiches/:id (company view)
+/projects/:id (company view) (include accept and reject button)
 
 ##Models
 
