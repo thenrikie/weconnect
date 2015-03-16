@@ -1,0 +1,13 @@
+<h1>Job Request</h1>
+{% include 'projects/show_generic.html' with project=project only %}
+<div>
+	<form method="POST">
+		{% csrf_token %}
+		<input type="Submit" value="I will pass on this project">
+	</form>
+
+	<form method="POST">
+		{% csrf_token %}
+		<input type="Submit" value="I want to work on this project">
+	</form>
+</div>

@@ -16,7 +16,7 @@
 /pitches/hired
 /pitches/archive
 /ptiches/:id (company view)
-/projects/:id (company view) (include accept and reject button)
+/projects/:id (company view) (include accept and reject button) / (quote and job)
 
 ##Models
 
@@ -30,7 +30,7 @@ canTravel true/false
 customer_travel true/false
 desc
 budget_lower
-budget_upper
+budget_uppers
 create_at
 mod_at
 

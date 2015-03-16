@@ -41,6 +41,9 @@ class User(AbstractBaseUser):
 	USERNAME_FIELD = 'email'
 	REQUIRED_FIELDS = ['first_name', 'last_name']
 
+	def full_name(self):
+		return self.first_name + ' ' + self.last_name
+
 	def get_full_name(self):
 	    # The user is identified by their email address
 	    return self.email

@@ -73,3 +73,8 @@ class Project(models.Model):
 
 	def pitch_count(self):
 		return self.pitch_set.exclude(state='waiting').count()
+
+	def urgency_text(self):
+		for u in self.URGENCY:
+			if u[0] == self.urgency:
+				return u[1]
