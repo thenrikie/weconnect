@@ -1,6 +1,7 @@
 from django.db import models
 from authentication.models import User
 from projects.models import Project
+from datetime import datetime
 
 # Create your models here.
 class Pitch(models.Model):
@@ -22,12 +23,13 @@ class Pitch(models.Model):
 	company = models.ForeignKey(User)
 
 
-	price = models.FloatField(blank=True)
-	desc = models.CharField(max_length=1024, blank=True, verbose_name='description')
+	price = models.FloatField(blank=True, null=True)
+	desc = models.CharField(max_length=1024, blank=True, verbose_name='description', null=True)
 
 	rate = models.CharField(max_length=25,
 			choices=RATE,
-			default='total'
+			default='total',
+			null=True
 	)
 
 	state = models.CharField(max_length=25, choices=STATE, default='waiting')
@@ -36,6 +38,24 @@ class Pitch(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 
+	def waiting(self):
+		return self.state == 'waiting'
+
+	def quoted(self):
+		return self.state == 'accepted' or self.state == 'hired'
+		
+	def change_state(self, state):
+		found = False
+
+		for val in self.STATE:
+			if state == val[0]:
+				found = True
+
+		if not found:
+			raise ValueError('Not a valid state')
+		else:
+			self.state = state
+			self.state_changed_at = datetime.now()
 
 class Message(models.Model):
 	pitch = models.ForeignKey(Pitch)

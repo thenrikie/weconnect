@@ -10,5 +10,6 @@ urlpatterns = patterns('',
     url(r'^auth/', include('authentication.urls', namespace='auth')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^profile/', include('users.urls', namespace='users')),
-    url(r'^projects/', include('projects.urls', namespace='projects'))
+    url(r'^projects/', include('projects.urls', namespace='projects')),
+    url(r'^pitches/', include('pitches.urls', namespace='pitches'))
 )

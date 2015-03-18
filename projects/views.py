@@ -93,4 +93,8 @@ def show_creator_view(r, project):
 	return render(r, 'projects/show_creator.html', {'project': project})
 
 def show_company_view(r, project):
-	return render(r, 'projects/show_company.html', {'project': project})
+	pitch = project.pitch_set.get(company=r.user)
+	return render(r, 'projects/show_company.html', {'project': project, 'pitch': pitch})
+
+
+

@@ -1,6 +1,7 @@
 from authentication.models import User
 from users.models import Business, SubBusiness
 from projects.models import Project
+from pitches.models import Pitch
 from django import forms
 
 
@@ -20,5 +21,4 @@ class Project(forms.ModelForm):
 		widgets = {
 			'sub_business' : forms.CheckboxSelectMultiple
 		}
-
 

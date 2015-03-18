@@ -1,0 +1,11 @@
+<h1>Job Request</h1>
+<p>Tell {{ pitch.project.user.full_name }} why you would be the best person for this project</p>
+<form action="{% url 'pitches:accept' pitch.id %}" method="post">
+	{% csrf_token %}
+	<ul>
+		{{ form.as_ul }}
+		<li>
+			<input type="submit" value="Send Quote">
+		</li>
+	</ul>
+</form>

@@ -17,6 +17,8 @@
 /pitches/archive
 /ptiches/:id (company view)
 /projects/:id (company view) (include accept and reject button) / (quote and job)
+/pitches/:id/accept (get -> enter details, post-> change pitch status)
+/pitches/:id/reject (get -> nothing, post -> change pitch to rejected)
 
 ##Models
 
