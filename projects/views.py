@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from projects import forms
+from pitches.forms import Message as MessageForm
 from projects.models import Project
 
 # Create your views here.
@@ -68,33 +69,7 @@ def list(r):
 	return render(r, 'projects/list.html', {'projects' : projects})
 
 
-#show project details
-def show(r, project_id):
-	if not r.user.is_authenticated():
-		return redirect('/')
 
-	project = get_object_or_404(Project, pk=project_id);
-
-
-	if project.user == r.user:
-		print('Creator View')
-		return show_creator_view(r, project)
-
-	elif project.pitch_set.filter(company=r.user.id):
-		print('Company view')
-		return show_company_view(r, project)
-
-	else:
-		print('No Access to this project')
-		return redirect('/')
-
-
-def show_creator_view(r, project):
-	return render(r, 'projects/show_creator.html', {'project': project})
-
-def show_company_view(r, project):
-	pitch = project.pitch_set.get(company=r.user)
-	return render(r, 'projects/show_company.html', {'project': project, 'pitch': pitch})
 
 
 

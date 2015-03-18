@@ -14,7 +14,9 @@ Your Projects
  				{% endif %}
  			{% endfor %}
  		</p>
- 		<a href="{% url 'projects:show' project.id %}">View Project</a>
+ 		{% if project.pitch_count > 0 %}
+ 		<a href="{% url 'pitches:show' project.pitch_set.first.id %}">View Project</a>
+ 		{% endif %}
  	</li>
  {% endfor %}
 </ul>

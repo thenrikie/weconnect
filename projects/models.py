@@ -74,6 +74,14 @@ class Project(models.Model):
 	def pitch_count(self):
 		return self.pitch_set.exclude(state='waiting').count()
 
+	def ready_pitch(self):
+		return self.pitch_set.exclude(state='waiting')
+
+	def awarded(self):
+		if self.pitch_set.get(state='hired').count() > 0:
+			return True
+		return False
+
 	def urgency_text(self):
 		for u in self.URGENCY:
 			if u[0] == self.urgency:

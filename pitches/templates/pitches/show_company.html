@@ -1,5 +1,5 @@
 <h1>Job Request</h1>
-{% include 'projects/show_generic.html' with project=project only %}
+{% include 'pitches/project.html' with project=project only %}
 
 {% if pitch.waiting %}
 <div>
@@ -36,3 +36,7 @@
 	</p>
 </div>
 {% endif %}
+
+
+<h1>Message</h1>
+{% include 'pitches/message.html' with form=form messages=messages pitch=pitch  %}

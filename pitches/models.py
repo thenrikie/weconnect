@@ -16,12 +16,14 @@ class Pitch(models.Model):
 		('waiting', 'Waiting'),
 		('accepted', 'Company Accepted'),
 		('hired', 'Hired'),
-		('rejected', 'Customer rejected')
+		('rejected', 'Customer rejected'),
+		('company_rejected', 'Company rejected'),
 	)
 
 	project = models.ForeignKey(Project)
 	company = models.ForeignKey(User)
 
+	archived = models.BooleanField(default=False)
 
 	price = models.FloatField(blank=True, null=True)
 	desc = models.CharField(max_length=1024, blank=True, verbose_name='description', null=True)
@@ -35,6 +37,7 @@ class Pitch(models.Model):
 	state = models.CharField(max_length=25, choices=STATE, default='waiting')
 	state_changed_at = models.DateTimeField()
 
+	hired_at = models.DateTimeField(null=True)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 
@@ -56,13 +59,21 @@ class Pitch(models.Model):
 		else:
 			self.state = state
 			self.state_changed_at = datetime.now()
+			if self.state == 'hired':
+				self.hired_at = datetime.now()
+
+	def company_unread_message_count(self):
+		self.message_set.filter(read=False, recipient=self.company, pitch=self).count()
+
+	def customer_unread_message_count(self):
+		self.message_set.filter(read=False, recipient=self.project.user, pitch=self).count()
 
 class Message(models.Model):
 	pitch = models.ForeignKey(Pitch)
 	sender = models.ForeignKey(User, related_name='sender')
 	recipient = models.ForeignKey(User, related_name='recipient')
 	content =  models.CharField(max_length=4096)
-
+	read = models.BooleanField(default=False)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 

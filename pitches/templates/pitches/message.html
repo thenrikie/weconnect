@@ -1,0 +1,19 @@
+<form method="post" enctype="multipart/form-data" action="{% url 'pitches:post_message' pitch.id %}">
+	{% csrf_token %}
+	<ul>
+		{{ form.as_ul }}
+		<li>
+			<input type="submit" value="Send">
+		</li>
+	</ul>
+</form>
+
+{%  for  message in messages %}
+	<div>
+		<div>
+			<span>{{ message.sender.full_name }}</span>
+			<span>{{ message.created_at|timesince }}</span>
+		</div>
+		<p>{{ message.content }}</p>
+	</div>
+{% endfor %}

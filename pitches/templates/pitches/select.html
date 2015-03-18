@@ -1,0 +1,6 @@
+<ul>
+	<li {% if page == 'request' %}class="highlighted"{% endif %}><a href="{% url 'pitches:list_request' %}">Request</a></li>
+	<li {% if page == 'quote' %}class="highlighted"{% endif %}><a href="{% url 'pitches:list_quote' %}">Quotes</a></li>
+	<li {% if page == 'hired' %}class="highlighted"{% endif %}><a href="{% url 'pitches:list_hired' %}">Hired</a></li>
+	<li {% if page == 'archive' %}class="highlighted"{% endif %}><a href="{% url 'pitches:list_archive' %}">Archive</a></li>
+</ul>

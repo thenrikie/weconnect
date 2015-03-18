@@ -16,10 +16,14 @@
 /pitches/hired
 /pitches/archive
 /ptiches/:id (company view)
+/projects/ => /
 /projects/:id (company view) (include accept and reject button) / (quote and job)
 /pitches/:id/accept (get -> enter details, post-> change pitch status)
 /pitches/:id/reject (get -> nothing, post -> change pitch to rejected)
 
+
+
+project/:id -> pitch/:id
 ##Models
 
 #projects
@@ -51,6 +55,7 @@ state_changed_at date
 #message
 foreignkey pitch
 from forrignkey user
+content
 create_at
 
 #message_attachment

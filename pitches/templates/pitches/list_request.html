@@ -1,0 +1,21 @@
+{% include 'pitches/select.html' with page='request' only %}
+<h1>Request</h1>
+
+<ul>
+	{% for pitch in pitches %}
+	<li>
+		<div>
+			<div>
+				{{ pitch.project.user.full_name }} is looking for {{ pitch.project.business.first.name|lower }}
+			</div>
+
+			<p>
+				{{ pitch.project.user.first_name }} is looking for someone with your skills to help them with their project
+			</p>
+		</div>
+		<div>
+			<a href="{% url 'pitches:show' pitch.id %}">View details</a>
+		</div>
+	</li>
+	{% endfor %}
+</ul>

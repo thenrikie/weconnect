@@ -1,0 +1,21 @@
+{% include 'pitches/select.html' with page='quote' only %}
+<h1>Quotes</h1>
+
+<ul>
+	{% for pitch in pitches %}
+	<li>
+		<div>
+			<div>
+				You sent a quote to {{  pitch.project.user.first_name }}
+			</div>
+			<div>
+				Quoted on {{ pitch.state_changed_at|date:'j F, Y'}}
+			</div>
+			<a href="{% url 'pitches:show' pitch.id %}">View request and quote</a> 
+		</div>
+		<div>
+			<a href="{% url 'pitches:show' pitch.id %}">Message</a>
+		</div>
+	</li>
+	{% endfor %}
+</ul>
