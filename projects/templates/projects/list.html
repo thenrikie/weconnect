@@ -1,10 +1,13 @@
-Your Projects
-<br>
+{% extends "weconnect/base.html" %}
+{% block content %}
 
-<ul>
+<h1>Your Projects</h1>
+
+<ul class="projects_project_item col-md-12">
  {% for project in projects %}
  	<li>
- 		<h2>{{ project.pitch_count }} Service Providers</h2>
+ 		<span class="projects_project_item_count">{{ project.pitch_count }}</span> 
+ 		<span class="projects_project_item_sp">Service Providers</span>
  		<p> {{ project.business.all.first.name }}</p>
  		<p> 
  			{% for sub in project.sub_business.all %}
@@ -15,8 +18,10 @@ Your Projects
  			{% endfor %}
  		</p>
  		{% if project.pitch_count > 0 %}
- 		<a href="{% url 'pitches:show' project.pitch_set.first.id %}">View Project</a>
+ 		<a href="{% url 'pitches:show' project.ready_pitch.first.id %}" class="projects_project_item_view">View Project</a>
  		{% endif %}
  	</li>
  {% endfor %}
 </ul>
+
+{% endblock %}

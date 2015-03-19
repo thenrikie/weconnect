@@ -131,6 +131,7 @@ def hire(r, pitch_id):
 		for this_pitch in pitches:
 			if this_pitch != pitch:
 				this_pitch.change_state('rejected');
+				this_pitch.archived = True
 				this_pitch.save()
 
 		pitch.change_state('hired')

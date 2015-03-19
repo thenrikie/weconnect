@@ -1,0 +1,183 @@
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-top: 50px;
+  padding-bottom: 20px;
+}
+
+.pitch_pitches_select {
+    list-style-type: none;
+}
+
+.pitch_pitches_select li {
+    display: inline-block;
+}
+
+.pitch_pitches_select a {
+    display: inline-block;
+    padding: 15px;
+}
+
+.pitch_pitches_select a:hover {
+    text-decoration: none;
+    border-bottom: 2px solid #337ab7;
+}
+
+.pitch_pitches_select .highlighted a {
+    border-bottom: 2px solid #337ab7;
+}
+
+.pitches_pitch_item {
+    list-style-type: none;
+}
+
+.pitches_pitch_item li {
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+}
+
+.pitches_pitch_item h1 {
+    font-size: 20px;
+}
+
+.projects_project_item {
+    list-style-type: none;
+}
+
+.projects_project_item li {
+    border: 1px solid #ccc;
+    display: inline-block;
+    height: 250px;
+    margin-right: 40px;
+    padding: 25px;
+    vertical-align: middle;
+}
+
+.projects_project_item_count {
+    display: block;
+    font-size: 40px;
+    text-align: center;
+}
+
+.projects_project_item_sp {
+    font-size: 20px;
+}
+
+.projects_project_item p {
+    margin-top: 10px;
+}
+
+.projects_project_item_view {
+    display: block;
+    margin-top: 30px;
+    text-align: center;
+}
+
+.pitches_pitch_operations {
+    margin-top: 10px;
+    padding: 5px;
+}
+
+.pitches_company_select {
+    list-style-type: none;
+}
+
+
+*::after, *::before {
+    box-sizing: border-box;
+}
+*::after, *::before {
+    box-sizing: border-box;
+}
+.pitches_company_select .highlighted a {
+}
+.pitches_company_select .highlighted a {
+    border-bottom: 2px solid #337ab7;
+}
+.pitches_company_select a {
+    color: #333333;
+    display: block;
+    font-size: 16px;
+    padding: 30px;
+    text-decoration: none;
+}
+
+.pitches_company_select a:hover {
+    border-bottom: 2px solid #337ab7;
+}
+
+.pitches_company_select li {
+    display: inline-block;
+}
+
+.pitches_pitch_quotecontact {
+    border: 1px solid #666;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.pitches_pitch_quotecontact_head {
+    border-bottom: 1px solid #666666;
+    padding: 15px;
+}
+
+.pitches_pitch_quotecontact_price {
+    font-size: 20px;
+}
+
+.pitches_pitch_quotecontact_content {
+    padding: 15px;
+}
+
+.pitches_pitch_quotecontact_content span {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.pitches_pitch_quotecontent_content_head {
+    padding: 15px;
+}
+
+.pitches_pitch_quotecontent_content_head_name {
+    font-size: 17px;
+}
+
+.pitches_pitch_quotecontent_content_head_time {
+    color: #bbbbbb;
+    font-size: 12px;
+}
+
+.pitches_pitch_quotecontent_desc {
+    padding: 15px;
+}
+
+.pitches_pitch_quotecontent_content_operations {
+    padding: 15px;
+    text-align: right;
+}
+
+.pitches_pitch_message_item {
+    border-bottom: 1px solid #cccccc;
+    padding: 15px;
+}
+
+.pitches_pitch_message_item_head {
+    padding: 10px 0;
+}
+
+.pitches_pitch_message_item_head span {
+    font-size: 15px;
+
+}
+
+
+
+.unread_message_pop {
+    background-color: red;
+    border-radius: 50px;
+    color: white;
+    display: inline-block;
+    font-size: 10px;
+    height: 16px;
+    text-align: center;
+    width: 16px;
+}

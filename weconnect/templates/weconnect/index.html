@@ -1,8 +1,40 @@
-{% if user.is_authenticated %}
-    <p>Hi, {{ user.first_name }} {{ user.last_name }}</p>
-    <p><a href="{% url 'users:profile' %}">Profile</a></p>
-    <p><a href="{% url 'auth:logout' %}">Logout</a></p>
-{% else %}
-	<p><a href="{% url 'auth:register' %}">Sign up</a></p>
-    <p><a href="{% url 'auth:login' %}">Login</a></p>
-{% endif %}
+{% extends "weconnect/base.html" %}
+
+
+{% block bighead %}
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+        <h2>Find trusted and rated professionals to help you with your projects</h2>
+        <div>
+			<form class="navbar-form">
+	        	<div class="form-group"><input type="text" class="form-control"></div>
+	        	<button class="btn btn-primary" type="submit">Continue</button>
+			</form>
+        </div>
+     
+      </div>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="col-md-4">
+          <h2>Tell us what you are looking for</h2>
+          <p>Let us know what you are looking for, where you are looking for it and how much you want to spend. </p>
+          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+          <h2>Receive 3 proposals within 24 hours </h2>
+          <p>Within 24 hours we will connect you with 3 professionals that can help you with your needs. </p>
+          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+       </div>
+        <div class="col-md-4">
+          <h2>Compare and decide who to work with</h2>
+          <p>Compare prices, portfolio and reviews to help you decide who you want to work with.</p>
+          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        </div>
+      </div>
+{% endblock %}

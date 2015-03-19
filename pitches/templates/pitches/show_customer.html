@@ -1,27 +1,30 @@
+{% extends "weconnect/base.html" %}
+{% block content %}
+
+
 <h1>Introduction to {{ project.business.first.name }}</h1>
 
-<div>
+<div class="pitches_pitch_operations col-md-12">
 	<a href="">View original request</a>
 	<a href="">Cancel project</a>
 </div>
 
-<div>
-	<ul>
-	{% for this_pitch in pitches %}
-		<li {% if this_pitch == pitch %}class="underlined"{% endif %}>
-			<a href={% url 'pitches:show' this_pitch.id %}>{{ this_pitch.company.userprofile.business_name}}</a>
-		</li>
-	{% endfor %}
-	</ul>
-</div>
+<ul class="pitches_company_select col-md-12">
+{% for this_pitch in pitches %}
+	<li {% if this_pitch == pitch %}class="highlighted"{% endif %}>
+		<a href={% url 'pitches:show' this_pitch.id %}>{{ this_pitch.company.userprofile.business_name}}</a>
+	</li>
+{% endfor %}
+</ul>
 
-<div>
-	<div>
-		<div>
+
+<div class="pitches_pitch_quotecontact col-md-3">
+	<div class="pitches_pitch_quotecontact_head">
+		<div class="pitches_pitch_quotecontact_price">
 			{{ pitch.price }} {{ pitch.rate }}
 		</div>
 	</div>
-	<div>
+	<div class="pitches_pitch_quotecontact_content">
 		<span>{{ pitch.company.userprofile.business_name}}</span>
 		<span>{{ pitch.company.full_name }}</span>
 		<span>{{ pitch.company.userprofile.mobile_number}}</span>
@@ -29,24 +32,25 @@
 	</div>
 </div>
 
-<div>
-	<div>
-		<div>
-			<span>{{ pitch.company.full_name }}</span>
-			<span>{{ pitch.state_changed_at|timesince }}</span>
+<div class="pitches_pitch_right col-md-8">
+	<div class="pitches_pitch_quotecontent_content">
+		<div class="pitches_pitch_quotecontent_content_head">
+			<span class="pitches_pitch_quotecontent_content_head_name">{{ pitch.company.full_name }}</span>
+			<span class="pitches_pitch_quotecontent_content_head_time pull-right">{{ pitch.state_changed_at|timesince }}</span>
 		</div>
-		<p>{{ pitch.desc }}</p>
+		<p class="pitches_pitch_quotecontent_desc">{{ pitch.desc }}</p>
 
 		{% if not project.awarded %}
-		<form method="post" action="{% url 'pitches:hire' pitch.id %}">
+		<form method="post" action="{% url 'pitches:hire' pitch.id %}" class="pitches_pitch_quotecontent_content_operations">
 			{% csrf_token %}
-			<input type="submit" value="Hire">
+			<input type="submit" value="Hire" class="btn btn-success">
 		</form>
 		{% endif %}
 	</div>
 
-	<div>
+	<div class="pitches_pitch_message">
 		{% include 'pitches/message.html' with form=form messages=messages pitch=pitch  %}
 	</div>
 </div>
 
+{% endblock %}

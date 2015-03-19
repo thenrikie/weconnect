@@ -1,13 +1,16 @@
+{% extends "weconnect/base.html" %}
+{% block content %}
+
 {% include 'pitches/select.html' with page='quote' only %}
 <h1>Quotes</h1>
 
-<ul>
+<ul class="pitches_pitch_item col-md-10">
 	{% for pitch in pitches %}
 	<li>
 		<div>
-			<div>
+			<h1>
 				You sent a quote to {{  pitch.project.user.first_name }}
-			</div>
+			</h1>
 			<div>
 				Quoted on {{ pitch.state_changed_at|date:'j F, Y'}}
 			</div>
@@ -19,3 +22,5 @@
 	</li>
 	{% endfor %}
 </ul>
+
+{% endblock %}

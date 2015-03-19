@@ -2,7 +2,7 @@ from django.conf.urls import patterns, url
 from pitches import views
 
 urlpatterns = patterns('',
-	url(r'^$', views.list_request, name='list_request'),
+	url(r'^$', views.list_request, name='list'),
 	url(r'^request/$', views.list_request, name='list_request'),
 	url(r'^quote/$', views.list_quote, name='list_quote'),
 	url(r'^hired/$', views.list_hired, name='list_hired'),

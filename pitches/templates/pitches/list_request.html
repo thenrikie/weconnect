@@ -1,13 +1,16 @@
+{% extends "weconnect/base.html" %}
+{% block content %}
+
 {% include 'pitches/select.html' with page='request' only %}
 <h1>Request</h1>
 
-<ul>
+<ul class="pitches_pitch_item col-md-10">
 	{% for pitch in pitches %}
 	<li>
 		<div>
-			<div>
+			<h1>
 				{{ pitch.project.user.full_name }} is looking for {{ pitch.project.business.first.name|lower }}
-			</div>
+			</h1>
 
 			<p>
 				{{ pitch.project.user.first_name }} is looking for someone with your skills to help them with their project
@@ -19,3 +22,5 @@
 	</li>
 	{% endfor %}
 </ul>
+
+{% endblock %}

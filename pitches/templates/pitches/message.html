@@ -1,19 +1,21 @@
-<form method="post" enctype="multipart/form-data" action="{% url 'pitches:post_message' pitch.id %}">
+<form class="pitches_pitch_message_form" method="post" enctype="multipart/form-data" action="{% url 'pitches:post_message' pitch.id %}">
 	{% csrf_token %}
 	<ul>
 		{{ form.as_ul }}
 		<li>
-			<input type="submit" value="Send">
+			<input type="submit" value="Send" class="btn btn-success">
 		</li>
 	</ul>
 </form>
 
+<div class="pitches_pitch_message_block">
 {%  for  message in messages %}
-	<div>
-		<div>
+	<div class="pitches_pitch_message_item">
+		<div class="pitches_pitch_message_item_head">
 			<span>{{ message.sender.full_name }}</span>
 			<span>{{ message.created_at|timesince }}</span>
 		</div>
-		<p>{{ message.content }}</p>
+		<p class="pitches_pitch_message_item_content">{{ message.content }}</p>
 	</div>
 {% endfor %}
+</div>

@@ -81,6 +81,17 @@ class UserProfile(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 
+	def is_customer(self):
+		return self.role == 'CUSTOMER'
+
+	def is_company(self):
+		return self.role == 'COMPANY'
+
+	def unread_message_count(self):
+		#print('message count')
+		#print(Message.objects.filter(recipient=self.user, read=False).count())
+		return 0
+
 	def __str__(self):
 		return self.user.email
 

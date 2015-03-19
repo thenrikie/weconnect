@@ -1,4 +1,4 @@
-<ul>
+<ul class="col-md-12 pitch_pitches_select">
 	<li {% if page == 'request' %}class="highlighted"{% endif %}><a href="{% url 'pitches:list_request' %}">Request</a></li>
 	<li {% if page == 'quote' %}class="highlighted"{% endif %}><a href="{% url 'pitches:list_quote' %}">Quotes</a></li>
 	<li {% if page == 'hired' %}class="highlighted"{% endif %}><a href="{% url 'pitches:list_hired' %}">Hired</a></li>

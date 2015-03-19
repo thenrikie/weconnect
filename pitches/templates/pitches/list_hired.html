@@ -1,13 +1,16 @@
+{% extends "weconnect/base.html" %}
+{% block content %}
+
 {% include 'pitches/select.html' with page='hired' only %}
 <h1>Hired</h1>
 
-<ul>
+<ul class="pitches_pitch_item col-md-10">
 	{% for pitch in pitches %}
 	<li>
 		<div>
-			<div>
+			<h1>
 				Hired to help {{  pitch.project.user.first_name }}
-			</div>
+			</h1>
 			<div>
 				Hired on {{ pitch.hired_at|date:'j F, Y'}}
 			</div>
@@ -25,3 +28,5 @@
 	</li>
 	{% endfor %}
 </ul>
+
+{% endblock %}
