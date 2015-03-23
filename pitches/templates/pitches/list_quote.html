@@ -18,6 +18,9 @@
 		</div>
 		<div>
 			<a href="{% url 'pitches:show' pitch.id %}">Message</a>
+            {% if pitch.company_unread_message_count > 0 %}
+            <span class="unread_message_pop">{{pitch.company_unread_message_count}}<span>
+            {% endif %}
 		</div>
 	</li>
 	{% endfor %}

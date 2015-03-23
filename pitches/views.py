@@ -66,7 +66,8 @@ def reject(r, pitch_id):
 			return redirect('/')
 
 		pitch.change_state('company_rejected')
-
+		pitch.archived = True
+		
 		pitch.save()
 		return HttpResponseRedirect(reverse('pitches:list_request'))
 
@@ -145,6 +146,10 @@ def post_message(r, pitch_id):
 
 	if r.method == 'POST':
 		pitch = get_object_or_404(Pitch, pk=pitch_id)
+
+		if pitch.waiting():
+			print('You cannot leave message while pitching is in waiting state')
+			return redirect('/')
 
 		if pitch.company != r.user and pitch.project.user != r.user:
 			print('You have no permission to post message on this pitch')

@@ -18,8 +18,14 @@
  			{% endfor %}
  		</p>
  		{% if project.pitch_count > 0 %}
- 		<a href="{% url 'pitches:show' project.ready_pitch.first.id %}" class="projects_project_item_view">View Project</a>
+ 		<a href="{% url 'pitches:show' project.ready_pitch.first.id %}" class="projects_project_item_view">
+ 			View Project
+	        {% if project.unread_message_count > 0 %}
+	        <span class="unread_message_pop">{{project.unread_message_count}}<span>
+	        {% endif %}
+ 		</a>
  		{% endif %}
+
  	</li>
  {% endfor %}
 </ul>

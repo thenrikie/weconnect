@@ -86,3 +86,8 @@ class Project(models.Model):
 		for u in self.URGENCY:
 			if u[0] == self.urgency:
 				return u[1]
+
+	def unread_message_count(self):
+		from pitches.models import Message
+		return Message.objects.filter(read=False, pitch__project=self, recipient=self.user).count()
+

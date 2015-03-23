@@ -1,11 +1,20 @@
+{% extends "weconnect/base.html" %}
+{% block content %}
+
 <h1>Job Request</h1>
-<p>Tell {{ pitch.project.user.full_name }} why you would be the best person for this project</p>
-<form action="{% url 'pitches:accept' pitch.id %}" method="post">
-	{% csrf_token %}
-	<ul>
-		{{ form.as_ul }}
-		<li>
-			<input type="submit" value="Send Quote">
-		</li>
-	</ul>
-</form>
+<div class="pitches_company_quote">
+	
+	<p>Tell {{ pitch.project.user.full_name }} why you would be the best person for this project</p>
+	<form action="{% url 'pitches:accept' pitch.id %}" method="post" class="pitches_company_quote_form">
+		{% csrf_token %}
+		<ul>
+			{{ form.as_ul }}
+			<li>
+				<input type="submit" value="Send Quote" class="btn btn-primary">
+			</li>
+		</ul>
+	</form>
+
+</div>
+
+{% endblock %}

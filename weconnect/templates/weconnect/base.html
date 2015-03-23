@@ -38,11 +38,17 @@
 			{% if user.is_authenticated %}>
 				{% if user.userprofile.is_customer %}
               <li><a href="{% url 'projects:create' %}">+ New Project</a></li>
-	            <li><a href="{% url 'projects:list' %}">Project Board</a></li>
+	            <li><a href="{% url 'projects:list' %}">
+                    Project Board
+                    {% if user.userprofile.unread_message_count > 0 %}
+                    <span class="unread_message_pop">{{user.userprofile.unread_message_count}}<span>
+                    {% endif %}
+                  </a>
+            </li>
 	            {% endif %}
 
 	            {% if user.userprofile.is_company %}
-	            <li><a href="{% url 'pitches:list' %}">Job Requests 
+	            <li><a href="{% url 'pitches:list' %}"><span>Job Requests</span> 
                 {% if user.userprofile.unread_message_count > 0 %}
                 <span class="unread_message_pop">{{user.userprofile.unread_message_count}}<span>
                 {% endif %}

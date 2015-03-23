@@ -1,3 +1,7 @@
+{% extends "weconnect/base.html" %}
+{% block content %}
+
+
 <form action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data">
 	{% csrf_token %}
 	<ul>
@@ -8,3 +12,5 @@
 		</li>
 	</ul>
 </form>
+
+{% endblock %}

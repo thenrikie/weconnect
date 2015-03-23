@@ -63,10 +63,12 @@ class Pitch(models.Model):
 				self.hired_at = datetime.now()
 
 	def company_unread_message_count(self):
-		self.message_set.filter(read=False, recipient=self.company, pitch=self).count()
+		return self.message_set.filter(read=False, recipient=self.company, pitch=self).count()
 
 	def customer_unread_message_count(self):
-		self.message_set.filter(read=False, recipient=self.project.user, pitch=self).count()
+		print('cmessage')
+		print(self.project.user);
+		return self.message_set.filter(read=False, recipient=self.project.user, pitch=self).count()
 
 class Message(models.Model):
 	pitch = models.ForeignKey(Pitch)

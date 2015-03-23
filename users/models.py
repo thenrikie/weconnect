@@ -88,9 +88,8 @@ class UserProfile(models.Model):
 		return self.role == 'COMPANY'
 
 	def unread_message_count(self):
-		#print('message count')
-		#print(Message.objects.filter(recipient=self.user, read=False).count())
-		return 0
+		from pitches.models import Message
+		return Message.objects.filter(recipient=self.user, read=False).count();
 
 	def __str__(self):
 		return self.user.email

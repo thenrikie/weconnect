@@ -1,3 +1,7 @@
+{% extends "weconnect/base.html" %}
+{% block content %}
+
+
 <form action="{% url 'auth:register_business' %}" method="post">
 	{% csrf_token %}
 	<ul>
@@ -7,3 +11,6 @@
 		</li>
 	</ul>
 </form>
+
+
+{% endblock %}

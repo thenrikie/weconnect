@@ -1,22 +1,26 @@
+{% extends "weconnect/base.html" %}
+{% block content %}
+
+
 <h1>Job Request</h1>
 {% include 'pitches/project.html' with project=project only %}
 
 {% if pitch.waiting %}
-<div>
+<div class="pitches_company_operations">
 	<form method="post" action="{% url 'pitches:reject' pitch.id %}">
 		{% csrf_token %}
-		<input type="Submit" value="I will pass on this project">
+		<input type="Submit" value="I will pass on this project" class="btn btn-danger btn-lg">
 	</form>
 
 	<form method="get" action="{% url 'pitches:accept' pitch.id %}">
-		<input type="Submit" value="I want to work on this project">
+		<input type="Submit" value="I want to work on this project" class="btn btn-success btn-lg">
 	</form>
 </div>
 {% endif %}
 
 {% if pitch.quoted %}
 <h1>Your Quote</h1>
-<div>
+<div class="pitches_company_quote">
 	<h2>{{ pitch.company.full_name }}</h2>
 
 	<p>
@@ -37,6 +41,9 @@
 </div>
 {% endif %}
 
-
+{% if not pitch.waiting %}
 <h1>Message</h1>
 {% include 'pitches/message.html' with form=form messages=messages pitch=pitch  %}
+{% endif %}
+
+{% endblock %}

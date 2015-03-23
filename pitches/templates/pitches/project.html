@@ -1,29 +1,36 @@
-<p>{{ project.user.full_name }} is looking for someone with your expertise to help them with their project.</p>
-
-<h2> {{ project.user.first_name }} is looking for</h2>
-
-<p>{{ project.business.all.first.name }} who does</p>
-
-<ul>
-	{% for sub in project.sub_business.all %} 
-	<li>{{ sub.name }}</li>
-	{% endfor %}
-</ul>
-
-<p>at {{ project.my_place}}</p>
-
-<p>Budget: 
-	{% if project.budget_lower and project.budget_upper %}
-		{{ project.budget_lower }} - {{ project.budget_upper }}
-	{% else %}
-		No information
-	{% endif %}
+<p class="pitches_project_headerdesc">
+	{{ project.user.full_name }} is looking for someone with your expertise to help them with their project.
 </p>
 
-<p>
-	prefered start date: {{ project.urgency_text }}
-</p>
+<div class="pitches_project_header"> 
+	{{ project.user.first_name }} is looking for
+</div>
 
+<div class="pitches_project">
+	<span>{{ project.business.all.first.name }} who does</span>
 
-<h3>job description:</h3>
-<p>{{ project.desc }}</p>
+	<ul class="pitches_project_items">
+		{% for sub in project.sub_business.all %} 
+		<li>{{ sub.name }}</li>
+		{% endfor %}
+	</ul>
+
+	<span>at {{ project.my_place}}</span>
+
+	<div class="pitches_project_budget">Budget: 
+		{% if project.budget_lower and project.budget_upper %}
+			{{ project.budget_lower }} - {{ project.budget_upper }}
+		{% else %}
+			No information
+		{% endif %}
+	</div>
+
+	<div class="pitches_project_startdate">
+		prefered start date: {{ project.urgency_text }}
+	</div>
+
+	<h3>Job description:</h3>
+	<p class="pitches_project_desc">{{ project.desc }}</p>
+
+</div>
+
