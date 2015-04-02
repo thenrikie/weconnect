@@ -4,6 +4,38 @@ from authentication.models import User
 
 
 # Create your models here.
+
+class Question(models.Model):
+	TYPE = (
+		('CheckboxSelectMultiple', 'CheckboxSelectMultiple'),
+		('Select', 'Select'),
+		('RadioSelect', 'RadioSelect')
+	)
+
+	sub_business = models.ForeignKey(SubBusiness)
+	type = models.CharField(max_length=25, verbose_name='', choices=TYPE)
+	text = models.CharField(max_length=512)
+
+	def __str__(self):
+		return self.text
+
+
+class QuestionOption(models.Model):
+	
+	question = models.ForeignKey(Question)
+	text = models.CharField(max_length=512)
+
+	def __str__(self):
+		return self.text
+
+
+class District(models.Model):
+	text = models.CharField(max_length=512)
+
+	def __str__(self):
+		return self.text
+
+
 class Project(models.Model):
 
 	
@@ -15,35 +47,9 @@ class Project(models.Model):
 		('other', 'Other')
 	)
 
-	DISTANCE = (
-		('10', '10 miles'),
-		('15', '15 miles'),
-		('20', '20 miles'),
-		('30', '30+ miles')
-	)
-
-	DISTRICT = (
-		('Islands', 'Islands'),
-		('Kwai Tsing', 'Kwai Tsing') ,
-		('North', 'North'),
-		('Sha Tin', 'Sha Tin'),
-		('Tai Po', 'Tai Po'),
-		('Tsuen Wan', 'Tsuen Wan'),
-		('Tuen Mun', 'Tuen Mun'),
-		('Yuen Long', 'Yuen Long'),
-		('Kowloon City', 'Kowloon City'),
-		('Kwun Tong', 'Kwun Tong'),
-		('Sham Shui Po', 'Sham Shui Po'),
-		('Wong Tai Sin', 'Wong Tai Sin'),
-		('Yau Tsim Mong', 'Yau Tsim Mong'),
-		('Central & Western', 'Central & Western'),
-		('Eastern', 'Eastern'),
-		('Southern', 'Southern'),
-		('Wan Chai', 'Wan Chai')
-	)
-
 	business = models.ManyToManyField(Business)
 	sub_business = models.ManyToManyField(SubBusiness)
+	question_option = models.ManyToManyField(QuestionOption)
 
 	urgency = models.CharField(max_length=25,
 			verbose_name='When do you need this service?',
@@ -58,13 +64,9 @@ class Project(models.Model):
 
 	can_travel = models.BooleanField(default=False, verbose_name='I can travel to them')
 	company_travel = models.BooleanField(default=False, verbose_name='They travel to me')
-	travel_distance = models.CharField(max_length=25,
-			verbose_name='How far will you travel',
-			choices=DISTRICT,
-			default='Central & Western'
-	)
 
-	my_place = models.CharField(max_length=25, verbose_name='', choices=DISTRICT, default='Central & Western')
+	travel_distance = models.ManyToManyField(District, related_name='travel_distance_set')
+	my_place = models.ForeignKey(District, related_name='my_place')
 
 	desc = models.CharField(max_length=1024, blank=True, verbose_name='description')
 	

@@ -16,6 +16,9 @@
     <!-- Custom styles for this template -->
     <link href="/static/css/style.css" rel="stylesheet">
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="/static/bower_components/lodash/lodash.min.js"></script>
+
   </head>
 
   <body>
@@ -65,7 +68,7 @@
 			{% else %}
 	            <li class="active"><a href="{% url 'auth:register' %}">Sign up</a></li>
 	            <li><a href="{% url 'auth:login' %}">Login</a></li>
-	            l>
+	            
 	            </li>
 			{% endif %}
 
@@ -93,7 +96,7 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    
     <script src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
   </body>
 </html>

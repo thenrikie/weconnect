@@ -10,6 +10,13 @@ class SubBusiness(models.Model):
 	def __str__(self):
 		return self.name
 
+	def as_json(self):
+		return {
+			'name': self.name,
+			'id': self.id,
+			'business': self.business_set.all().first().id
+		}
+
 class Business(models.Model):
 	name = models.CharField(max_length=255)
 	desc = models.CharField(max_length=255)

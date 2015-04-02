@@ -1,7 +1,10 @@
+{% extends "weconnect/base.html" %}
+{% block content %}
+
 <form action="{% url 'projects:create_details' %}" method="post">
 	{% csrf_token %}
 	<ul>
-		{{ businessForm.as_ul }}
+		{{ questionForm.as_ul }}
 		{{ form.as_ul }}
 		<li>
 
@@ -9,3 +12,5 @@
 		</li>
 	</ul>
 </form>
+
+{% endblock %}

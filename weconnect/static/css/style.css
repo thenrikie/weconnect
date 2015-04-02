@@ -45,7 +45,6 @@ body {
 
 .projects_project_item li {
     border: 1px solid #ccc;
-    display: inline-block;
     height: 250px;
     margin-right: 40px;
     padding: 25px;
@@ -60,6 +59,7 @@ body {
 
 .projects_project_item_sp {
     font-size: 20px;
+    text-align: center;
 }
 
 .projects_project_item p {

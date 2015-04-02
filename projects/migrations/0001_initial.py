@@ -2,37 +2,92 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
+from django.conf import settings
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('authentication', '0001_initial'),
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('users', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Project',
+            name='District',
             fields=[
-                ('id', models.AutoField(serialize=False, auto_created=True, primary_key=True, verbose_name='ID')),
-                ('urgency', models.CharField(max_length=25, verbose_name='When do you need this service?', default='flexible', choices=[('flexible', 'I can be flexible'), ('asap', 'As soon as possible'), ('week', 'Sometime this week'), ('specific', 'Specific date'), ('other', 'Other')])),
-                ('deadline', models.DateTimeField(null=True)),
-                ('budget_lower', models.FloatField(blank=True, null=True)),
-                ('budget_upper', models.FloatField(blank=True, null=True)),
-                ('can_travel', models.BooleanField(verbose_name='I can travel to them', default=False)),
-                ('company_travel', models.BooleanField(verbose_name='They travel to me', default=False)),
-                ('travel_distance', models.CharField(max_length=25, verbose_name='How far will you travel', default='Central & Western', choices=[('Islands', 'Islands'), ('Kwai Tsing', 'Kwai Tsing'), ('North', 'North'), ('Sha Tin', 'Sha Tin'), ('Tai Po', 'Tai Po'), ('Tsuen Wan', 'Tsuen Wan'), ('Tuen Mun', 'Tuen Mun'), ('Yuen Long', 'Yuen Long'), ('Kowloon City', 'Kowloon City'), ('Kwun Tong', 'Kwun Tong'), ('Sham Shui Po', 'Sham Shui Po'), ('Wong Tai Sin', 'Wong Tai Sin'), ('Yau Tsim Mong', 'Yau Tsim Mong'), ('Central & Western', 'Central & Western'), ('Eastern', 'Eastern'), ('Southern', 'Southern'), ('Wan Chai', 'Wan Chai')])),
-                ('my_place', models.CharField(max_length=25, verbose_name='', default='Central & Western', choices=[('Islands', 'Islands'), ('Kwai Tsing', 'Kwai Tsing'), ('North', 'North'), ('Sha Tin', 'Sha Tin'), ('Tai Po', 'Tai Po'), ('Tsuen Wan', 'Tsuen Wan'), ('Tuen Mun', 'Tuen Mun'), ('Yuen Long', 'Yuen Long'), ('Kowloon City', 'Kowloon City'), ('Kwun Tong', 'Kwun Tong'), ('Sham Shui Po', 'Sham Shui Po'), ('Wong Tai Sin', 'Wong Tai Sin'), ('Yau Tsim Mong', 'Yau Tsim Mong'), ('Central & Western', 'Central & Western'), ('Eastern', 'Eastern'), ('Southern', 'Southern'), ('Wan Chai', 'Wan Chai')])),
-                ('desc', models.CharField(blank=True, max_length=1024, verbose_name='description')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('business', models.ManyToManyField(to='users.Business')),
-                ('sub_business', models.ManyToManyField(to='users.SubBusiness')),
-                ('user', models.ForeignKey(to='authentication.User')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('text', models.CharField(max_length=512)),
             ],
             options={
             },
             bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Project',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('urgency', models.CharField(choices=[('flexible', 'I can be flexible'), ('asap', 'As soon as possible'), ('week', 'Sometime this week'), ('specific', 'Specific date'), ('other', 'Other')], default='flexible', verbose_name='When do you need this service?', max_length=25)),
+                ('deadline', models.DateTimeField(null=True)),
+                ('budget_lower', models.FloatField(null=True, blank=True)),
+                ('budget_upper', models.FloatField(null=True, blank=True)),
+                ('can_travel', models.BooleanField(verbose_name='I can travel to them', default=False)),
+                ('company_travel', models.BooleanField(verbose_name='They travel to me', default=False)),
+                ('desc', models.CharField(verbose_name='description', blank=True, max_length=1024)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
+                ('business', models.ManyToManyField(to='users.Business')),
+                ('my_place', models.ForeignKey(related_name='my_place', to='projects.District')),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Question',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('type', models.CharField(choices=[('CheckboxInput', 'CheckboxInput'), ('Select', 'Select'), ('RadioSelect', 'RadioSelect')], verbose_name='', max_length=25)),
+                ('text', models.CharField(max_length=512)),
+                ('sub_business', models.ForeignKey(to='users.SubBusiness')),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='QuestionOption',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('text', models.CharField(max_length=512)),
+                ('question', models.ForeignKey(to='projects.Question')),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='project',
+            name='question_option',
+            field=models.ManyToManyField(to='projects.QuestionOption'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='project',
+            name='sub_business',
+            field=models.ManyToManyField(to='users.SubBusiness'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='project',
+            name='travel_distance',
+            field=models.ManyToManyField(related_name='travel_distance_set', to='projects.District'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='project',
+            name='user',
+            field=models.ForeignKey(to=settings.AUTH_USER_MODEL),
+            preserve_default=True,
         ),
     ]

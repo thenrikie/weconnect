@@ -5,7 +5,7 @@
 
 <ul class="projects_project_item col-md-12">
  {% for project in projects %}
- 	<li>
+ 	<li class="col-md-3">
  		<span class="projects_project_item_count">{{ project.pitch_count }}</span> 
  		<span class="projects_project_item_sp">Service Providers</span>
  		<p> {{ project.business.all.first.name }}</p>

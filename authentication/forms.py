@@ -29,5 +29,6 @@ class RegisterBusiness(ModelForm):
 		 'can_travel', 'travel_distance', 'customer_travel', 'only_remote'
 		]
 		widgets = {
-			'desc': Textarea()
+			'desc': Textarea
+
 		}
