@@ -1,5 +1,78 @@
 {% extends "weconnect/base.html" %}
+{% load staticfiles %}
+{% load sinceyear %}
 {% block content %}
+{% with "users_profile_business" as css_prefix %}
+
+<p class="{{ css_prefix }}_head_text">Complete your portfolio to increase your chance of attracting new customers</p>
+
+<div class="{{ css_prefix }}_head">
+	<div class="{{ css_prefix }}s_head_logo">
+	{% if userprofile.logo %}
+		<img src="{% static userprofile.logo %}" alt="{{ userprofile.business_name }}">
+	{% else %}
+		?
+	{% endif %}
+	</div>
+	<div class="{{ css_prefix }}_head_company">
+		{{ userprofile.business_name }}
+	</div>
+	<div class="{{ css_prefix }}_head_ppl">
+		<div class="{{ css_prefix }}_head_ppl_photo">
+		{% if userprofile.photo %}
+			<img src="{% static userprofile.photo %}" alt="{{ userprofile.business_name }}">
+		{% else %}
+			?
+		{% endif %}
+		</div>
+		<div class="{{ css_prefix }}_head_ppl_email">
+			{{ user.email }}
+		</div>
+	</div>
+	<div class="{{ css_prefix }}_head_contact">
+		<div class="{{ css_prefix }}_head_contact_row">
+			<span class="{{ css_prefix }}_head_contact_row_desc">T:</span>
+			<span class="{{ css_prefix }}_head_contact_row_content">{{ userprofile.mobile_number }}</span>
+		</div>
+		<div class="{{ css_prefix }}_head_contact_row">
+			<span class="{{ css_prefix }}_head_contact_row_desc">W:</span>
+			<span class="{{ css_prefix }}_head_contact_row_content">{{ userprofile.website }}</span>
+		</div>
+	</div>
+</div>
+
+<div class="{{ css_prefix }}_desc">
+	<span>Your Company</span>
+	<p>{{ userprofile.desc }}</p>
+</div>
+
+<div class="{{ css_prefix }}_desc">
+	<span>Your Services</span>
+	<p>{{ userprofile.service_desc }}</p>
+</div>
+
+<div class="{{ css_prefix }}_companydetail">
+	<div class="{{ css_prefix }}_companydetail_row">
+		<span class="{{ css_prefix }}_companydetail_row_icon"></span>
+		<span class="{{ css_prefix }}_companydetail_row_content">Located in {{ userprofile.address_4|default:'?' }}</span>
+	</div>
+	<div class="{{ css_prefix }}_companydetail_row">
+		<span class="{{ css_prefix }}_companydetail_row_icon"></span>
+		<span class="{{ css_prefix }}_companydetail_row_content">{{ userprofile.employees }} employee{{ userprofile.employees|pluralize }}</span>
+	</div>
+	<div class="{{ css_prefix }}_companydetail_row">
+		<span class="{{ css_prefix }}_companydetail_row_icon"></span>
+		<span class="{{ css_prefix }}_companydetail_row_content">In business for {{ userprofile.business_since|sinceyear }}</span>
+	</div>
+</div>
+
+<div class="{{ css_prefix }}_companysocial">
+	<span>Facebook: {{ userprofile.facebook|default:'+ Add'}}</span>
+	<span>LinkedIn: {{ userprofile.linkedin|default:'+ Add'}}</span>
+	<span>Twitter: {{ userprofile.twitter|default:'+ Add'}}</span>
+	<span>Printerest: {{ userprofile.pinterest|default:'+ Add'}}</span>
+	<span>Instagram: {{ userprofile.instagram|default:'+ Add'}}</span>
+</div>
 
 <form action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data">
 	{% csrf_token %}
@@ -11,4 +84,5 @@
 	</ul>
 </form>
 
+{% endwith %}
 {% endblock %}

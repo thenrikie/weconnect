@@ -3,19 +3,20 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 import users.models
+from django.conf import settings
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('authentication', '0001_initial'),
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
             name='Business',
             fields=[
-                ('id', models.AutoField(serialize=False, auto_created=True, primary_key=True, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, serialize=False, verbose_name='ID', primary_key=True)),
                 ('name', models.CharField(max_length=255)),
                 ('desc', models.CharField(max_length=255)),
             ],
@@ -24,9 +25,19 @@ class Migration(migrations.Migration):
             bases=(models.Model,),
         ),
         migrations.CreateModel(
+            name='District',
+            fields=[
+                ('id', models.AutoField(auto_created=True, serialize=False, verbose_name='ID', primary_key=True)),
+                ('text', models.CharField(max_length=512)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
             name='SubBusiness',
             fields=[
-                ('id', models.AutoField(serialize=False, auto_created=True, primary_key=True, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, serialize=False, verbose_name='ID', primary_key=True)),
                 ('name', models.CharField(max_length=255)),
                 ('desc', models.CharField(max_length=255)),
             ],
@@ -37,33 +48,34 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='UserProfile',
             fields=[
-                ('id', models.AutoField(serialize=False, auto_created=True, primary_key=True, verbose_name='ID')),
-                ('role', models.CharField(editable=False, max_length=25, choices=[('CUSTOMER', 'Customer'), ('COMPANY', 'Company')])),
-                ('business_name', models.CharField(max_length=256, verbose_name='business name')),
-                ('mobile_number', models.CharField(blank=True, max_length=100, verbose_name='mobile number')),
+                ('id', models.AutoField(auto_created=True, serialize=False, verbose_name='ID', primary_key=True)),
+                ('role', models.CharField(choices=[('CUSTOMER', 'Customer'), ('COMPANY', 'Company')], editable=False, max_length=25)),
+                ('business_name', models.CharField(verbose_name='business name', max_length=256)),
+                ('mobile_number', models.CharField(verbose_name='mobile number', blank=True, max_length=100)),
                 ('website', models.URLField(blank=True, max_length=512)),
-                ('desc', models.CharField(blank=True, max_length=1024, verbose_name='description')),
-                ('get_sms', models.BooleanField(verbose_name='Send me an sms when I receive a job request', default=False)),
-                ('address_1', models.CharField(blank=True, max_length=512, verbose_name='Room/Floor/Block')),
-                ('address_2', models.CharField(blank=True, max_length=512, verbose_name='Street/Residential address')),
-                ('address_3', models.CharField(blank=True, max_length=512, verbose_name='')),
-                ('address_4', models.CharField(blank=True, max_length=512, verbose_name='Area')),
-                ('can_travel', models.BooleanField(verbose_name='I can travel to my customers', default=False)),
-                ('travel_distance', models.CharField(max_length=25, verbose_name='How far will you travel', default=10, choices=[('10', '10 miles'), ('15', '15 miles'), ('20', '20 miles'), ('30', '30+ miles')])),
-                ('only_remote', models.BooleanField(verbose_name='Only internet or phone', default=False)),
-                ('customer_travel', models.BooleanField(verbose_name='My customer usually travel to me', default=False)),
-                ('employees', models.IntegerField(verbose_name='Employees number', default=0)),
-                ('facebook', models.CharField(blank=True, max_length=255, default='')),
-                ('linkedin', models.CharField(blank=True, max_length=255, default='')),
-                ('twitter', models.CharField(blank=True, max_length=255, default='')),
-                ('pinterest', models.CharField(blank=True, max_length=255, default='')),
-                ('instagram', models.CharField(blank=True, max_length=255, default='')),
-                ('photo', models.ImageField(blank=True, null=True, upload_to=users.models.person_filename)),
-                ('logo', models.ImageField(blank=True, null=True, upload_to=users.models.logo_filename)),
+                ('desc', models.CharField(verbose_name='description', blank=True, max_length=1024)),
+                ('get_sms', models.BooleanField(default=False, verbose_name='Send me an sms when I receive a job request')),
+                ('address_1', models.CharField(verbose_name='Room/Floor/Block', blank=True, max_length=512)),
+                ('address_2', models.CharField(verbose_name='Street/Residential address', blank=True, max_length=512)),
+                ('address_3', models.CharField(verbose_name='', blank=True, max_length=512)),
+                ('address_4', models.CharField(verbose_name='Area', blank=True, max_length=512)),
+                ('can_travel', models.BooleanField(default=False, verbose_name='I can travel to my customers')),
+                ('only_remote', models.BooleanField(default=False, verbose_name='Only internet or phone')),
+                ('customer_travel', models.BooleanField(default=False, verbose_name='My customer usually travel to me')),
+                ('employees', models.IntegerField(default=0, verbose_name='Employees number')),
+                ('facebook', models.CharField(default='', blank=True, max_length=255)),
+                ('linkedin', models.CharField(default='', blank=True, max_length=255)),
+                ('twitter', models.CharField(default='', blank=True, max_length=255)),
+                ('pinterest', models.CharField(default='', blank=True, max_length=255)),
+                ('instagram', models.CharField(default='', blank=True, max_length=255)),
+                ('photo', models.ImageField(null=True, blank=True, upload_to=users.models.person_filename)),
+                ('logo', models.ImageField(null=True, blank=True, upload_to=users.models.logo_filename)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('business', models.ManyToManyField(to='users.Business')),
-                ('user', models.OneToOneField(to='authentication.User')),
+                ('sub_business', models.ManyToManyField(to='users.SubBusiness')),
+                ('travel_distance', models.ManyToManyField(to='users.District', related_name='userprofile_travel_distance_set', verbose_name='How far will you travel')),
+                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
             ],
             options={
             },

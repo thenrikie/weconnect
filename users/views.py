@@ -40,7 +40,7 @@ def profile_business(r):
 			form.save()
 			return HttpResponseRedirect(reverse('users:profile'))
 
-	return render(r, 'users/profile/business.html', {'form' : form})
+	return render(r, 'users/profile/business.html', {'form' : form, 'userprofile' : r.user.userprofile})
 
 
 def profile(r):

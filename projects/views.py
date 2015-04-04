@@ -38,27 +38,24 @@ def create_project_select_business(r):
 
 def create_project_select_details(r):
 	
-
+	#get session from first create page
 	session_business = r.session.get('create_project_business')
 
 	if not session_business or not session_business.get('business') or not session_business.get('sub_business'):
-		return redirect('projects:create');
+		return redirect('projects:create')
 
-	form = forms.Project()
+	#get question set based on business selected
 	questions = Question.objects.filter(sub_business=session_business['sub_business'])
 	extra = []
 
 	for q in questions:
 		extra.append({'question': q.text, 'type': q.type, 'queryset': QuestionOption.objects.filter(question=q)})
 
-	questionForm = forms.ProjectQuestion(extra=extra);
+	questionForm = forms.ProjectQuestion(r.POST or None, extra=extra);
+	form = forms.Project(r.POST or None)
 
 	if r.method == 'POST':
-
-		form = forms.Project(r.POST)
-
-		print(r.POST)
-		if form.is_valid():
+		if form.is_valid() and questionForm.is_valid():
 			print('passed')
 
 			whiteListProject = {k: r.POST.get(k, False) for k in (
@@ -68,11 +65,10 @@ def create_project_select_details(r):
 				)
 			}
 
-			print(form.cleaned_data['my_place'])
 			project = Project(user=r.user, my_place=form.cleaned_data['my_place'], **whiteListProject)
 			project.save()
 
-			project.business.add(businessForm.cleaned_data['business'])
+			project.business.add(session_business['business'])
 
 			##for var in form.cleaned_data['sub_business']:
 			##	project.sub_business.add(var)
@@ -81,26 +77,25 @@ def create_project_select_details(r):
 			for var in form.cleaned_data['travel_distance']:
 				project.travel_distance.add(var)
 
-			
-			return HttpResponseRedirect(reverse('projects:list'))
+			#save question option
+			for key, question_set in questionForm.cleaned_data.items():
+				try: 
+					for question in question_set:
+						project.question_option.add(question)
+				except TypeError:
+					project.question_option.add(question_set)
+
+			del r.session['create_project_business']
+			return redirect('projects:list')
 
 		#print("post not passed")
 
-
-
-
 	return render(r, 'projects/create_project_select_details.html', {'form' : form, 'questionForm': questionForm})
 
-def list(r):
+def list_project(r):
 
 	if not r.user.is_authenticated():
 		return redirect('/')
 
 	projects = Project.objects.all().filter(user=r.user)
 	return render(r, 'projects/list.html', {'projects' : projects})
-
-
-
-
-
-

@@ -1,5 +1,5 @@
 from django.db import models
-from users.models import SubBusiness, Business
+from users.models import SubBusiness, Business, District
 from authentication.models import User
 
 
@@ -27,14 +27,6 @@ class QuestionOption(models.Model):
 
 	def __str__(self):
 		return self.text
-
-
-class District(models.Model):
-	text = models.CharField(max_length=512)
-
-	def __str__(self):
-		return self.text
-
 
 class Project(models.Model):
 
@@ -65,10 +57,10 @@ class Project(models.Model):
 	can_travel = models.BooleanField(default=False, verbose_name='I can travel to them')
 	company_travel = models.BooleanField(default=False, verbose_name='They travel to me')
 
-	travel_distance = models.ManyToManyField(District, related_name='travel_distance_set')
+	travel_distance = models.ManyToManyField(District, related_name='project_travel_distance_set')
 	my_place = models.ForeignKey(District, related_name='my_place')
 
-	desc = models.CharField(max_length=1024, blank=True, verbose_name='description')
+	desc = models.CharField(max_length=1024, blank=True, verbose_name='Anything else they should know')
 	
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)

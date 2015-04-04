@@ -1,6 +1,7 @@
 from authentication.models import User
 from users.models import UserProfile, Business
-from django.forms import ModelForm, PasswordInput, Textarea
+from django.forms import ModelForm, PasswordInput, Textarea, CheckboxSelectMultiple
+from django import forms
 
 """
 class Login(ModelForm):
@@ -21,6 +22,9 @@ class Register(ModelForm):
 			'password': PasswordInput()
 		}
 
+class Business(forms.Form):
+	business = forms.ModelChoiceField(queryset=Business.objects.all(), empty_label='What are you looking for?')
+	
 class RegisterBusiness(ModelForm):
 	class Meta:
 		model = UserProfile
@@ -29,6 +33,6 @@ class RegisterBusiness(ModelForm):
 		 'can_travel', 'travel_distance', 'customer_travel', 'only_remote'
 		]
 		widgets = {
+			'travel_distance': CheckboxSelectMultiple,
 			'desc': Textarea
-
 		}

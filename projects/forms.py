@@ -13,38 +13,46 @@ class ProjectQuestion(forms.Form):
 		extra = kwargs.pop('extra')
 		super(ProjectQuestion, self).__init__(*args, **kwargs)
 
+
 		for i, item in enumerate(extra):
+			kwargs = {
+				'label': item.get('question'),
+				'queryset': item['queryset']
+			}
+
 			if item.get('type') == 'CheckboxSelectMultiple':
 				field = forms.ModelMultipleChoiceField
-				widget = forms.CheckboxSelectMultiple
+				kwargs['widget'] = forms.CheckboxSelectMultiple
 
 			elif item.get('type') == 'RadioSelect':
 				field = forms.ModelChoiceField
-				widget = forms.RadioSelect
+				kwargs['widget'] = forms.RadioSelect
+				kwargs['empty_label'] = None
 
 			elif item.get('type') == 'Select':
 				field = forms.ModelChoiceField
-				widget = forms.Select
+				kwargs['widget'] = forms.Select
+				kwargs['empty_label'] = None
 
 			else:
 				raise ValueError('Unsupported question type. Must be CheckboxSelectMultiple, RadioSelect or Select')
 
 
-			self.fields['business_question_' + str(i)] = field(label=item.get('question'), widget=widget, queryset=item['queryset'])
+			self.fields['business_question_' + str(i)] = field(**kwargs)
 
 
 class Project(forms.ModelForm):
 
-#
-#	def __init__(self, *args, **kwargs):
-#		super(Project, self).__init__(*args, **kwargs)
-#		if 'initial' in kwargs:
-#			self.fields['sub_business'].queryset = SubBusiness.objects.filter(business=kwargs['initial']['business'])
+
+	def __init__(self, *args, **kwargs):
+		super(Project, self).__init__(*args, **kwargs)
+		self.fields['my_place'].empty_label = None
 
 	class Meta:
 		model = Project
-		fields = ['urgency', 'can_travel', 'travel_distance', 'company_travel', 'my_place']
+		fields = ['urgency', 'can_travel', 'travel_distance', 'company_travel', 'my_place', 'desc']
 		widgets = {
-			'travel_distance': forms.CheckboxSelectMultiple
+			'travel_distance': forms.CheckboxSelectMultiple,
+			'desc': forms.Textarea
 		}
 

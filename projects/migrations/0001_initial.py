@@ -8,36 +8,26 @@ from django.conf import settings
 class Migration(migrations.Migration):
 
     dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('users', '0001_initial'),
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='District',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('text', models.CharField(max_length=512)),
-            ],
-            options={
-            },
-            bases=(models.Model,),
-        ),
-        migrations.CreateModel(
             name='Project',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('urgency', models.CharField(choices=[('flexible', 'I can be flexible'), ('asap', 'As soon as possible'), ('week', 'Sometime this week'), ('specific', 'Specific date'), ('other', 'Other')], default='flexible', verbose_name='When do you need this service?', max_length=25)),
+                ('id', models.AutoField(auto_created=True, serialize=False, verbose_name='ID', primary_key=True)),
+                ('urgency', models.CharField(default='flexible', choices=[('flexible', 'I can be flexible'), ('asap', 'As soon as possible'), ('week', 'Sometime this week'), ('specific', 'Specific date'), ('other', 'Other')], verbose_name='When do you need this service?', max_length=25)),
                 ('deadline', models.DateTimeField(null=True)),
                 ('budget_lower', models.FloatField(null=True, blank=True)),
                 ('budget_upper', models.FloatField(null=True, blank=True)),
-                ('can_travel', models.BooleanField(verbose_name='I can travel to them', default=False)),
-                ('company_travel', models.BooleanField(verbose_name='They travel to me', default=False)),
-                ('desc', models.CharField(verbose_name='description', blank=True, max_length=1024)),
+                ('can_travel', models.BooleanField(default=False, verbose_name='I can travel to them')),
+                ('company_travel', models.BooleanField(default=False, verbose_name='They travel to me')),
+                ('desc', models.CharField(verbose_name='Anything else they should know', blank=True, max_length=1024)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('business', models.ManyToManyField(to='users.Business')),
-                ('my_place', models.ForeignKey(related_name='my_place', to='projects.District')),
+                ('my_place', models.ForeignKey(related_name='my_place', to='users.District')),
             ],
             options={
             },
@@ -46,8 +36,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Question',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('type', models.CharField(choices=[('CheckboxInput', 'CheckboxInput'), ('Select', 'Select'), ('RadioSelect', 'RadioSelect')], verbose_name='', max_length=25)),
+                ('id', models.AutoField(auto_created=True, serialize=False, verbose_name='ID', primary_key=True)),
+                ('type', models.CharField(choices=[('CheckboxSelectMultiple', 'CheckboxSelectMultiple'), ('Select', 'Select'), ('RadioSelect', 'RadioSelect')], verbose_name='', max_length=25)),
                 ('text', models.CharField(max_length=512)),
                 ('sub_business', models.ForeignKey(to='users.SubBusiness')),
             ],
@@ -58,7 +48,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='QuestionOption',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, serialize=False, verbose_name='ID', primary_key=True)),
                 ('text', models.CharField(max_length=512)),
                 ('question', models.ForeignKey(to='projects.Question')),
             ],
@@ -81,7 +71,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='project',
             name='travel_distance',
-            field=models.ManyToManyField(related_name='travel_distance_set', to='projects.District'),
+            field=models.ManyToManyField(to='users.District', related_name='project_travel_distance_set'),
             preserve_default=True,
         ),
         migrations.AddField(

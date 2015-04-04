@@ -4,6 +4,10 @@
 <form action="{% url 'auth:register_business_details' %}" method="post">
 	{% csrf_token %}
 	<ul>
+		{{ businessForm.as_ul }}
+		<li id="subBusiness">
+
+		</li>
 		{{ form.as_ul }}
 		<li>
 			<input type="submit" value="Continue">
@@ -11,5 +15,37 @@
 	</ul>
 </form>
 
+<script>
+	var subBusiness = {{ sub_business_json | safe }};
+	var businessSelect = $('#id_business');
+	
+	var renderSubBusiness = function(){
 
+		if (!businessSelect.val()){
+			$('#subBusiness').html('');
+			return;
+		}
+
+		var filteredSubBusiness = _.filter(subBusiness, function(o){
+			return o.business == businessSelect.val()
+		});
+
+		var subBusinessUl = $('<ul id="id_sub_business"></ul>');
+		_.each(filteredSubBusiness, function(business){
+			subBusinessUl.append($('<li><input type="checkbox" name="sub_business" value="' + business.id + '"> ' + business.name + '</li>'));
+		});
+
+		$('#subBusiness').html(subBusinessUl);
+
+	}
+
+	//init
+	renderSubBusiness();
+
+	//on select change
+	businessSelect.change(renderSubBusiness);
+
+
+
+</script>
 {% endblock %}

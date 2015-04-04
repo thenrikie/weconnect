@@ -6,7 +6,8 @@ from django.contrib import auth
 from django.shortcuts import redirect
 from authentication import forms
 from authentication.models import User
-from users.models import UserProfile
+from users.models import UserProfile, SubBusiness
+import json
 
 # Create your views here.
 
@@ -90,11 +91,15 @@ def register_business_details(r):
 		#redirect if not from previous page
 		return redirect('auth:register_business')
 
-	businessForm = forms.RegisterBusiness(label_suffix='')
+	businessForm = forms.Business(r.POST or None)
+	form = forms.RegisterBusiness(r.POST or None, label_suffix='')
+
+	subBusinesses = SubBusiness.objects.all();
+	sub_business_json = json.dumps([ob.as_json() for ob in subBusinesses])
 
 	if r.method == 'POST':
-		businessForm = forms.RegisterBusiness(r.POST, label_suffix='')
-		if businessForm.is_valid():
+
+		if form.is_valid() and businessForm.is_valid():
 			# Create user object
 			session_user = r.session.get('register_business_user')
 			user = User.objects.create_user(
@@ -107,11 +112,19 @@ def register_business_details(r):
 			#Create user profile
 			whiteListProfile = {k: r.POST.get(k, False) for k in ('business_name', 'website', 'mobile_number', 'desc', 'get_sms',
 	 			'address_1', 'address_2', 'address_3', 'address_4',
-				'can_travel', 'travel_distance', 'customer_travel', 'only_remote')
+				'can_travel', 'customer_travel', 'only_remote')
 			}
 
 			userProfile = UserProfile(role='COMPANY', user=user, **whiteListProfile);
 			userProfile.save()
+
+			userProfile.business.add(businessForm.cleaned_data['business'])
+
+			for sub_business in r.POST.getlist('sub_business'):
+				userProfile.sub_business.add(sub_business)
+
+			for d in form.cleaned_data['travel_distance']:
+				userProfile.travel_distance.add(d)
 
 			user = auth.authenticate(username=session_user['email'], password=session_user['password'])
 
@@ -122,4 +135,8 @@ def register_business_details(r):
 				auth.login(r, user)
 				return redirect('/')
 
-	return render(r, 'auth/register_business_details.html', {'form' : businessForm})
+	return render(r, 'auth/register_business_details.html', {
+		'form' : form, 
+		'businessForm' : businessForm, 
+		'sub_business_json': sub_business_json
+	})

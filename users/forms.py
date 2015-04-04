@@ -1,6 +1,7 @@
 from authentication.models import User
 from users.models import UserProfile, Business
-from django.forms import ModelForm, PasswordInput, Textarea
+from django.forms import ModelForm, PasswordInput, Textarea, CheckboxSelectMultiple
+
 
 
 class Credential(ModelForm):
@@ -26,5 +27,6 @@ class Business(ModelForm):
 		 'employees','facebook', 'linkedin', 'twitter', 'pinterest', 'instagram','logo'
 		]
 		widgets = {
-			'desc': Textarea()
+			'travel_distance': CheckboxSelectMultiple,
+			'desc': Textarea
 		}
