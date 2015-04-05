@@ -1,79 +1,215 @@
 {% extends "weconnect/base.html" %}
 {% load staticfiles %}
 {% load sinceyear %}
+{% load hformrow %}
 {% block content %}
 {% with "users_profile_business" as css_prefix %}
 
-<p class="{{ css_prefix }}_head_text">Complete your portfolio to increase your chance of attracting new customers</p>
+<p class="{{ css_prefix }}_head_text page_header">Complete your portfolio to increase your chance of attracting new customers</p>
 
-<div class="{{ css_prefix }}_head">
-	<div class="{{ css_prefix }}s_head_logo">
-	{% if userprofile.logo %}
-		<img src="{% static userprofile.logo %}" alt="{{ userprofile.business_name }}">
-	{% else %}
-		?
-	{% endif %}
-	</div>
-	<div class="{{ css_prefix }}_head_company">
-		{{ userprofile.business_name }}
-	</div>
-	<div class="{{ css_prefix }}_head_ppl">
-		<div class="{{ css_prefix }}_head_ppl_photo">
-		{% if userprofile.photo %}
-			<img src="{% static userprofile.photo %}" alt="{{ userprofile.business_name }}">
-		{% else %}
-			?
-		{% endif %}
+<div class="{{ css_prefix }}_left col-md-8">
+	<div class="{{ css_prefix }}_head">
+		<div id="head-display">
+			<a href="javascript:void(0)" class="pull-right {{ css_prefix }}_edit_btn" id="head" >Click here to edit</a>
+			{% if userprofile.logo %}
+				<img class="{{ css_prefix }}s_head_logo_img" src="{% static userprofile.logo %}" alt="{{ userprofile.business_name }}">
+			{% else %}
+				<div class="{{ css_prefix }}s_head_logo">?</div>
+			{% endif %}
+			
+			<div class="{{ css_prefix }}_head_company">
+				{{ userprofile.business_name }}
+			</div>
+			<div class="{{ css_prefix }}_head_ppl">
+				
+				{% if userprofile.photo %}
+					<img class="{{ css_prefix }}_head_ppl_photo_img" src="{% static userprofile.photo %}" alt="{{ userprofile.business_name }}">
+				{% else %}
+					<div class="{{ css_prefix }}_head_ppl_photo">?</div>
+				{% endif %}
+				
+				<div class="{{ css_prefix }}_head_ppl_email">
+					{{ user.email }}
+				</div>
+			</div>
+			<div class="{{ css_prefix }}_head_contact">
+				<div class="{{ css_prefix }}_head_contact_row">
+					<span class="{{ css_prefix }}_head_contact_row_desc">T:</span>
+					<span class="{{ css_prefix }}_head_contact_row_content">{{ userprofile.mobile_number }}</span>
+				</div>
+				<div class="{{ css_prefix }}_head_contact_row">
+					<span class="{{ css_prefix }}_head_contact_row_desc">W:</span>
+					<span class="{{ css_prefix }}_head_contact_row_content">{{ userprofile.website }}</span>
+				</div>
+			</div>
 		</div>
-		<div class="{{ css_prefix }}_head_ppl_email">
-			{{ user.email }}
+		<div id="head-form" class="hide">
+			<form action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data" class="form-horizontal">
+				{% csrf_token %}
+				{{ form_business_head.non_field_errors }}
+				{{ form_business_head.business_name|hformrow:'Business Name'}}
+				{{ form_business_head.logo|hformrow:'Company Logo'}}
+				{{ form_business_head.website|hformrow:'Website'}}
+				{{ form_business_head.mobile_number|hformrow:'Mobile number'}}
+				{{ form_business_head.photo|hformrow:'Your photo'}}
+
+				<input type="hidden" value="head" name="part">
+				<input type="submit" value="Save" class="btn btn-primary pull-right">
+			</form>
 		</div>
+		<div style="clear:both"></div>
 	</div>
-	<div class="{{ css_prefix }}_head_contact">
-		<div class="{{ css_prefix }}_head_contact_row">
-			<span class="{{ css_prefix }}_head_contact_row_desc">T:</span>
-			<span class="{{ css_prefix }}_head_contact_row_content">{{ userprofile.mobile_number }}</span>
+
+
+	<div class="{{ css_prefix }}_desc">
+		<div id="company-desc-display">
+			<a href="javascript:void(0)" class="pull-right {{ css_prefix }}_edit_btn" id="company-desc" >Click here to edit</a>
+			<span class="{{ css_prefix }}_desc_head">About the company</span>
+			<p>{{ userprofile.desc|linebreaksbr }}</p>
 		</div>
-		<div class="{{ css_prefix }}_head_contact_row">
-			<span class="{{ css_prefix }}_head_contact_row_desc">W:</span>
-			<span class="{{ css_prefix }}_head_contact_row_content">{{ userprofile.website }}</span>
+		<div id="company-desc-form" class="hide">
+			<form action="{% url 'users:profile' %}" method="post" class="form-horizontal">
+				{% csrf_token %}
+				{{ form_business_company_desc.non_field_errors }}
+				{{ form_business_company_desc.desc|hformrow:'About the company' }}
+				<input type="hidden" value="company_desc" name="part">
+				<input type="submit" value="Save" class="btn btn-primary pull-right">
+			</form>
 		</div>
+		<div style="clear:both"></div>
+
+	</div>
+
+	<div class="{{ css_prefix }}_desc">
+		<div id="service-desc-display">
+			<a href="javascript:void(0)" class="pull-right {{ css_prefix }}_edit_btn" id="service-desc" >Click here to edit</a>
+			<span class="{{ css_prefix }}_desc_head">Services</span>
+			<div class="{{ css_prefix }}_service_item">
+				<span class="{{ css_prefix }}_service_item_key">Business Nature</span>
+				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.business.first }}</span>
+			</div>
+			<div class="{{ css_prefix }}_service_item">
+				<span class="{{ css_prefix }}_service_item_key">Categories</span>
+				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.sub_business.all|join:"<br>" }}</span>
+			</div>
+			<p>{{ userprofile.service_desc|linebreaksbr }}</p>
+		</div>
+		<div id="service-desc-form" class="hide">
+			<form action="{% url 'users:profile' %}" method="post" class="form-horizontal">
+				{% csrf_token %}
+				{{ form_business_service_desc.non_field_errors }}
+				<div class="form-group ">
+					<label class="col-sm-3 control-label">Business</label>
+					<div class="col-sm-9">
+						<div class="form-control-static">{{ userprofile.business.first }}</div>			
+					</div>
+				</div>
+				{{ form_business_service_desc.sub_business|hformrow:'Categories' }}
+				{{ form_business_service_desc.service_desc|hformrow:'Tell us more about your services' }}
+				<input type="hidden" value="service_desc" name="part">
+				<input type="submit" value="Save" class="btn btn-primary pull-right">
+			</form>
+		</div>
+		<div style="clear:both"></div>
+	</div>
+
+	<div class="{{ css_prefix }}_desc">
+		<div id="preference-display">
+			<a href="javascript:void(0)" class="pull-right {{ css_prefix }}_edit_btn" id="preference" >Click here to edit</a>
+			<span class="{{ css_prefix }}_desc_head">Preferences</span>
+			<div class="{{ css_prefix }}_service_item">
+				<span class="{{ css_prefix }}_service_item_key">Willing to travel to customer</span>
+				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.can_travel|yesno }}</span>
+			</div>
+			<div class="{{ css_prefix }}_service_item">
+				<span class="{{ css_prefix }}_service_item_key">Customer usually travel to me</span>
+				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.customer_travel|yesno }}</span>
+			</div>
+			<div class="{{ css_prefix }}_service_item">
+				<span class="{{ css_prefix }}_service_item_key">Remote only</span>
+				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.only_remote|yesno }}</span>
+			</div>
+			<div class="{{ css_prefix }}_service_item">
+				<span class="{{ css_prefix }}_service_item_key">Travel distance</span>
+				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.travel_distance.all|join:"<br>" }}</span>
+			</div>
+		</div>
+		<div id="preference-form" class="hide">
+			<form action="{% url 'users:profile' %}" method="post" class="form-horizontal">
+				{% csrf_token %}
+				{{ form_business_preference.can_travel|hformrow:'Willing to travel to customer' }}
+				{{ form_business_preference.customer_travel|hformrow:'Customer usually travel to me' }}
+				{{ form_business_preference.only_remote|hformrow:'Remote only' }}
+				{{ form_business_preference.travel_distance|hformrow:'Travel distance' }}
+				<input type="hidden" value="preference" name="part">
+				<input type="submit" value="Save" class="btn btn-primary pull-right">
+			</form>
+		</div>
+		<div style="clear:both"></div>
 	</div>
 </div>
-
-<div class="{{ css_prefix }}_desc">
-	<span>Your Company</span>
-	<p>{{ userprofile.desc }}</p>
-</div>
-
-<div class="{{ css_prefix }}_desc">
-	<span>Your Services</span>
-	<p>{{ userprofile.service_desc }}</p>
-</div>
-
-<div class="{{ css_prefix }}_companydetail">
-	<div class="{{ css_prefix }}_companydetail_row">
-		<span class="{{ css_prefix }}_companydetail_row_icon"></span>
-		<span class="{{ css_prefix }}_companydetail_row_content">Located in {{ userprofile.address_4|default:'?' }}</span>
+<div class="{{ css_prefix }}_right col-md-4">
+	<div class="{{ css_prefix }}_companydetail">
+		<div id="company-detail-display">
+			<a href="javascript:void(0)" class="pull-right {{ css_prefix }}_edit_btn" id="company-detail" >Click here to edit</a>
+			<div class="{{ css_prefix }}_companydetail_row">
+				<span class="{{ css_prefix }}_companydetail_row_icon"></span>
+				<span class="{{ css_prefix }}_companydetail_row_content">Located in {{ userprofile.address_4|default:'?' }}</span>
+			</div>
+			<div class="{{ css_prefix }}_companydetail_row">
+				<span class="{{ css_prefix }}_companydetail_row_icon"></span>
+				<span class="{{ css_prefix }}_companydetail_row_content">{{ userprofile.employees }} employee{{ userprofile.employees|pluralize }}</span>
+			</div>
+			<div class="{{ css_prefix }}_companydetail_row">
+				<span class="{{ css_prefix }}_companydetail_row_icon"></span>
+				<span class="{{ css_prefix }}_companydetail_row_content">In business for {{ userprofile.business_since|sinceyear }}</span>
+			</div>
+		</div>
+		<div id="company-detail-form" class="hide">
+			<form action="{% url 'users:profile' %}" method="post" class="form-horizontal">
+				{% csrf_token %}
+				{{ form_business_company_detail.address_1|hformrow:'Address' }}
+				{{ form_business_company_detail.address_2|hformrow:'' }}
+				{{ form_business_company_detail.address_3|hformrow:'' }}
+				{{ form_business_company_detail.address_4|hformrow:'Area' }}
+				{{ form_business_company_detail.employees|hformrow:'No. of employees' }}
+				{{ form_business_company_detail.business_since|hformrow:'Business started since' }}
+				<input type="hidden" value="company_detail" name="part">
+				<input type="submit" value="Save" class="btn btn-primary">
+			</form>
+		</div>
+		<div style="clear:both"></div>
 	</div>
-	<div class="{{ css_prefix }}_companydetail_row">
-		<span class="{{ css_prefix }}_companydetail_row_icon"></span>
-		<span class="{{ css_prefix }}_companydetail_row_content">{{ userprofile.employees }} employee{{ userprofile.employees|pluralize }}</span>
+
+	<div class="{{ css_prefix }}_companysocial">
+
+		<div id="company-social-display">
+			<a href="javascript:void(0)" class="pull-right {{ css_prefix }}_edit_btn" id="company-social" >Click here to edit</a>
+			<span>Facebook: {{ userprofile.facebook|default:'None'}}</span>
+			<span>LinkedIn: {{ userprofile.linkedin|default:'None'}}</span>
+			<span>Twitter: {{ userprofile.twitter|default:'None'}}</span>
+			<span>Printerest: {{ userprofile.pinterest|default:'None'}}</span>
+			<span>Instagram: {{ userprofile.instagram|default:'None'}}</span>
+		</div>
+		<div id="company-social-form" class="hide">
+			<form action="{% url 'users:profile' %}" method="post" class="form-horizontal">
+				{% csrf_token %}
+				{{ form_business_company_social.facebook|hformrow:'Facebook' }}
+				{{ form_business_company_social.linkedin|hformrow:'LinkedIn' }}
+				{{ form_business_company_social.twitter|hformrow:'Twitter' }}
+				{{ form_business_company_social.pinterest|hformrow:'Printerest' }}
+				{{ form_business_company_social.instagram|hformrow:'Instagram' }}
+
+				<input type="hidden" value="company_social" name="part">
+				<input type="submit" value="Save" class="btn btn-primary">
+			</form>
+		</div>
+		<div style="clear:both"></div>
 	</div>
-	<div class="{{ css_prefix }}_companydetail_row">
-		<span class="{{ css_prefix }}_companydetail_row_icon"></span>
-		<span class="{{ css_prefix }}_companydetail_row_content">In business for {{ userprofile.business_since|sinceyear }}</span>
-	</div>
+
 </div>
 
-<div class="{{ css_prefix }}_companysocial">
-	<span>Facebook: {{ userprofile.facebook|default:'+ Add'}}</span>
-	<span>LinkedIn: {{ userprofile.linkedin|default:'+ Add'}}</span>
-	<span>Twitter: {{ userprofile.twitter|default:'+ Add'}}</span>
-	<span>Printerest: {{ userprofile.pinterest|default:'+ Add'}}</span>
-	<span>Instagram: {{ userprofile.instagram|default:'+ Add'}}</span>
-</div>
-
+<!--
 <form action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data">
 	{% csrf_token %}
 	<ul>
@@ -83,6 +219,74 @@
 		</li>
 	</ul>
 </form>
+-->
+
+<script>
+	var edit = {
+		'head' : {
+			btn: $('#head'),
+			display: $('#head-display'),
+			form: $('#head-form')
+		},
+		'company-desc' : {
+			btn: $('#company-desc'),
+			display: $('#company-desc-display'),
+			form: $('#company-desc-form')
+		},
+		'service-desc' : {
+			btn: $('#service-desc'),
+			display: $('#service-desc-display'),
+			form: $('#service-desc-form')
+		},
+		'preference' : {
+			btn: $('#preference'),
+			display: $('#preference-display'),
+			form: $('#preference-form')
+		},
+		'company-detail':{
+			btn: $('#company-detail'),
+			display: $('#company-detail-display'),
+			form: $('#company-detail-form')
+		},
+		'company-social':{
+			btn: $('#company-social'),
+			display: $('#company-social-display'),
+			form: $('#company-social-form')
+		}
+	}
+
+	_.each(edit, function(item){
+		item.btn.click(function(){
+			item.display.addClass('hide')
+			item.form.removeClass('hide')
+		})
+	})
+
+	{% if form_business_head_error %}
+		edit.head.btn.trigger('click')
+	{% endif %}
+
+	{% if form_business_company_desc_error %}
+		edit['company-desc'].btn.trigger('click')
+	{% endif %}
+
+	{% if form_business_service_desc_error %}
+		edit['service-desc'].btn.trigger('click')
+	{% endif %}
+
+	{% if form_business_preference_error %}
+		edit['preference'].btn.trigger('click')
+	{% endif %}
+
+	{% if form_business_company_detail_error %}
+		edit['company-detail'].btn.trigger('click')
+	{% endif %}
+
+	{% if form_business_company_social_error %}
+		edit['company-social'].btn.trigger('click')
+	{% endif %}
+
+</script>
 
 {% endwith %}
 {% endblock %}

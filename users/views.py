@@ -31,16 +31,54 @@ def profile_customer(r):
 
 def profile_business(r):
 
-	form = forms.Business(instance=r.user.userprofile)
+	# form = forms.Business(instance=r.user.userprofile)
+	form_business_head = forms.BusinessHead(r.POST or None, r.FILES or None, instance=r.user.userprofile)
+	form_business_company_desc = forms.BusinessCompanyDesc(r.POST or None, instance=r.user.userprofile)
+	form_business_service_desc = forms.BusinessSerivceDesc(r.POST or None, instance=r.user.userprofile)
+	form_business_preference = forms.BusinessPreference(r.POST or None, instance=r.user.userprofile)
+	form_business_company_detail = forms.BusinessCompanyDetail(r.POST or None, instance=r.user.userprofile)
+	form_business_company_social = forms.BusinessCompanySocial(r.POST or None, instance=r.user.userprofile)
 
-	if (r.method == 'POST'):
-		#whiteListProfile = {k: r.POST.get(k, None) for k in forms.Business.Meta.fields}
-		form = forms.Business(r.POST, r.FILES, instance=r.user.userprofile)
-		if form.is_valid():
-			form.save()
-			return HttpResponseRedirect(reverse('users:profile'))
+	view_values = {
+	#	'form' : form, 
+		'userprofile' : r.user.userprofile,
+		'form_business_head': form_business_head,
+		'form_business_company_desc' : form_business_company_desc,
+		'form_business_service_desc' : form_business_service_desc,
+		'form_business_preference' : form_business_preference,
+		'form_business_company_detail' : form_business_company_detail,
+		'form_business_company_social' : form_business_company_social
+	}
 
-	return render(r, 'users/profile/business.html', {'form' : form, 'userprofile' : r.user.userprofile})
+	part = {
+		'head' : {'form' : form_business_head, 'error' : 'form_business_head_error'},
+		'company_desc': {'form' : form_business_company_desc, 'error' : 'form_business_company_desc_error'},
+		'service_desc': {'form' : form_business_service_desc, 'error' : 'form_business_service_desc_error'},
+		'preference' : {'form' : form_business_preference, 'error' : 'form_business_preference_error'},
+		'company_detail' : {'form' : form_business_company_detail, 'error' : 'form_business_company_detail_error'},
+		'company_social' : {'form' : form_business_company_social, 'error' : 'form_business_company_social_error'}
+	}
+
+	if r.method == 'POST':
+
+		if r.POST.get('part'):
+			
+			part_form = part[r.POST.get('part')]['form']
+			part_form_error = part[r.POST.get('part')]['error']
+
+			if part_form.is_valid():
+				part_form.save()
+				return redirect('users:profile')
+			else:
+				view_values[part_form_error] = True
+
+#		else:
+#			form = forms.Business(r.POST, r.FILES, instance=r.user.userprofile)
+#			if form.is_valid():
+#				form.save()
+#				return HttpResponseRedirect(reverse('users:profile'))
+
+	return render(r, 'users/profile/business.html', view_values)
 
 
 def profile(r):

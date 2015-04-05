@@ -1,16 +1,27 @@
 {% extends "weconnect/base.html" %}
 {% block content %}
+{% load hformrow %}
+<div class="col-md-10 top_space">
 
+	<form action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data" class="form-horizontal">
+		{% csrf_token %}
+	
+		{{ form.non_field_errors }}
+		{% for field in form %}
+			{{ field|hformrow:field.label }}
+		{% endfor %}
+	
+		{{ profileForm.non_field_errors }}
+		{{ profileForm.photo|hformrow:'Photo' }}
+		{{ profileForm.desc|hformrow:'About you' }}
 
-<form action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data">
-	{% csrf_token %}
-	<ul>
-		{{ form.as_ul }}
-		{{ profileForm.as_ul }}
-		<li>
-			<input type="submit" value="Save">
-		</li>
-	</ul>
-</form>
+		<div class="form-group">
+			<div class="col-sm-offset-3 col-sm-9">
+				<input type="submit" value="Save" class="btn btn-primary">
+			</div>
+		</div>
+	
+	</form>
 
+</div>
 {% endblock %}

@@ -169,7 +169,10 @@ body {
 
 }
 
-
+.page_header{
+    font-size: 20px;
+    padding: 30px 0;
+}
 
 .unread_message_pop {
     background-color: red;
@@ -181,4 +184,167 @@ body {
     text-align: center;
     width: 16px;
     line-height: 16px;
+}
+
+.users_profile_business_head_text {
+}
+
+.users_profile_business_head {
+    border-bottom: 1px solid #cccccc;
+    border-top: 1px solid #cccccc;
+    padding: 10px;
+}
+
+.users_profile_businesss_head_logo {
+    border: 1px dashed #ccc;
+    color: #ccc;
+    float: left;
+    font-size: 35px;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    width: 150px;
+}
+
+.users_profile_businesss_head_logo_img {
+    max-height: 100px;
+    max-width: 150px;
+    float: left;
+}
+.users_profile_business_head_company {
+    float: left;
+    font-size: 18px;
+    margin-left: 20px;
+    vertical-align: top;
+}
+.users_profile_business_head_ppl {
+    clear: both;
+    float: left;
+    margin-top: 10px;
+}
+.users_profile_business_head_ppl_photo {
+    border: 1px dashed #ccc;
+    color: #ccc;
+    display: inline-block;
+    font-size: 20px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    width: 50px;
+}
+.users_profile_business_head_ppl_photo_img{
+    display: inline-block;
+    max-height: 50px;
+    max-width: 50px;
+}
+.users_profile_business_head_ppl_email {
+    display: inline-block;
+    font-size: 12px;
+    margin-left: 10px;
+}
+.users_profile_business_head_contact {
+    float: left;
+    margin-left: 20px;
+    margin-top: 10px;
+}
+.users_profile_business_head_contact_row {
+    font-size: 13px;
+}
+.users_profile_business_head_contact_row_desc {
+    display: inline-block;
+    font-weight: bold;
+    width: 30px;
+}
+.users_profile_business_desc {
+    border-bottom: 1px solid #ccc;
+    margin-top: 10px;
+    padding:10px;
+}
+.users_profile_business_desc_head {
+    font-size: 16px;
+    font-weight: bold;
+}
+.users_profile_business_desc p {
+    margin-top: 10px;
+    min-height: 50px;
+    width: 100%;
+}
+.users_profile_business_companydetail {
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    padding: 10px;
+    vertical-align: top;
+}
+.users_profile_business_companydetail_row {
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+.users_profile_business_companysocial {
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+}
+.users_profile_business_companysocial span {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 3px;
+}
+
+.users_profile_business_right{
+    float:right;
+}
+.users_profile_business_left{
+    float:left;
+}
+.users_profile_business_edit_btn {
+    font-size: 11px;
+}
+.users_profile_business_service_item {
+    font-size: 12px;
+    margin-top: 10px;
+}
+.users_profile_business_service_item_key {
+    display: inline-block;
+    font-weight: bold;
+    width: 30%
+}
+
+.users_profile_business_service_item_value {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.image_edit {
+    max-height: 50px;
+    max-width: 50px;
+}
+
+.errorlist {
+    color: red;
+    list-style: outside none none;
+}
+.form-horizontal ul {
+    list-style: outside none none;
+}
+.form-horizontal label {
+    cursor: pointer;
+}
+.auth_login {
+    margin-top: 50px;
+    width: 50%;
+}
+.auth_register_mode {
+    display: inline-block;
+    font-size: 20px;
+    margin-top: 30px;
+    padding: 60px;
+    text-align: center;
+}
+.auth_register{
+    margin-top: 30px;
+}
+.top_space{
+    margin-top: 30px;
+}
+.has-error .control-label {
+    background-color: #ff9494;
 }

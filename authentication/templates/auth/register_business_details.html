@@ -1,20 +1,30 @@
 {% extends "weconnect/base.html" %}
 {% block content %}
+{% load hformrow %}
 
-<form action="{% url 'auth:register_business_details' %}" method="post">
-	{% csrf_token %}
-	<ul>
-		{{ businessForm.as_ul }}
-		<li id="subBusiness">
+<div class="col-md-10 auth_register">
+	<form action="{% url 'auth:register_business_details' %}" method="post" class="form-horizontal">
+		{% csrf_token %}
+		{{ businessForm.non_field_errors }}
+		{{ businessForm.business|hformrow:'Business' }}
+		<div class="form-group">
+			<div class="col-sm-offset-3 col-sm-9" id="subBusiness">
 
-		</li>
-		{{ form.as_ul }}
-		<li>
-			<input type="submit" value="Continue">
-		</li>
-	</ul>
-</form>
+			</div>
+		</div>
 
+		{{ form.non_field_errors }}
+		{% for field in form %}
+			{{ field|hformrow:field.label }}
+		{% endfor %}
+
+		<div class="form-group">
+			<div class="col-sm-offset-3 col-sm-9">
+				<input type="submit" value="Sign Up" class="btn btn-primary btn-lg">
+			</div>
+		</div>
+	</form>
+</div>
 <script>
 	var subBusiness = {{ sub_business_json | safe }};
 	var businessSelect = $('#id_business');
@@ -32,7 +42,7 @@
 
 		var subBusinessUl = $('<ul id="id_sub_business"></ul>');
 		_.each(filteredSubBusiness, function(business){
-			subBusinessUl.append($('<li><input type="checkbox" name="sub_business" value="' + business.id + '"> ' + business.name + '</li>'));
+			subBusinessUl.append($('<li><label><input type="checkbox" name="sub_business" value="' + business.id + '"> ' + business.name + '</label></li>'));
 		});
 
 		$('#subBusiness').html(subBusinessUl);

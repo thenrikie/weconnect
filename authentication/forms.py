@@ -23,7 +23,7 @@ class Register(ModelForm):
 		}
 
 class Business(forms.Form):
-	business = forms.ModelChoiceField(queryset=Business.objects.all(), empty_label='What are you looking for?')
+	business = forms.ModelChoiceField(queryset=Business.objects.all(), empty_label='')
 	
 class RegisterBusiness(ModelForm):
 	class Meta:

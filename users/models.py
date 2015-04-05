@@ -40,7 +40,7 @@ def logo_filename(model, filename):
 	return upload_filename('logos/companies/', model, filename)
 
 def person_filename(model, filename):
-	return upload_filename('photos/peoples/', model, filename)
+	return upload_filename('photos/people/', model, filename)
 
 class UserProfile(models.Model):
 

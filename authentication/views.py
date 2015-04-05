@@ -17,12 +17,12 @@ def login(r):
 		return redirect('/')
 
 	if r.method == 'POST':
-		form = AuthenticationForm(r.POST);
-
-		user = auth.authenticate(username=r.POST['username'], password=r.POST['password'])
-		if user is not None and user.is_active:
-			auth.login(r, user)
-			return redirect('/')
+		form = AuthenticationForm(data=r.POST);
+		if form.is_valid():
+			user = auth.authenticate(username=r.POST['username'], password=r.POST['password'])
+			if user is not None and user.is_active:
+				auth.login(r, user)
+				return redirect('/')
 	else:
 		form = AuthenticationForm();
 	
@@ -133,7 +133,7 @@ def register_business_details(r):
 			
 			if user is not None and user.is_active:
 				auth.login(r, user)
-				return redirect('/')
+				return redirect('users:profile')
 
 	return render(r, 'auth/register_business_details.html', {
 		'form' : form, 
