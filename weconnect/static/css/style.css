@@ -45,7 +45,7 @@ body {
 
 .projects_project_item li {
     border: 1px solid #ccc;
-    height: 250px;
+    height: 300px;
     margin-right: 40px;
     padding: 25px;
     vertical-align: middle;
@@ -109,12 +109,6 @@ body {
     display: inline-block;
 }
 
-.pitches_pitch_quotecontact {
-    border: 1px solid #666;
-    border-radius: 5px;
-    padding: 15px;
-}
-
 .pitches_pitch_quotecontact_head {
     border-bottom: 1px solid #666666;
     padding: 15px;
@@ -152,11 +146,11 @@ body {
 
 .pitches_pitch_quotecontent_content_operations {
     padding: 15px;
-    text-align: right;
+ 
 }
 
 .pitches_pitch_message_item {
-    border-bottom: 1px solid #cccccc;
+    border-top: 1px solid #cccccc;
     padding: 15px;
 }
 
@@ -167,6 +161,10 @@ body {
 .pitches_pitch_message_item_head span {
     font-size: 15px;
 
+}
+.pitches_pitch_messge_item_head_author {
+    font-size: 14px;
+    font-weight: bold;
 }
 
 .page_header{
@@ -195,7 +193,9 @@ body {
     padding: 10px;
 }
 
-.users_profile_businesss_head_logo {
+.users_profile_businesss_head_logo,
+.pitches_quote_head_logo,
+.business_head_logo {
     border: 1px dashed #ccc;
     color: #ccc;
     float: left;
@@ -206,12 +206,16 @@ body {
     width: 150px;
 }
 
-.users_profile_businesss_head_logo_img {
+.users_profile_businesss_head_logo_img,
+.pitches_quote_head_logo_img,
+.business_head_logo_img
+ {
     max-height: 100px;
     max-width: 150px;
     float: left;
 }
-.users_profile_business_head_company {
+.users_profile_business_head_company,
+.pitches_quote_head_company {
     float: left;
     font-size: 18px;
     margin-left: 20px;
@@ -222,7 +226,12 @@ body {
     float: left;
     margin-top: 10px;
 }
-.users_profile_business_head_ppl_photo {
+.users_profile_business_head_ppl_photo,
+ .pitches_project_head_ppl_photo,
+ .pitches_quote_head_ppl_photo,
+ .name_card_ppl_photo,
+ .ppl_photo
+  {
     border: 1px dashed #ccc;
     color: #ccc;
     display: inline-block;
@@ -232,7 +241,12 @@ body {
     text-align: center;
     width: 50px;
 }
-.users_profile_business_head_ppl_photo_img{
+.users_profile_business_head_ppl_photo_img,
+.pitches_project_ppl_photo_img,
+.pitches_quote_ppl_photo_img,
+.name_card_ppl_photo_img,
+.ppl_photo_img
+{
     display: inline-block;
     max-height: 50px;
     max-width: 50px;
@@ -298,17 +312,31 @@ body {
 .users_profile_business_edit_btn {
     font-size: 11px;
 }
-.users_profile_business_service_item {
+.users_profile_business_service_item,
+.pitches_project_row,
+.pitches_quote_row {
     font-size: 12px;
     margin-top: 10px;
 }
-.users_profile_business_service_item_key {
+.users_profile_business_service_item_key,
+.pitches_project_row_key,
+.pitches_quote_row_key {
     display: inline-block;
     font-weight: bold;
     width: 30%
 }
 
-.users_profile_business_service_item_value {
+.pitches_quote_row_key_full{
+    font-weight: bold;
+    font-size:14px;
+}
+.pitches_quote_row_value_full{
+    font-size: 12px;
+}
+
+.users_profile_business_service_item_value,
+.pitches_project_row_value,
+.pitches_quote_row_value {
     display: inline-block;
     vertical-align: top;
 }
@@ -347,4 +375,89 @@ body {
 }
 .has-error .control-label {
     background-color: #ff9494;
+}
+.pitches_pitch_quotecontact {
+    border: 1px solid #ccc;
+    padding: 15px;
+}
+.pitches_project_headerdesc {
+    font-size: 16px;
+    margin-top: 15px;
+}
+.pitches_project_header {
+    line-height: 25px;
+}
+.pitches_project_ppl_name,
+.pitches_quote_ppl_name {
+    display: inline-block;
+    font-size: 15px;
+    margin-left: 10px;
+}
+.pitches_company_operations{
+    margin-top: 20px;
+}
+.pitches_project,
+.pitches_quote {
+    padding: 10px;
+}
+.thick-green-border-bottom {
+    border-bottom: 2px solid #5cb85c;
+}
+.thick-blue-border-bottom{
+    border-bottom: 2px solid #337ab7;
+}
+.pitches_pitch_message_leave {
+    margin-top: 15px;
+}
+.name_card {
+    text-align: center;
+}
+.name_card_ppl_name {
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.action-btn-group{
+    margin-top:10px;
+}
+.pitches_pitch_message_block {
+    margin-top: 30px;
+}
+.pitches_pitch_message_item_head_date {
+    color: #bbbbbb;
+    font-size: 13px;
+    font-weight: bold;
+}
+.pitches_pitch_quotecontact_content_business_name {
+    font-size: 17px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.pitches_pitch_quotecontact_content_contact_name {
+    margin-top: 10px;
+}
+.pitches_pitch_quotecontent_desc_head{
+    padding:15px;
+    font-weight: bold;
+}
+.pitches_company_operations form {
+    margin-bottom: 20px;
+}
+.pitches_pitch_item_btns{
+    margin-top:10px;
+}
+.hired {
+    background-color: #daa520;
+    border-radius: 5px;
+    color: white;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 5px;
+}
+.pitches_pitch_item_btns form {
+    display: inline-block;
+}
+.pitches_pitch_messge_item_attach {
+    font-size: 11px;
 }

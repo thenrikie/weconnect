@@ -14,6 +14,8 @@ urlpatterns = patterns('',
 	url(r'^(?P<pitch_id>\d+)/hire/$', views.hire, name='hire'),
 
 	url(r'^(?P<pitch_id>\d+)/$', views.show, name='show'),
-	url(r'^(?P<pitch_id>\d+)/messages/$', views.post_message, name='post_message')
+	url(r'^(?P<pitch_id>\d+)/messages/$', views.post_message, name='post_message'),
+	url(r'^(?P<pitch_id>\d+)/messages/(?P<message_id>\d+)/attachment$', views.download_attachment, name='download_attachment')
+
 
 )

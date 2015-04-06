@@ -10,7 +10,7 @@ def hformrow(field, name):
 	#print(field.field.__class__.__name__)
 	#print(field.field.widget.__class__.__name__)
 
-	if field.field.__class__.__name__ == 'ImageField':
+	if field.field.__class__.__name__ == 'ImageField' or field.field.__class__.__name__  == 'FileField' :
 		str =  '<div class="form-group">'
 		str += '	<label for="' + field.id_for_label + '" class="col-sm-3 control-label">' + name + '</label>'
 		str += '		    <div class="col-sm-9">'

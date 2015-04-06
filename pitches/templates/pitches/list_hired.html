@@ -14,17 +14,23 @@
 			<div>
 				Hired on {{ pitch.hired_at|date:'j F, Y'}}
 			</div>
-			<a href="{% url 'pitches:show' pitch.id %}">View request and quote</a> 
+
 		</div>
-		<div>
+
+		<div class="pitches_pitch_item_btns">
+			<a href="{% url 'pitches:show' pitch.id %}" class="btn btn-primary">View request and quote</a> 
+			<a href="{% url 'pitches:show' pitch.id %}#message" class="btn btn-default">	Message             
+				{% if pitch.company_unread_message_count > 0 %}
+            		<span class="unread_message_pop">{{pitch.company_unread_message_count}}<span>
+            	{% endif %}
+        	</a>
 			<form method="post" action="{% url 'pitches:archive' pitch.id %}">
 				{% csrf_token %}
-				<input type="submit" value="Archive">
+				<input type="submit" value="Archive" class="btn btn-default">
 			</form>
 		</div>
-		<div>
-			<a href="{% url 'pitches:show' pitch.id %}">Message</a>
-		</div>
+
+
 	</li>
 	{% endfor %}
 </ul>

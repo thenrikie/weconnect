@@ -1,6 +1,6 @@
 {% extends "weconnect/base.html" %}
 {% block content %}
-
+{% load staticfiles %}
 
 <h1>Introduction to {{ project.business.first.name }}</h1>
 
@@ -12,7 +12,11 @@
 <ul class="pitches_company_select col-md-12">
 {% for this_pitch in pitches %}
 	<li {% if this_pitch == pitch %}class="highlighted"{% endif %}>
-		<a href={% url 'pitches:show' this_pitch.id %}>{{ this_pitch.company.userprofile.business_name}}</a>
+		<a href="{% url 'pitches:show' this_pitch.id %}">{{ this_pitch.company.userprofile.business_name}} 
+		{% if pitch.hired %}
+			<span class="hired">Hired!</span>
+		{% endif %}
+	</a>
 	</li>
 {% endfor %}
 </ul>
@@ -21,14 +25,28 @@
 <div class="pitches_pitch_quotecontact col-md-3">
 	<div class="pitches_pitch_quotecontact_head">
 		<div class="pitches_pitch_quotecontact_price">
-			{{ pitch.price }} {{ pitch.rate }}
+			${{ pitch.price }} {{ pitch.rate }}
 		</div>
 	</div>
 	<div class="pitches_pitch_quotecontact_content">
-		<span>{{ pitch.company.userprofile.business_name}}</span>
-		<span>{{ pitch.company.full_name }}</span>
-		<span>{{ pitch.company.userprofile.mobile_number}}</span>
-		<a href="{{ pitch.company.userprofile.website }}" target="_blank">View website</a>
+		{% if pitch.company.userprofile.logo %}
+			<img class="business_head_logo_img" src="{% static pitch.company.userprofile.logo %}" alt="{{ pitch.company.userprofile.business_name }}">
+		{% else %}
+			<div class="business_head_logo">?</div>
+		{% endif %}
+		<div class="clearfix"></div>
+		<span class="pitches_pitch_quotecontact_content_business_name">{{ pitch.company.userprofile.business_name}}</span>
+		
+		{% if pitch.company.userprofile.photo %}
+			<img class="ppl_photo_img" src="{% static pitch.company.userprofile.photo %}" alt="{{ pitch.company.full_name }}">
+		{% else %}
+			<div class="ppl_photo">?</div>
+		{% endif %}
+
+		<span class="pitches_pitch_quotecontact_content_contact_name">{{ pitch.company.full_name }}</span>
+		<span>T: {{ pitch.company.userprofile.mobile_number}}</span>
+		<span><a href="{{ pitch.company.userprofile.website }}" target="_blank">View website</a></span>
+		<span><a href="{% url 'users:pub_profile' pitch.company.id %}">View company profile</a></span>
 	</div>
 </div>
 
@@ -38,12 +56,14 @@
 			<span class="pitches_pitch_quotecontent_content_head_name">{{ pitch.company.full_name }}</span>
 			<span class="pitches_pitch_quotecontent_content_head_time pull-right">{{ pitch.state_changed_at|timesince }}</span>
 		</div>
+
+		<div class="pitches_pitch_quotecontent_desc_head">Why you would be the best person for this project? </div>
 		<p class="pitches_pitch_quotecontent_desc">{{ pitch.desc }}</p>
 
 		{% if not project.awarded %}
 		<form method="post" action="{% url 'pitches:hire' pitch.id %}" class="pitches_pitch_quotecontent_content_operations">
 			{% csrf_token %}
-			<input type="submit" value="Hire" class="btn btn-success">
+			<input type="submit" value="Hire" class="btn btn-success btn-lg">
 		</form>
 		{% endif %}
 	</div>

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from users.models import UserProfile
 from users import forms
 from authentication.models import User
@@ -88,3 +88,10 @@ def profile(r):
 		return profile_customer(r)
 	else:
 		return redirect('/')
+
+def pub_profile(r, company_id):
+	user = get_object_or_404(User, pk=company_id)
+	if user.userprofile.role != 'COMPANY':
+		return redirect('/')
+
+	return render(r, 'users/profile/business_pub.html', {'userprofile' : user.userprofile})

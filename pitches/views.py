@@ -106,7 +106,7 @@ def show(r, pitch_id, messageForm=None):
 
 	#mark messages as read
 	Message.objects.filter(read=False, pitch=pitch, recipient=r.user).update(read=True, updated_at=datetime.now())
-	
+	#print(pitch.message_set.first().attachment.first())
 
 	if pitch.company == r.user:
 		return render(r, 'pitches/show_company.html', {'project': project, 'pitch': pitch, 'form': messageForm, 'messages': messages})
@@ -155,7 +155,7 @@ def post_message(r, pitch_id):
 			print('You have no permission to post message on this pitch')
 			return redirect('/')
 
-		form = MessageForm(r.POST)
+		form = MessageForm(r.POST, r.FILES)
 		if form.is_valid():
 			message = Message()
 			message.content = form.cleaned_data['content']
@@ -167,9 +167,16 @@ def post_message(r, pitch_id):
 				message.recipient = pitch.project.user
 		
 			message.save()
+
+			if r.FILES.get('file'):
+				message.attachment.add(MessageAttachment(file=r.FILES.get('file')))
+
 			return HttpResponseRedirect(reverse('pitches:show', args=[pitch.id]))
 		else:
 			print ('not valid message')
 			return show(r, pitch.id, form)
 	else:
 		return redirect(reverse('pitches:show', args=[pitch_id]))
+
+def download_attachment(r, pitch_id, message_id):
+	pass

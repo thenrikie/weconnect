@@ -1,21 +1,82 @@
-<form class="pitches_pitch_message_form" method="post" enctype="multipart/form-data" action="{% url 'pitches:post_message' pitch.id %}">
+{% load staticfiles %}
+{% load addcss %}
+{% load hformrow %}
+
+
+<form class="pitches_pitch_message_form" method="post" enctype="multipart/form-data" action="{% url 'pitches:post_message' pitch.id %}#message">
 	{% csrf_token %}
-	<ul>
-		{{ form.as_ul }}
-		<li>
-			<input type="submit" value="Send" class="btn btn-success">
-		</li>
-	</ul>
+	{{ form.non_field_errors }}
+	<div class="pitches_pitch_message_leave">
+		<div class="form-group {{ form.content.errors|yesno:'has-error,'}}">
+			<div class="name_card col-md-1">
+				{% if user.userprofile.photo %}
+					<img class="name_card_ppl_photo_img" src="{% static user.userprofile.photo %}" alt="{{ user.full_name }}">
+				{% else %}
+					<div class="name_card_head_ppl_photo">?</div>
+				{% endif %}
+
+				<div class="name_card_ppl_name">
+					{{ user.full_name}}
+				</div>
+			</div>
+			<div class="pitches_pitch_message_leave_content col-md-10">
+				{{ form.content|addattrs:'class=form-control,placeholder=Leave message here,rows=4,cols=1' }}
+				{{ form.content.errors }}
+			</div>
+			<div class="clearfix"></div>
+		</div>
+
+		<div class="clearfix"></div>
+
+		<div class="col-md-offset-1 col-md-10">
+			{{ form.file|hformrow:'Attachment' }}
+		</div>
+		
+		
+		<div class="clearfix"></div>
+
+		<div class="col-md-offset-1 col-md-10 action-btn-group">
+			<input type="submit" class="btn btn-primary" value="Send">
+		</div>
+		<div class="clearfix"></div>
+		
+
+
+	</div>
+
 </form>
 
 <div class="pitches_pitch_message_block">
-{%  for  message in messages %}
-	<div class="pitches_pitch_message_item">
-		<div class="pitches_pitch_message_item_head">
-			<span>{{ message.sender.full_name }}</span>
-			<span>{{ message.created_at|timesince }}</span>
+{% for message in messages %}
+	<div class="pitches_pitch_message_item col-md-12">
+		<div class="name_card col-md-1">
+			{% if message.sender.userprofile.photo %}
+				<img class="name_card_ppl_photo_img" src="{% static message.sender.userprofile.photo %}" alt="{{ message.sender.full_name }}">
+			{% else %}
+				<div class="name_card_head_ppl_photo">?</div>
+			{% endif %}
+
 		</div>
-		<p class="pitches_pitch_message_item_content">{{ message.content }}</p>
+
+		<div class="col-md-11">
+			<div class="pitches_pitch_messge_item_head">
+				<span class="pitches_pitch_messge_item_head_author">
+					{{  message.sender.full_name }}
+				</span>
+				<span class="pitches_pitch_message_item_head_date pull-right">
+					{{ message.created_at|timesince }}
+				</span>
+			
+			</div>
+			{% if message.attachment.first %}
+			<div class="pitches_pitch_messge_item_attach"><a href="#">Download Attachment</a> ({{message.attachment.first.file.size|filesizeformat }})</div> 
+			{% endif %}
+			<p class="pitches_pitch_message_item_content">
+				{{ message.content|linebreaksbr }}
+			</p>
+		</div>
+		<div class="clearfix"></div>		
 	</div>
+
 {% endfor %}
 </div>

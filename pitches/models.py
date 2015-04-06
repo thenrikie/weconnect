@@ -46,6 +46,9 @@ class Pitch(models.Model):
 
 	def quoted(self):
 		return self.state == 'accepted' or self.state == 'hired'
+
+	def hired(self):
+		return self.state == 'hired'
 		
 	def change_state(self, state):
 		found = False
@@ -80,9 +83,9 @@ class Message(models.Model):
 	updated_at = models.DateTimeField(auto_now=True)
 
 
-def upload_filename(path, model, filename):
-	nameparts = filename.split(".")
-	return 'messages/' + str(model.id) + '.' + nameparts[len(nameparts) - 1]
+def upload_filename(model, filename):
+	#nameparts = filename.split(".")
+	return 'messages/' + str(model.message.id) + '/' + filename
 
 
 class MessageAttachment(models.Model):

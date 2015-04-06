@@ -1,49 +1,96 @@
 {% extends "weconnect/base.html" %}
 {% block content %}
+{% load staticfiles %}
 
 
-<h1>Job Request</h1>
-{% include 'pitches/project.html' with project=project only %}
 
-{% if pitch.waiting %}
-<div class="pitches_company_operations">
-	<form method="post" action="{% url 'pitches:reject' pitch.id %}">
-		{% csrf_token %}
-		<input type="Submit" value="I will pass on this project" class="btn btn-danger btn-lg">
-	</form>
+<div class="pitches_project {{ pitch.quoted|yesno:'col-md-6,col-md-12'}}">
+	<div class="page_header thick-green-border-bottom">Job Request</div>
 
-	<form method="get" action="{% url 'pitches:accept' pitch.id %}">
-		<input type="Submit" value="I want to work on this project" class="btn btn-success btn-lg">
-	</form>
+	{% include 'pitches/project.html' with project=project only %}
+
+	{% if pitch.waiting %}
+	<div class="pitches_company_operations">
+		<form class="col-md-5" method="post" action="{% url 'pitches:reject' pitch.id %}">
+			{% csrf_token %}
+			<input type="submit" value="Reject" class="btn btn-danger btn-lg btn-block">
+		</form>
+
+		<form class="col-md-5" method="get" action="{% url 'pitches:accept' pitch.id %}">
+			<input type="submit" value="Accept" class="btn btn-success btn-lg btn-block">
+		</form>
+	</div>
+	{% endif %}
+	<div class="clearfix"></div>
 </div>
-{% endif %}
+
+
 
 {% if pitch.quoted %}
-<h1>Your Quote</h1>
-<div class="pitches_company_quote">
-	<h2>{{ pitch.company.full_name }}</h2>
+<div class="pitches_quote col-md-6">
+	<div class="page_header thick-blue-border-bottom">Your Quote</div>
 
-	<p>
-		Why you would be the best person for this project? 
-		<br><br>
-		{{ pitch.desc }}
-	</p>
+		<div class="pitches_quote_row">
+			{% if pitch.company.userprofile.logo %}
+				<img class="pitches_quote_head_logo_img" src="{% static pitch.company.userprofile.logo %}" alt="{{ pitch.company.userprofile.business_name }}">
+			{% else %}
+				<div class="pitches_quote_head_logo">?</div>
+			{% endif %}
+			
+			<div class="pitches_quote_head_company">
+				{{ pitch.company.userprofile.business_name }}
+			</div>
+			<div class="clearfix"></div>
+		</div>
 
-
-	<p>
-		Price:
-		{%  if pitch.rate == 'NA' %}
-			I do not want to provide a price yet
+	<div class="pitches_quote_row">
+		{% if pitch.company.userprofile.photo %}
+			<img class="pitches_quote_ppl_photo_img" src="{% static pitch.company.userprofile.photo %}" alt="{{ pitch.company.full_name }}">
 		{% else %}
-			{{ pitch.price }} {{ pitch.rate }}
+			<div class="pitches_quote_head_ppl_photo">?</div>
 		{% endif %}
-	</p>
+
+		<div class="pitches_quote_ppl_name">
+			Contact person: {{ pitch.company.full_name}}
+		</div>
+	</div>
+
+	<div class="pitches_quote_row">
+		<div class="pitches_quote_row_key_full">
+			Why you would be the best person for this project?
+		</div> 
+		<p class="pitches_quote_row_value_full">
+			{{ pitch.desc|linebreaksbr }}
+		</p>
+	</div>
+
+
+
+	<div class="pitches_quote_row">
+		<div class="pitches_quote_row_key">
+			Price 
+		</div>
+		<div class="pitches_quote_row_value">
+			{%  if pitch.rate == 'NA' %}
+				I do not want to provide a price yet
+			{% else %}
+				{{ pitch.price }} {{ pitch.rate }}
+			{% endif %}
+		</div>
+	</div>
+	<div class="clearfix"></div>
 </div>
+<div class="clearfix"></div>
+
 {% endif %}
 
 {% if not pitch.waiting %}
-<h1>Message</h1>
-{% include 'pitches/message.html' with form=form messages=messages pitch=pitch  %}
+	<div id="message" class="col-md-12">
+		<div class="page_header thick-green-border-bottom">
+			Message
+		</div>
+		{% include 'pitches/message.html' with form=form messages=messages pitch=pitch  %}
+	</div>
 {% endif %}
 
 {% endblock %}

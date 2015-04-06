@@ -1,7 +1,7 @@
 from django.db import models
 from users.models import SubBusiness, Business, District
 from authentication.models import User
-
+from django.db.models import Q
 
 # Create your models here.
 
@@ -66,13 +66,13 @@ class Project(models.Model):
 	updated_at = models.DateTimeField(auto_now=True)
 
 	def pitch_count(self):
-		return self.pitch_set.exclude(state='waiting').count()
+		return self.pitch_set.exclude(state__in=['waiting', 'rejected', 'company_rejected']).count()
 
 	def ready_pitch(self):
-		return self.pitch_set.exclude(state='waiting')
+		return self.pitch_set.exclude(state__in=['waiting', 'rejected', 'company_rejected'])
 
 	def awarded(self):
-		if self.pitch_set.get(state='hired').count() > 0:
+		if self.pitch_set.filter(state='hired').count() > 0:
 			return True
 		return False
 
