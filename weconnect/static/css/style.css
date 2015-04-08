@@ -1,7 +1,7 @@
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
   padding-top: 50px;
-  padding-bottom: 20px;
+
 }
 
 .pitch_pitches_select {
@@ -75,6 +75,7 @@ body {
 .pitches_pitch_operations {
     margin-top: 10px;
     padding: 5px;
+    text-align: right;
 }
 
 .pitches_company_select {
@@ -460,4 +461,85 @@ body {
 }
 .pitches_pitch_messge_item_attach {
     font-size: 11px;
+}
+.index-main-space {
+    background-color: whitesmoke;
+    background-image: url("/static/image/bg.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    height: 500px;
+    margin: -80px auto -500px;
+}
+.jumbotron {
+    background-color: transparent;
+    display: table;
+    height: 500px;
+    padding: 48px 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+.index-action-block {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+.index-block-desc {
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px #666666;
+}
+.jumbotron h2 {
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px #333333;
+
+}
+.index-action-form {
+    margin-top: 50px;
+}
+.navbar-index a {
+    color: white;
+}
+.body-index {
+    padding-top: 0px;
+}
+.index-desc-title {
+    color: #337ab7;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 20px;
+    text-align: center;
+}
+.index-desc-flow img {
+    display: block;
+    margin: 20px auto;
+}
+.index-desc-flow h2 {
+    font-size: 18px;
+}
+footer {
+    background-color: #080808;
+    color: white;
+    padding: 40px 40px 10px 40px;
+    margin-top:40px;
+}
+.footer_copyright {
+    margin-top: 20px;
+    text-align: center;
+}
+.footer_row ul {
+    list-style: outside none none;
+}
+.footer_row_li_head {
+    color: #337ab7;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+.footer_row li {
+    margin-bottom: 5px;
+}
+.footer_logo {
+    font-size: 18px;
+    padding: 20px;
 }

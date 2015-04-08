@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from pitches import forms
 from pitches.models import Pitch, Message, MessageAttachment
 from datetime import datetime
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from pitches.forms import Message as MessageForm
 
@@ -179,4 +179,18 @@ def post_message(r, pitch_id):
 		return redirect(reverse('pitches:show', args=[pitch_id]))
 
 def download_attachment(r, pitch_id, message_id):
-	pass
+	from django.conf import settings
+	message = get_object_or_404(Message, pk=message_id)
+
+	#permission checking
+	if str(message.pitch.id) != pitch_id or (message.pitch.company != r.user and message.pitch.project.user != r.user):
+		return redirect("/")
+
+	filename = message.attachment.first().file.name.split("/")
+	filename = filename[-1]
+
+	with open(settings.MEDIA_ROOT + message.attachment.first().file.name, 'rb') as fsock:
+		response = HttpResponse(fsock)
+		response['Content-Disposition'] = "attachment; filename=" + filename
+
+	return response

@@ -21,9 +21,9 @@
 
   </head>
 
-  <body>
+  <body class="{% block xtra_body_class %}{% endblock %}">
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav id="nav" class="navbar {% block xtra_nav_class %}navbar-inverse navbar-fixed-top{% endblock %}">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -32,13 +32,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">Ask Henry</a>
+          <a class="navbar-brand" href="/">[LOGO] AskHenry</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav pull-right">
 
 
-			{% if user.is_authenticated %}>
+			{% if user.is_authenticated %}
 				{% if user.userprofile.is_customer %}
               <li><a href="{% url 'projects:create' %}">+ New Project</a></li>
 	            <li><a href="{% url 'projects:list' %}">
@@ -47,13 +47,13 @@
                     <span class="unread_message_pop">{{user.userprofile.unread_message_count}}<span>
                     {% endif %}
                   </a>
-            </li>
+              </li>
 	            {% endif %}
 
 	            {% if user.userprofile.is_company %}
 	            <li><a href="{% url 'pitches:list' %}"><span>Job Requests</span> 
                 {% if user.userprofile.unread_message_count > 0 %}
-                <span class="unread_message_pop">{{user.userprofile.unread_message_count}}<span>
+                <span class="unread_message_pop">{{user.userprofile.unread_message_count}}</span>
                 {% endif %}
               </a></li>
 	            {% endif %}
@@ -84,15 +84,73 @@
       {% endblock %}
 
 
-      <div style="clear:both">
-      <hr>
-
-      <footer>
-        <p>&copy; Company 2014</p>
-      </footer>
+      <div style="clear:both"></div>
     </div> <!-- /container -->
 
+  <footer>
 
+    <div class="footer_row col-md-3">
+      <ul>
+        <li class="footer_row_li_head">
+          Customers
+        </li>
+        <li>
+          How it works
+        </li>
+        <li>
+          Service provider safety
+        </li>
+        <li>
+          Short stories from other customers
+        </li>
+      </ul>
+    </div>
+
+    <div class="footer_row col-md-3">
+      <ul>
+        <li class="footer_row_li_head">
+          For business
+        </li>
+        <li>
+          How it works
+        </li>
+        <li>
+          Sign up
+        </li>
+        <li>
+          Short stories from other businesses
+        </li>
+      </ul>
+    </div>
+
+    <div class="footer_row col-md-3">
+      <ul>
+        <li class="footer_row_li_head">
+          Blog
+        </li>
+        <li>
+          About us
+        </li>
+        <li>
+          Privacy Policy
+        </li>
+        <li>
+          Terms of use
+        </li>
+      </ul>
+    </div>
+
+    <div class="footer_row col-md-3">
+      <div class="footer_logo">AskHenry</div>
+      <div>
+        <img src="/static/image/facebook.png">
+        <img src="/static/image/twitter.png">
+        <img src="/static/image/googleplus.png">
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <p class="footer_copyright">&copy; Company 2015 askhenry</p>
+  </footer>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->

@@ -5,15 +5,20 @@
 <h1>Introduction to {{ project.business.first.name }}</h1>
 
 <div class="pitches_pitch_operations col-md-12">
-	<a href="">View original request</a>
-	<a href="">Cancel project</a>
+	<a href="javascript:void(0)" class="btn btn-default" id="pitch-original-request-btn">View original request</a>
+	<!--<a href="javascript:void(0)" class="btn btn-default">Cancel project</a>-->
+</div>
+
+<div class="pitches_project col-md-12 hide" id="pitch-original-request">
+	<div class="page_header thick-green-border-bottom">Job Request</div>
+	{% include 'pitches/project.html' with project=project %}
 </div>
 
 <ul class="pitches_company_select col-md-12">
 {% for this_pitch in pitches %}
 	<li {% if this_pitch == pitch %}class="highlighted"{% endif %}>
 		<a href="{% url 'pitches:show' this_pitch.id %}">{{ this_pitch.company.userprofile.business_name}} 
-		{% if pitch.hired %}
+		{% if this_pitch.hired %}
 			<span class="hired">Hired!</span>
 		{% endif %}
 	</a>
@@ -68,9 +73,25 @@
 		{% endif %}
 	</div>
 
-	<div class="pitches_pitch_message">
+	<div class="pitches_pitch_message" id="message">
 		{% include 'pitches/message.html' with form=form messages=messages pitch=pitch  %}
 	</div>
 </div>
 
+<script>
+	var toggleRequest = $('#pitch-original-request-btn')
+	
+	toggleRequest.click(function(){
+		var requestBlock = $('#pitch-original-request')
+		if(requestBlock.hasClass('hide')){
+			requestBlock.removeClass('hide')
+			toggleRequest.html('Hide original request')
+		} else {
+			requestBlock.addClass('hide')
+			toggleRequest.html('View original request')
+		}
+	})
+
+</script>
 {% endblock %}
+
