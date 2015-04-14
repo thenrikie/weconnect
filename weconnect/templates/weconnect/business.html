@@ -1,0 +1,160 @@
+{% extends "weconnect/base.html" %}
+
+{% block xtra_nav_class %}
+  navbar-index
+{% endblock %}
+
+{% block xtra_body_class %}
+  body-index
+{% endblock %}
+
+{% block headerbutton %}
+        <div>
+          <a class="btn pull-right btn-tran" href="{% url 'home_customer' %}">For Customer</a>
+        </div>
+{% endblock %}
+
+{% block bighead %}
+    <div class="index-main-space index-main-space-business">&nbsp;</div>
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container index-action-block">
+        <h1>Grow your business by meeting new customers</h1>
+        <div class="index-block index-block-desc">
+          It's simple, we send you requests from people that are looking for your expertise
+        </div>
+        <div>
+    			<form id="contact-form" class="index-action-form form-horizontal" action="{% url 'auth:register_business' %}" method="get" data-parsley-validate>
+                <div class="index-block">COMING IN MID 2015</div>
+    	        	<div class="form-group">
+                  <div class="col-md-9 no-padding">
+                    <input type="email" class="form-control big-control" placeholder="Your email address" id="email" required>
+                  </div>
+                  <div class="col-md-3 no-padding">
+                    <input type="button" class="btn btn-blue" id="get-notified-btn" value="Get Notified">
+                  </div>
+
+                </div>
+              
+    			</form>
+        </div>
+     
+      </div>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+      <!-- Example row of columns -->
+      <h2 class="text-center index-h2">
+        How it works
+      </h2>
+      <div class="row index-desc-flow">
+        <div class="col-md-3">
+          <h3 class="index-step-title">
+            <span class="blue index-step-number col-md-1">1.</span> 
+            We send you job leads
+          </h3>
+          <img src="/static/image/1.png">
+          <p class="text-justify index-desc-p">We will send you relevant customer leads, you can choose which leads you accept</p>
+        </div>
+
+        <div class="col-md-1 arror-right"><img src="/static/image/arrow-right.png"></div>
+
+        <div class="col-md-3">
+          <h3 class="index-step-title">
+            <span class="blue index-step-number col-md-1">2.</span> 
+            Introduce yourself and provide a quote
+          </h3>
+          <img src="/static/image/2.png">
+          <p class="text-justify index-desc-p">For the projects that you wish to work on, provide an introduction and quote.</p>
+ 
+       </div>
+
+       <div class="col-md-1 arror-right"><img src="/static/image/arrow-right.png"></div>
+
+        <div class="col-md-3">
+          <h3 class="index-step-title">
+            <span class="blue index-step-number col-md-1">3.</span> 
+            Win jobs, get rated and grow your profile
+          </h3>
+          <img src="/static/image/3.png">
+          <p class="text-justify index-desc-p">Complete successful jobs and get reviews from your customers to help grow your profile.</p>
+
+        </div>
+      </div>
+
+
+
+      <h2 class="text-center index-h2">
+        Some of the professionals are already using
+      </h2>
+      <div class="row index-desc-flow">
+        <div class="col-md-4">
+
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+ 
+    
+        </div>
+        <div class="col-md-4">
+
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+ 
+    
+        </div>
+        <div class="col-md-4">
+
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+ 
+    
+        </div>
+      </div>
+
+<div class="modal fade" id="modal-email-success">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <h3 class="text-center">Thank you</h3>
+      <div class="modal-body">
+        <p>Thank you for your interest. We will contact you as soon as we launch!&hellip;</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn btn-blue">OK!</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+  $('#get-notified-btn').click(function(){
+    if ($('#contact-form').parsley().validate()){
+
+      $.postJSON("{% url 'contacts:create' %}", {
+        email : $('#email').val()
+      });
+
+      $('#modal-email-success').modal()
+    }
+  });
+
+  $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+        xhr.setRequestHeader("X-CSRFToken", '{{csrf_token}}');
+      }
+  });
+
+  jQuery.extend({
+    postJSON : function(url, data, callback){
+       $.ajax({
+        url:url,
+        type:"POST",
+        data: JSON.stringify(data),
+        contentType:"application/json; charset=utf-8",
+        dataType:"json",
+        success: callback
+        })
+      }
+  });
+
+</script>
+{% endblock %}
+
