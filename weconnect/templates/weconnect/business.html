@@ -25,10 +25,10 @@
         </div>
         <div>
     			<form id="contact-form" class="index-action-form form-horizontal" action="{% url 'auth:register_business' %}" method="get" data-parsley-validate>
-                <div class="index-block">COMING IN MID 2015</div>
+                <div class="index-block">Launching May 2015</div>
     	        	<div class="form-group">
                   <div class="col-md-9 no-padding">
-                    <input type="email" class="form-control big-control" placeholder="Your email address" id="email" required>
+                    <input type="email" class="form-control big-control" placeholder="Your email address" id="email" data-parsley-error-message="Please enter a valid email address" required>
                   </div>
                   <div class="col-md-3 no-padding">
                     <input type="button" class="btn btn-blue" id="get-notified-btn" value="Get Notified">
@@ -59,36 +59,43 @@
           <p class="text-justify index-desc-p">We will send you relevant customer leads, you can choose which leads you accept</p>
         </div>
 
-        <div class="col-md-1 arror-right"><img src="/static/image/arrow-right.png"></div>
+        <div class="col-md-9">
+          <div class="row">
+            <div class="col-md-2 arror-right"><img src="/static/image/arrow-right.png"></div>
 
-        <div class="col-md-3">
-          <h3 class="index-step-title">
-            <span class="blue index-step-number col-md-1">2.</span> 
-            Introduce yourself and provide a quote
-          </h3>
-          <img src="/static/image/2.png">
-          <p class="text-justify index-desc-p">For the projects that you wish to work on, provide an introduction and quote.</p>
- 
-       </div>
+            <div class="col-md-4">
+              <h3 class="index-step-title">
+                <span class="blue index-step-number col-md-1">2.</span> 
+                Introduce yourself and provide a quote
+              </h3>
+              <img src="/static/image/2.png">
+              <p class="text-justify index-desc-p">For the projects that you wish to work on, provide an introduction and quote.</p>
+     
+           </div>
 
-       <div class="col-md-1 arror-right"><img src="/static/image/arrow-right.png"></div>
+           <div class="col-md-2 arror-right"><img src="/static/image/arrow-right.png"></div>
 
-        <div class="col-md-3">
-          <h3 class="index-step-title">
-            <span class="blue index-step-number col-md-1">3.</span> 
-            Win jobs, get rated and grow your profile
-          </h3>
-          <img src="/static/image/3.png">
-          <p class="text-justify index-desc-p">Complete successful jobs and get reviews from your customers to help grow your profile.</p>
+            <div class="col-md-4">
+              <h3 class="index-step-title">
+                <span class="blue index-step-number col-md-1">3.</span> 
+                Win jobs, get rated and grow your profile
+              </h3>
+              <img src="/static/image/3.png">
+              <p class="text-justify index-desc-p">Complete successful jobs and get reviews from your customers to help grow your profile.</p>
 
+            </div>
+          </div>
         </div>
+
+
       </div>
 
 
-
+      <div class="clearfix"></div>
       <h2 class="text-center index-h2">
         Some of the professionals are already using
       </h2>
+      
       <div class="row index-desc-flow">
         <div class="col-md-4">
 
