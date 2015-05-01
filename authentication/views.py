@@ -8,6 +8,7 @@ from authentication import forms
 from authentication.models import User
 from users.models import UserProfile, SubBusiness
 import json
+from emails import sender
 
 # Create your views here.
 
@@ -57,6 +58,7 @@ def register_customer(r):
 			user = auth.authenticate(username=r.POST['email'], password=r.POST['password'])
 			if user is not None and user.is_active:
 				auth.login(r, user)
+				sender.signup_customer(user.email, {'name': user.full_name()})
 				return redirect('/')
 
 	else:
@@ -133,6 +135,7 @@ def register_business_details(r):
 			
 			if user is not None and user.is_active:
 				auth.login(r, user)
+				sender.signup_company(user.email, {'name': user.full_name()})
 				return redirect('users:profile')
 
 	return render(r, 'auth/register_business_details.html', {

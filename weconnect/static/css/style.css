@@ -379,9 +379,6 @@ h1 {
 .top_space{
     margin-top: 30px;
 }
-.has-error .control-label {
-    background-color: #ff9494;
-}
 .pitches_pitch_quotecontact {
     border: 1px solid #ccc;
     padding: 15px;

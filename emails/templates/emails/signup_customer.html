@@ -1,0 +1,19 @@
+{% extends "emails/base.html" %}
+{% block content %}
+	Hi {{ name }},
+	<br><br>
+	Thanks for signing up to RatedFrog, we are very excited to have you join our community.
+	<br><br>
+	How it works
+	<br><br>
+	&nbsp;&nbsp;&nbsp;&nbsp;1. Get started by telling us what services you need for your project
+	<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;2. We'll reach out to a select few companies from our community of qualified and approved professionals, and you will receive 3 custom proposals within 24 hours
+	<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;3. You can then review their proposal, profiles, previous customer reviews, call them and then when you are ready, decide who you want to hire.
+	<br>
+	{% url 'projects:create' as url %}
+	{% include 'emails/button.html' with btn_text='Submit a request' btn_url=url host_url=host_url  %}
+	<br><br>
+	The RatedFrog Team
+{% endblock %}
