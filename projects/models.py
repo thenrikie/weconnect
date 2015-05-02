@@ -39,6 +39,13 @@ class Project(models.Model):
 		('other', 'Other')
 	)
 
+	CANCEL_REASON = (
+		('no_help_needed', 'I no longer need help with this project'),
+		('found_someone', 'I have found someone else to help me'),
+		('no_right_candidate', 'The companies I was introduced to are not right for this project'),
+		('other', 'Other')
+	)
+
 	business = models.ManyToManyField(Business)
 	sub_business = models.ManyToManyField(SubBusiness)
 	question_option = models.ManyToManyField(QuestionOption)
@@ -64,6 +71,10 @@ class Project(models.Model):
 	
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
+
+	cancelled = models.BooleanField(default=False)
+	cancelled_reason = models.CharField(max_length=25, choices=CANCEL_REASON, null=True)
+	cancelled_reason_other = models.CharField(max_length=1024, null=True)
 
 	def pitch_count(self):
 		return self.pitch_set.exclude(state__in=['waiting', 'rejected', 'company_rejected']).count()
