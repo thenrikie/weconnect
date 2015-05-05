@@ -1,0 +1,12 @@
+{% extends "emails/base.html" %}
+{% block content %}
+	Hi {{ name }},
+	<br><br>
+	Thank you for submitting a proposal, this has been sent to {{ customer_name }} for review.
+	<br><br>
+	{{ customer_name }} has your contact details and may give you a call or message at any time. 
+	<br><br>
+	Best of luck and we will be in touch again soon!
+	<br><br>
+	The RatedFrog Team
+{% endblock %}

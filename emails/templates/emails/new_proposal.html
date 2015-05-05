@@ -1,0 +1,13 @@
+{% extends "emails/base.html" %}
+{% block content %}
+	Hi {{ name }},
+	<br><br>
+	We have some great news! {{ company_contact }} from {{ company_name }} has sent you a proposal for your {{ project_type }} project. 
+	<br><br>
+	Take a look at their message, previous customer reviews and portfolio!
+	<br><br>
+	{% url 'pitches:show' pitch.id as url %}
+	{% include 'emails/button.html' with btn_text='View Proposal' btn_url=url host_url=host_url  %}
+	<br><br>
+	The RatedFrog Team
+{% endblock %}

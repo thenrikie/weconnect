@@ -1,0 +1,10 @@
+{% extends "emails/base.html" %}
+{% block content %}
+	Hi {{ name }},
+	<br><br>
+	Unfortunately {{ customer_name }} has cancelled this {{ project_type }} project. 
+	<br><br>
+	Thanks again for submitting your proposal and sorry for any inconvenience this may have caused you.
+	<br><br>
+	The RatedFrog Team
+{% endblock %}
