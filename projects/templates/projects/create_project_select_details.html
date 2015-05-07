@@ -34,7 +34,7 @@
 		{% endif %}
 		{% endfor %}
 
-		{% if not r.user %}
+		{% if not user.is_authenticated %}
 			<h3 class="project_create_account_header">Create your account, it's super quick</h3>
 
 			{{ registerForm.non_field_errors }}
