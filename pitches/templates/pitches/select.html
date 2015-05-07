@@ -1,6 +1,39 @@
 <ul class="col-md-12 pitch_pitches_select">
-	<li {% if page == 'request' %}class="highlighted"{% endif %}><a href="{% url 'pitches:list_request' %}">Request</a></li>
-	<li {% if page == 'quote' %}class="highlighted"{% endif %}><a href="{% url 'pitches:list_quote' %}">Quotes</a></li>
-	<li {% if page == 'hired' %}class="highlighted"{% endif %}><a href="{% url 'pitches:list_hired' %}">Hired</a></li>
-	<li {% if page == 'archive' %}class="highlighted"{% endif %}><a href="{% url 'pitches:list_archive' %}">Archive</a></li>
+	<li {% if page == 'request' %}class="highlighted"{% endif %}>
+		<a href="{% url 'pitches:list_request' %}">Requests</a>
+		{% if page == 'request' %}
+		<div class="pitches_select_selected">
+			<img src="/static/image/arrow-down.png">
+		</div>
+		{% endif %}
+	</li>
+
+	<li {% if page == 'quote' %}class="highlighted"{% endif %}>
+		<a href="{% url 'pitches:list_quote' %}">Quotes</a>
+		{% if page == 'quote' %}
+		<div class="pitches_select_selected">
+			<img src="/static/image/arrow-down.png">
+		</div>
+		{% endif %}
+	</li>
+
+	<li {% if page == 'hired' %}class="highlighted"{% endif %}>
+		<a href="{% url 'pitches:list_hired' %}">Hired</a>
+		{% if page == 'hired' %}
+		<div class="pitches_select_selected">
+			<img src="/static/image/arrow-down.png">
+		</div>
+		{% endif %}
+	</li>
+
+	<li {% if page == 'archive' %}class="highlighted"{% endif %}>
+		<a href="{% url 'pitches:list_archive' %}">Archive</a>
+		{% if page == 'archive' %}
+		<div class="pitches_select_selected">
+			<img src="/static/image/arrow-down.png">
+		</div>
+		{% endif %}
+	</li>
+
 </ul>
+<div class="clearfix"></div>

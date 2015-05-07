@@ -14,21 +14,39 @@ h1 {
 }
 
 .pitch_pitches_select li {
+    border-bottom: 1px solid #e5e5e5;
     display: inline-block;
+    font-weight: bold;
+    margin-left: -5px;
+    margin-top: 30px;
+    text-align: center;
+    width: 250px;
+    vertical-align: bottom;
 }
-
+.pitches_select_selected {
+    left: -5px;
+    position: relative;
+    top: 4px;
+}
+.pitches_select_selected > img{
+    position: absolute;
+}
 .pitch_pitches_select a {
     display: inline-block;
-    padding: 15px;
+    padding: 0 80px 10px;
+}
+
+.pitch_pitches_select li:hover {
+    text-decoration: none;
+    border-bottom: 4px solid #3d7dca;
 }
 
 .pitch_pitches_select a:hover {
     text-decoration: none;
-    border-bottom: 2px solid #337ab7;
 }
 
-.pitch_pitches_select .highlighted a {
-    border-bottom: 2px solid #337ab7;
+.pitch_pitches_select .highlighted {
+    border-bottom: 4px solid #3d7dca;
 }
 
 .pitches_pitch_item {
@@ -36,34 +54,49 @@ h1 {
 }
 
 .pitches_pitch_item li {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #e5e5e5;
     padding: 10px;
 }
-
-.pitches_pitch_item h1 {
-    font-size: 20px;
+.pitches_pitch_item_image {
+    max-height: 100px;
+    max-width: 100px;
 }
-
-.projects_project_item {
+.pitches_pitch_item_button {
+    line-height: 100px;
+}
+.pitches_pitch_item_quoted_time {
+    font-size: 14px;
+    margin-top: 20px;
+    text-align: right;
+}
+.pitch_item_hired .pitches_pitch_item_button{
+    line-height: normal;
+}
+.projects_project_ul {
     list-style-type: none;
 }
 
-.projects_project_item li {
+.projects_project_item {
     border: 1px solid #ccc;
-    height: 300px;
-    margin-right: 40px;
-    padding: 25px;
+    height: 350px;
+    margin-bottom: 30px;
+    padding: 50px 30px;
     vertical-align: middle;
+    border-radius: 3px;
 }
 
 .projects_project_item_count {
+    color: #3d7dca;
     display: block;
-    font-size: 40px;
+    font-size: 50px;
+    font-weight: bold;
     text-align: center;
 }
-
 .projects_project_item_sp {
+    display: block;
     font-size: 20px;
+    font-weight: bold;
+    margin: 5px 0 20px;
     text-align: center;
 }
 
@@ -78,46 +111,83 @@ h1 {
 }
 
 .pitches_pitch_operations {
-    margin-top: 10px;
-    padding: 5px;
-    text-align: right;
+     padding: 10px 0;
 }
-
+.pitches_pitch_operations_text {
+    display: inline-block;
+    margin: 0 10px;
+}
 .pitches_company_select {
     list-style-type: none;
+    margin: 10px 0 35px -15px;
 }
-
-
-*::after, *::before {
-    box-sizing: border-box;
-}
-*::after, *::before {
-    box-sizing: border-box;
-}
-.pitches_company_select .highlighted a {
-}
-.pitches_company_select .highlighted a {
-    border-bottom: 2px solid #337ab7;
-}
-.pitches_company_select a {
-    color: #333333;
+.pitches_company_select_item_selected {
     display: block;
-    font-size: 16px;
-    padding: 30px;
-    text-decoration: none;
-}
+    margin-bottom: -26px;
+    position: relative;
+    text-align: center;
 
-.pitches_company_select a:hover {
-    border-bottom: 2px solid #337ab7;
 }
-
+.pitches_company_select_item.highlighted {
+    border-bottom: 3px solid #3d7dca;
+}
 .pitches_company_select li {
     display: inline-block;
 }
+.pitches_company_select_item {
+    border: 1px solid #e5e5e5;
+    border-radius: 3px;
+    padding: 10px 20px;
+}
+.pitches_company_select_item_head {
+    font-size: 20px;
+}
+.pitches_company_select_item_price {
+    color: #3d7dca;
+    display: inline-block;
+    font-size: 30px;
+    font-weight: bold;
+    vertical-align: middle;
+}
+.pitches_company_select_item_content {
+    border-bottom: 1px solid #e5e5e5;
+    border-top: 1px solid #e5e5e5;
+    margin-top: 10px;
+    padding: 10px 0;
+}
+.pitches_company_select_item_content_logo {
+    display: inline-block;
+    font-size: 40px;
+    font-weight: bold;
+    height: 100px;
+    text-align: center;
+    width: 100px;
+    color: #cccccc;
+}
+.pitches_company_select_item_content_logo > img {
+    max-height: 100px;
+    max-width: 100px;
+    text-align: center;
+}
+.pitches_company_select_item_content_name {
+    font-size: 20px;
+    font-weight: bold;
+}
+.pitches_company_select_item_link {
+    color: #3d7dca;
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: center;
+}
+.pitches_company_select_item_link:hover{
+    text-decoration: none;
+    color: #3d7dca;
+}
 
 .pitches_pitch_quotecontact_head {
-    border-bottom: 1px solid #666666;
-    padding: 15px;
+    padding: 0;
 }
 
 .pitches_pitch_quotecontact_price {
@@ -142,10 +212,20 @@ h1 {
 }
 
 .pitches_pitch_quotecontent_content_head_time {
-    color: #bbbbbb;
-    font-size: 12px;
 }
-
+.pitches_pitch_contact_item {
+    padding: 10px 0;
+}
+.pitches_pitch_contact_item_icon {
+    display: inline-block;
+    width: 15%;
+}
+.pitches_pitch_contact_text {
+    display: inline-block;
+    vertical-align: middle;
+    width: 75%;
+    word-wrap: break-word;
+}
 .pitches_pitch_quotecontent_desc {
     padding: 15px;
 }
@@ -156,8 +236,8 @@ h1 {
 }
 
 .pitches_pitch_message_item {
-    border-top: 1px solid #cccccc;
-    padding: 15px;
+    border-top: 1px solid #e5e5e5;
+    padding: 30px 0;
 }
 
 .pitches_pitch_message_item_head {
@@ -168,11 +248,15 @@ h1 {
     font-size: 15px;
 
 }
+.pitches_pitch_message_button {
+    text-align: right;
+}
 .pitches_pitch_messge_item_head_author {
-    font-size: 14px;
     font-weight: bold;
 }
-
+.pitches_pitch_messge_item_head {
+    margin-bottom: 10px;
+}
 .page_header{
     font-size: 20px;
     padding: 30px 0;
@@ -193,12 +277,61 @@ h1 {
 .users_profile_business_head_text {
 }
 
-.users_profile_business_head {
-    border-bottom: 1px solid #cccccc;
-    border-top: 1px solid #cccccc;
-    padding: 10px;
+.profile_head_company_name {
+    display: inline-block;
+    margin: 10px 0;
 }
-
+.users_profile_business_head {
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+    padding: 10px 15px;
+}
+.users_profile_business_head_contact_item {
+    margin-bottom: 5px;
+}
+.users_profile_business_head_contact_key {
+    display: inline-block;
+    margin-right: 25px;
+    text-align: center;
+    width: 5%;
+}
+.users_profile_business_head_contact_value {
+    display: inline-block;
+    vertical-align: middle;
+    word-wrap: break-word;
+}
+.users_profile_business_head_logo{
+    display: inline-block;
+}
+.users_profile_business_edit_btn {
+    position: absolute;
+    right: 30px;
+    z-index: 1;
+}
+.company-profile-head {
+    margin-bottom: 25px;
+}
+.company-profile-right-head{
+    margin-bottom: 25px;
+    margin-top: 0
+}
+.users_profile_business_head_company_contact {
+    border-bottom: 1px solid #e5e5e5;
+    padding: 30px 0;
+}
+.users_profile_business_head_person_contact {
+    margin-top: 20px;
+}
+.users_profile_business_head_ppl_photo {
+    border: 1px dashed #ccc;
+    color: #ccc;
+    display: inline-block;
+    font-size: 20px;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    width: 100px;
+}
 .users_profile_businesss_head_logo,
 .pitches_quote_head_logo,
 .business_head_logo {
@@ -213,15 +346,12 @@ h1 {
 }
 
 .users_profile_businesss_head_logo_img,
-.pitches_quote_head_logo_img,
 .business_head_logo_img
  {
-    max-height: 100px;
-    max-width: 150px;
+    width: 150px;
     float: left;
 }
-.users_profile_business_head_company,
-.pitches_quote_head_company {
+.users_profile_business_head_company {
     float: left;
     font-size: 18px;
     margin-left: 20px;
@@ -232,7 +362,7 @@ h1 {
     float: left;
     margin-top: 10px;
 }
-.users_profile_business_head_ppl_photo,
+
  .pitches_project_head_ppl_photo,
  .pitches_quote_head_ppl_photo,
  .name_card_ppl_photo,
@@ -247,8 +377,12 @@ h1 {
     text-align: center;
     width: 50px;
 }
-.users_profile_business_head_ppl_photo_img,
+.users_profile_business_head_ppl_photo_img {
+    max-height: 100px;
+    max-width: 100px;
+}
 .pitches_project_ppl_photo_img,
+.pitches_quote_head_logo_img,
 .pitches_quote_ppl_photo_img,
 .name_card_ppl_photo_img,
 .ppl_photo_img
@@ -276,9 +410,9 @@ h1 {
     width: 30px;
 }
 .users_profile_business_desc {
-    border-bottom: 1px solid #ccc;
-    margin-top: 10px;
-    padding:10px;
+    border: 1px solid #e5e5e5;
+    margin-top: 20px;
+    padding: 10px 15px;
 }
 .users_profile_business_desc_head {
     font-size: 16px;
@@ -299,8 +433,8 @@ h1 {
     font-size: 13px;
     margin-bottom: 4px;
 }
-.users_profile_business_companysocial {
-    border-bottom: 1px solid #ccc;
+.users_profile_business_companysocial,
+.users_profile_business_work {
     padding: 10px;
 }
 .users_profile_business_companysocial span {
@@ -315,38 +449,46 @@ h1 {
 .users_profile_business_left{
     float:left;
 }
-.users_profile_business_edit_btn {
-    font-size: 11px;
-}
 .users_profile_business_service_item,
 .pitches_project_row,
 .pitches_quote_row {
-    font-size: 12px;
-    margin-top: 10px;
+    margin-top: 30px;
 }
 .users_profile_business_service_item_key,
 .pitches_project_row_key,
 .pitches_quote_row_key {
-    display: inline-block;
     font-weight: bold;
-    width: 30%
+    display: block;
 }
 
 .pitches_quote_row_key_full{
     font-weight: bold;
-    font-size:14px;
+
 }
 .pitches_quote_row_value_full{
-    font-size: 12px;
-}
 
+}
+.pitches_project_posted {
+    float: right;
+    line-height: 50px;
+    margin-right: 20px;
+}
+.pitches_quote_price{
+    float: right;
+    line-height: 50px;
+    margin-right: 20px;
+    font-weight: bold;
+    font-size: 20px;
+}
 .users_profile_business_service_item_value,
 .pitches_project_row_value,
 .pitches_quote_row_value {
-    display: inline-block;
-    vertical-align: top;
+    margin-top: 5px;
+    display: block;
 }
-
+.pitches_pitch_company_message{
+    margin-top: 30px;
+}
 .image_edit {
     max-height: 50px;
     max-width: 50px;
@@ -367,21 +509,24 @@ h1 {
     width: 50%;
 }
 .auth_register_mode {
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
     display: inline-block;
     font-size: 20px;
+    margin-left: 40px;
+    margin-right: 40px;
     margin-top: 30px;
     padding: 60px;
     text-align: center;
 }
 .auth_register{
-    margin-top: 30px;
+
 }
 .top_space{
     margin-top: 30px;
 }
 .pitches_pitch_quotecontact {
-    border: 1px solid #ccc;
-    padding: 15px;
+    padding: 0;
 }
 .pitches_project_headerdesc {
     font-size: 16px;
@@ -389,19 +534,27 @@ h1 {
 }
 .pitches_project_header {
     line-height: 25px;
+    margin-top: 20px;
 }
 .pitches_project_ppl_name,
-.pitches_quote_ppl_name {
+.pitches_quote_head_company {
     display: inline-block;
-    font-size: 15px;
+    font-weight: bold;
     margin-left: 10px;
 }
 .pitches_company_operations{
     margin-top: 20px;
 }
+.pitches_quote_row_header,
+.pitches_project_row_header {
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 20px;
+}
 .pitches_project,
 .pitches_quote {
-    padding: 10px;
+    border: 1px solid #e5e5e5;
+    border-radius: 3px;
+    padding: 20px;
 }
 .thick-green-border-bottom {
     border-bottom: 2px solid #5cb85c;
@@ -413,11 +566,12 @@ h1 {
     margin-top: 15px;
 }
 .name_card {
-    text-align: center;
+    margin-bottom: 10px;
 }
 .name_card_ppl_name {
-    font-size: 11px;
+    display: inline-block;
     font-weight: bold;
+    vertical-align: middle;
 }
 
 .action-btn-group{
@@ -427,9 +581,7 @@ h1 {
     margin-top: 30px;
 }
 .pitches_pitch_message_item_head_date {
-    color: #bbbbbb;
-    font-size: 13px;
-    font-weight: bold;
+
 }
 .pitches_pitch_quotecontact_content_business_name {
     font-size: 17px;
@@ -572,6 +724,7 @@ h2, .h2{
     font-size:32px;
     color: #3d7dca;
     font-weight: bold;
+    margin: 50px 0px;
 }
 
 .blue {
@@ -609,7 +762,19 @@ h3, .h3{
     font-weight: bold;
     padding: 14px 40px;
 }
-
+.btn-grey {
+    background-color:#e5e5e5;
+    border-color: transparent;
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 1, 0.1);
+    color: #3d7dca;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 14px 40px;
+}
+.btn-grey:hover{
+    color: #3d7dca;
+    background-color:#e5e5e5;
+}
 .btn-blue:hover {
     color:#fff;
     background: linear-gradient(90deg, rgb(71, 132, 205) 100%), rgb(58, 119, 192) 0%, repeat scroll 0 0 rgba(0, 0, 0, 0);
@@ -619,27 +784,6 @@ h3, .h3{
     height: 50px;
 }
 
-*::after, *::before {
-    box-sizing: border-box;
-}
-*::after, *::before {
-    box-sizing: border-box;
-}
-*::after, *::before {
-    box-sizing: border-box;
-}
-*::after, *::before {
-    box-sizing: border-box;
-}
-*::after, *::before {
-    box-sizing: border-box;
-}
-*::after, *::before {
-    box-sizing: border-box;
-}
-.navbar-index a {
-    color: white;
-}
 .btn-tran {
     border: 1px solid white;
     border-radius: 3px;
@@ -666,12 +810,104 @@ h3, .h3{
 .modal-content {
     padding:40px;
 }
-.parsley-errors-list {
+.index-action-form .parsley-errors-list {
     color: white;
     list-style: outside none none;
     margin-bottom: 0;
     text-shadow: 1px 1px #1a1a1a;
 }
+.parsley-errors-list {
+    color:red;
+}
 .index-desc-flow {
     margin-bottom: 30px;
+}
+.nav a{
+    font-size:14px ;
+}
+.navbar-index .navbar-nav > li > a:hover,
+.navbar-index .navbar-nav > li > a:focus {
+    background: transparent;
+}
+.navbar-brand {
+    padding: 9px 0 0;
+}
+#id_cancelled_reason_other {
+    width: 100%;
+}
+.form-v ul {
+    list-style: outside none none;
+}
+.sign-up-btn{
+    margin-top:20px;
+}
+.auth_register_reminder_text{
+    text-align: center;
+    font-size: 16px;
+    margin-top: 30px;
+    line-height: 21px;
+}
+.auth_register form {
+
+}
+.blue-link{
+    color:#3d7dca;
+    font-weight: bold;
+}
+.blue-link:hover{
+    color:#3d7dca;
+    text-decoration: none;
+}
+.bottom-border {
+    border-bottom: 1px solid #e5e5e5;
+    padding: 20px 0;
+}
+.profile_header {
+    padding: 30px;
+}
+.sm {
+    background-image: url("/static/image/sm.png");
+    display: inline-block;
+    height: 41px;
+    width: 41px;
+}
+.sm_facebook {
+    background-position: 0 -60px;
+}
+.sm_linkedin {
+    background-position: 0 0;
+}
+.sm_twitter {
+    background-position: 0 -120px;
+}
+.sm_google {
+    background-position: 0 -180px;
+}
+.sm_pinterest {
+    background-position: 0 -240px;
+}
+.sm_instagram {
+    background-position: 0 -300px;
+}
+.users_profile_business_work_image {
+    display: inline-block;
+    margin: 15px auto;
+    max-width: 250px;
+}
+.create_project_question {
+    font-size: 20px;
+    font-weight: bold;
+}
+.create_project_answers ul {
+    padding: 0;
+}
+.create_project_answers input[type="checkbox"] {
+    margin-right: 10px;
+}
+.create_project_answers label {
+    font-weight: normal;
+    margin-bottom: 10px;
+}
+.create_project_answers {
+    margin-top: 10px;
 }

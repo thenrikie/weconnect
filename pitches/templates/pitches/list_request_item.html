@@ -1,0 +1,17 @@
+{% load staticfiles %}
+
+	<img class="pitches_pitch_item_image col-md-2" src="{% static pitch.project.user.userprofile.photo %}" alt="{{ pitch.project.user.full_name }}">
+
+	<div class="pitches_pitch_item_text col-md-8">
+		<h3>
+			{{ pitch.project.user.full_name }} is looking for {{ pitch.project.business.first.name|lower }}
+		</h3>
+		<p>
+			{{ pitch.project.user.first_name }} is looking for someone with your skills to help them with their project
+		</p>
+	</div>
+
+	<div class="pitches_pitch_item_button col-md-2">
+		<a href="{% url 'pitches:show' pitch.id %}" class="btn btn-blue">View details</a>
+	</div>
+	<div class="clearfix"></div>

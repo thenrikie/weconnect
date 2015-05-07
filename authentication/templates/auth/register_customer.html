@@ -1,7 +1,8 @@
 {% extends "weconnect/base.html" %}
 {% block content %}
 {% load hformrow %}
-<div class="col-md-10 auth_register">
+<h2>Sign Up</h2>
+<div class="col-md-8 auth_register">
 	<form action="{% url 'auth:register_customer' %}" method="post" class="form-horizontal">
 		{% csrf_token %}
 
@@ -20,7 +21,7 @@
 		
 		<div class="form-group">
 			<div class="col-sm-offset-3 col-sm-9">
-				<input type="submit" value="Sign Up" class="btn btn-primary btn-lg">
+				<input type="submit" value="Sign Up" class="btn btn-blue btn-lg">
 			</div>
 		</div>
 

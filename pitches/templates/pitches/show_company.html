@@ -4,8 +4,8 @@
 
 
 
-<div class="pitches_project {{ pitch.quoted|yesno:'col-md-6,col-md-12'}}">
-	<div class="page_header thick-green-border-bottom">Job Request</div>
+<div class="{{ pitch.quoted|yesno:'col-md-6,col-md-12'}}">
+	<h3>Job Request</h3>
 
 	{% include 'pitches/project.html' with project=project only %}
 
@@ -13,11 +13,11 @@
 	<div class="pitches_company_operations">
 		<form class="col-md-5" method="post" action="{% url 'pitches:reject' pitch.id %}">
 			{% csrf_token %}
-			<input type="submit" value="Reject" class="btn btn-danger btn-lg btn-block">
+			<input type="submit" value="Reject" class="btn btn-grey btn-block">
 		</form>
 
 		<form class="col-md-5" method="get" action="{% url 'pitches:accept' pitch.id %}">
-			<input type="submit" value="Accept" class="btn btn-success btn-lg btn-block">
+			<input type="submit" value="Accept" class="btn btn-blue btn-block">
 		</form>
 	</div>
 	{% endif %}
@@ -27,68 +27,76 @@
 
 
 {% if pitch.quoted %}
-<div class="pitches_quote col-md-6">
-	<div class="page_header thick-blue-border-bottom">Your Quote</div>
+<div class="col-md-6">
+	<h3>Your Quote</h3>
+		<div class="pitches_quote">
 
-		<div class="pitches_quote_row">
-			{% if pitch.company.userprofile.logo %}
-				<img class="pitches_quote_head_logo_img" src="{% static pitch.company.userprofile.logo %}" alt="{{ pitch.company.userprofile.business_name }}">
-			{% else %}
-				<div class="pitches_quote_head_logo">?</div>
-			{% endif %}
-			
-			<div class="pitches_quote_head_company">
-				{{ pitch.company.userprofile.business_name }}
+			<div class="pitches_quote_row_header">
+				{% if pitch.company.userprofile.logo %}
+					<img class="pitches_quote_head_logo_img" src="{% static pitch.company.userprofile.logo %}" alt="{{ pitch.company.userprofile.business_name }}">
+				{% else %}
+					<div class="pitches_quote_head_logo">?</div>
+				{% endif %}
+				
+				<div class="pitches_quote_head_company">
+					{{ pitch.company.userprofile.business_name }}
+				</div>
+				<div class="pitches_quote_price">
+					$ <span class="pitches_company_select_item_price">{{ pitch.price }}</span> {{ pitch.rate }}
+				</div>
+				<div class="clearfix"></div>
+			</div>
+
+			<div class="pitches_quote_row">
+				{% if pitch.company.userprofile.photo %}
+					<img class="pitches_quote_ppl_photo_img" src="{% static pitch.company.userprofile.photo %}" alt="{{ pitch.company.full_name }}">
+				{% else %}
+					<div class="pitches_quote_head_ppl_photo">?</div>
+				{% endif %}
+
+				<div class="pitches_quote_row_key">
+					Contact person
+				</div> 
+				<div class="pitches_quote_row_value">
+					{{ pitch.company.full_name}}
+				</div>
+			</div>
+
+			<div class="pitches_quote_row">
+				<div class="pitches_quote_row_key_full">
+					Why you would be the best person for this project?
+				</div> 
+				<p class="pitches_quote_row_value_full">
+					{{ pitch.desc|linebreaksbr }}
+				</p>
+			</div>
+
+
+
+			<div class="pitches_quote_row">
+				<div class="pitches_quote_row_key">
+					Price 
+				</div>
+				<div class="pitches_quote_row_value">
+					{%  if pitch.rate == 'NA' %}
+						I do not want to provide a price yet
+					{% else %}
+						{{ pitch.price }} {{ pitch.rate }}
+					{% endif %}
+				</div>
 			</div>
 			<div class="clearfix"></div>
 		</div>
-
-	<div class="pitches_quote_row">
-		{% if pitch.company.userprofile.photo %}
-			<img class="pitches_quote_ppl_photo_img" src="{% static pitch.company.userprofile.photo %}" alt="{{ pitch.company.full_name }}">
-		{% else %}
-			<div class="pitches_quote_head_ppl_photo">?</div>
-		{% endif %}
-
-		<div class="pitches_quote_ppl_name">
-			Contact person: {{ pitch.company.full_name}}
-		</div>
-	</div>
-
-	<div class="pitches_quote_row">
-		<div class="pitches_quote_row_key_full">
-			Why you would be the best person for this project?
-		</div> 
-		<p class="pitches_quote_row_value_full">
-			{{ pitch.desc|linebreaksbr }}
-		</p>
-	</div>
-
-
-
-	<div class="pitches_quote_row">
-		<div class="pitches_quote_row_key">
-			Price 
-		</div>
-		<div class="pitches_quote_row_value">
-			{%  if pitch.rate == 'NA' %}
-				I do not want to provide a price yet
-			{% else %}
-				{{ pitch.price }} {{ pitch.rate }}
-			{% endif %}
-		</div>
-	</div>
-	<div class="clearfix"></div>
 </div>
 <div class="clearfix"></div>
 
 {% endif %}
 
 {% if not pitch.waiting %}
-	<div id="message" class="col-md-12">
-		<div class="page_header thick-green-border-bottom">
+	<div id="message" class="pitches_pitch_company_message col-md-12">
+		<h3>
 			Message
-		</div>
+		</h3>
 		{% include 'pitches/message.html' with form=form messages=messages pitch=pitch  %}
 	</div>
 {% endif %}

@@ -1,18 +1,22 @@
 {% extends "weconnect/base.html" %}
+{% load bigformrow %}
 {% block content %}
 
-<h1>Job Request</h1>
+<h2>Job Request</h2>
 <div class="pitches_company_quote">
-	
-	<p>Tell {{ pitch.project.user.full_name }} why you would be the best person for this project</p>
-	<form action="{% url 'pitches:accept' pitch.id %}" method="post" class="pitches_company_quote_form">
+
+	<form action="{% url 'pitches:accept' pitch.id %}" method="post" class="pitches_company_quote_form form-horizontal col-md-7">
 		{% csrf_token %}
-		<ul>
-			{{ form.as_ul }}
-			<li>
-				<input type="submit" value="Send Quote" class="btn btn-primary">
-			</li>
-		</ul>
+		{% for field in form %}
+
+			{{ field|bigformrow:field.label }}
+
+		{% endfor %}
+
+			
+		<div class="form-group">
+				<input type="submit" value="Send Quote" class="btn btn-blue">
+		</div>
 	</form>
 
 </div>

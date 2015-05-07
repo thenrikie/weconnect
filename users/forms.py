@@ -34,7 +34,7 @@ class Business(ModelForm):
 class BusinessHead(ModelForm):
 	class Meta:
 		model = UserProfile
-		fields = ['business_name', 'website', 'mobile_number', 'logo', 'photo']
+		fields = ['business_name', 'website', 'mobile_number', 'logo', 'photo', 'address_1', 'address_2', 'address_3', 'address_4','employees','business_since']
 
 class BusinessCompanyDesc(ModelForm):
 	class Meta:
@@ -74,4 +74,9 @@ class BusinessCompanyDetail(ModelForm):
 class BusinessCompanySocial(ModelForm):
 	class Meta:
 		model = UserProfile
-		fields = ['facebook', 'linkedin', 'twitter', 'pinterest', 'instagram']
+		fields = ['facebook', 'linkedin', 'twitter', 'google', 'pinterest', 'instagram']
+
+class BusinessWorkImage(ModelForm):
+	class Meta:
+		model = UserProfile
+		fields = ['work_image_1', 'work_image_2', 'work_image_3']

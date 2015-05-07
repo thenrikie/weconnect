@@ -2,35 +2,12 @@
 {% block content %}
 
 {% include 'pitches/select.html' with page='hired' only %}
-<h1>Hired</h1>
+<h2>Hired</h2>
 
-<ul class="pitches_pitch_item col-md-10">
+<ul class="pitches_pitch_item col-md-10 pitch_item_hired">
 	{% for pitch in pitches %}
 	<li>
-		<div>
-			<h1>
-				Hired to help {{  pitch.project.user.first_name }}
-			</h1>
-			<div>
-				Hired on {{ pitch.hired_at|date:'j F, Y'}}
-			</div>
-
-		</div>
-
-		<div class="pitches_pitch_item_btns">
-			<a href="{% url 'pitches:show' pitch.id %}" class="btn btn-primary">View request and quote</a> 
-			<a href="{% url 'pitches:show' pitch.id %}#message" class="btn btn-default">	Message             
-				{% if pitch.company_unread_message_count > 0 %}
-            		<span class="unread_message_pop">{{pitch.company_unread_message_count}}<span>
-            	{% endif %}
-        	</a>
-			<form method="post" action="{% url 'pitches:archive' pitch.id %}">
-				{% csrf_token %}
-				<input type="submit" value="Archive" class="btn btn-default">
-			</form>
-		</div>
-
-
+		{% include 'pitches/list_hired_item.html' with pitch=pitch %}
 	</li>
 	{% endfor %}
 </ul>

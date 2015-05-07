@@ -1,30 +1,70 @@
 {% extends "weconnect/base.html" %}
 {% block content %}
-{% load hformrow %}
-<div class="col-md-10 top_space">
+{% load bigformrow %}
+{% load addcss %}
+<h2>Let us know more about what you need and we will introduce you to people ready to help</h2>
+<div class="col-md-10">
 	<form action="{% url 'projects:create_details' %}" method="post" class="form-horizontal">
 		{% csrf_token %}
 	
 
 		{{ questionForm.non_field_errors }}
 		{% for field in questionForm %}
-			{{ field|hformrow:field.label }}
+			{{ field|bigformrow:field.label }}
 		{% endfor %}
 		
 		{{ form.non_field_errors }}
+
+<div class="form-group {%if form.budget_lower.errors or form.budget_upper.errors %}has-error{% endif %}">
+	<label for="id_urgency" class="create_project_question control-label">What is your budget?</label>
+	<div class="create_project_answers">
+		<label><input type="checkbox" id="no-budget"> I don't have a budget in my mind just yet</label>
+		<div>
+			<div class="col-md-6">From {{ form.budget_lower|addcss:'form-control' }}</div>
+			<div class="col-md-6">To {{ form.budget_upper|addcss:'form-control' }}</div>
+		</div>
+		{{ form.budget_lower.errors }}
+		{{ form.budget_upper.errors }}
+	</div>
+	<div class="clearfix"></div>
+</div>
 		{% for field in form %}
-			{{ field|hformrow:field.label }}
+		{% if field.name != 'budget_lower' and field.name != 'budget_upper' %}
+			{{ field|bigformrow:field.label }}
+		{% endif %}
 		{% endfor %}
 
 			
 		<div class="form-group">
-			<div class="col-sm-offset-3 col-sm-9">
-				<input type="submit" value="Send Request" class="btn btn-primary btn-lg">
-			</div>
+				<input type="submit" value="Send Request" class="btn btn-blue">
 		</div>
 
 	</form>
 
 </div>
+
+<script type="text/javascript">
+	var noBudget = $('#no-budget')
+	var budgetFrom = $('#id_budget_lower')
+	var budgetTo = $('#id_budget_upper')
+
+	noBudget.click(function(){
+		if(noBudget.prop('checked')){
+			budgetFrom.val('').prop('disabled', true)
+			budgetTo.val('').prop('disabled', true)
+		} else {
+			budgetFrom.prop('disabled', false)
+			budgetTo.prop('disabled', false)
+		}
+	})	
+
+
+	$(function(){	
+		if (budgetFrom.val() == "" && budgetTo.val() == ""){
+			noBudget.trigger('click')
+		}
+	})
+
+</script>
 
 {% endblock %}

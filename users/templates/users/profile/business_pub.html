@@ -5,50 +5,77 @@
 {% block content %}
 {% with "users_profile_business" as css_prefix %}
 
+<h3 class="profile_header">Company Profile</h3>
 
-<div class="{{ css_prefix }}_left col-md-8 top_space">
+<div class="{{ css_prefix }}_left col-md-8">
 	<div class="{{ css_prefix }}_head">
 		<div id="head-display">
-			{% if userprofile.logo %}
-				<img class="{{ css_prefix }}s_head_logo_img" src="{% static userprofile.logo %}" alt="{{ userprofile.business_name }}">
-			{% else %}
-				<div class="{{ css_prefix }}s_head_logo">?</div>
-			{% endif %}
-			
-			<div class="{{ css_prefix }}_head_company">
-				{{ userprofile.business_name }}
-			</div>
-			<div class="{{ css_prefix }}_head_ppl">
-				
-				{% if userprofile.photo %}
-					<img class="{{ css_prefix }}_head_ppl_photo_img" src="{% static userprofile.photo %}" alt="{{ userprofile.business_name }}">
+
+			<div class="{{ css_prefix }}_head_logo  col-md-3">
+				{% if userprofile.logo %}
+					<img class="{{ css_prefix }}s_head_logo_img" src="{% static userprofile.logo %}" alt="{{ userprofile.business_name }}">
 				{% else %}
-					<div class="{{ css_prefix }}_head_ppl_photo">?</div>
+					<div class="{{ css_prefix }}s_head_logo">?</div>
 				{% endif %}
-				
-				<div class="{{ css_prefix }}_head_ppl_email">
-					{{ user.email }}
-				</div>
 			</div>
-			<div class="{{ css_prefix }}_head_contact">
-				<div class="{{ css_prefix }}_head_contact_row">
-					<span class="{{ css_prefix }}_head_contact_row_desc">T:</span>
-					<span class="{{ css_prefix }}_head_contact_row_content">{{ userprofile.mobile_number }}</span>
+
+			<div class="{{ css_prefix }}_head_detail  col-md-9">
+				<h3 class="profile_head_company_name">
+					{{ userprofile.business_name }}
+				</h3>			
+				<div class="{{ css_prefix }}_head_company_contact">
+					<div class="{{ css_prefix }}_head_contact_item col-md-6">
+						<div class="{{ css_prefix }}_head_contact_key"><img src="/static/image/phone.png" alt="phone"></div>
+						<div class="{{ css_prefix }}_head_contact_value">{{ userprofile.mobile_number }}</div>
+					</div>
+					<div class="{{ css_prefix }}_head_contact_item col-md-6">
+						<div class="{{ css_prefix }}_head_contact_key"><img src="/static/image/employees.png" alt="employees"></div>
+						<div class="{{ css_prefix }}_head_contact_value">{{ userprofile.employees }} Employee{{ userprofile.employees|pluralize }}</div>
+					</div>
+					<div class="{{ css_prefix }}_head_contact_item col-md-6">
+						<div class="{{ css_prefix }}_head_contact_key"><img src="/static/image/website.png" alt="website"></div>
+						<div class="{{ css_prefix }}_head_contact_value">{{ userprofile.website }}</div>
+					</div>
+					<div class="{{ css_prefix }}_head_contact_item col-md-6">
+						<div class="{{ css_prefix }}_head_contact_key"><img src="/static/image/since.png" alt="since"></div>
+						<div class="{{ css_prefix }}_head_contact_value">Since {{ userprofile.business_since|date:'Y' }}</div>
+					</div>
+					<div class="{{ css_prefix }}_head_contact_item col-md-6">
+						<div class="{{ css_prefix }}_head_contact_key"><img src="/static/image/location.png" alt="location"></div>
+						<div class="{{ css_prefix }}_head_contact_value">{{ userprofile.address_4|default:'N/A' }}</div>
+					</div>
+					<div class="clearfix"></div>
 				</div>
-				<div class="{{ css_prefix }}_head_contact_row">
-					<span class="{{ css_prefix }}_head_contact_row_desc">W:</span>
-					<span class="{{ css_prefix }}_head_contact_row_content">{{ userprofile.website }}</span>
+				<div class="{{ css_prefix }}_head_person_contact">
+					{% if userprofile.photo %}
+						<img class="{{ css_prefix }}_head_ppl_photo_img col-md-4" src="{% static userprofile.photo %}" alt="{{ userprofile.business_name }}">
+					{% else %}
+						<div class="{{ css_prefix }}_head_ppl_photo col-md-4">?</div>
+					{% endif %}
+
+					<div class="col-md-8">
+						<div class="{{ css_prefix }}_head_contact_item">
+							<div class="{{ css_prefix }}_head_contact_key"><img src="/static/image/contact-name.png" alt="contact"></div>
+							<div class="{{ css_prefix }}_head_contact_value">{{ user.full_name }}</div>
+						</div>
+
+						<div class="{{ css_prefix }}_head_contact_item">
+							<div class="{{ css_prefix }}_head_contact_key"><img src="/static/image/email.png" alt="email"></div>
+							<div class="{{ css_prefix }}_head_contact_value">{{ user.email }}</div>
+						</div>
+					</div>
+
 				</div>
 			</div>
 		</div>
-
 		<div style="clear:both"></div>
 	</div>
 
 
 	<div class="{{ css_prefix }}_desc">
 		<div id="company-desc-display">
-			<span class="{{ css_prefix }}_desc_head">About the company</span>
+
+			<h3 class="company-profile-head">About the company</h3>
 			<p>{{ userprofile.desc|linebreaksbr }}</p>
 		</div>
 
@@ -58,7 +85,7 @@
 
 	<div class="{{ css_prefix }}_desc">
 		<div id="service-desc-display">
-			<span class="{{ css_prefix }}_desc_head">Services</span>
+			<h3 class="company-profile-head">Services</h3>
 			<div class="{{ css_prefix }}_service_item">
 				<span class="{{ css_prefix }}_service_item_key">Business Nature</span>
 				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.business.first }}</span>
@@ -67,14 +94,17 @@
 				<span class="{{ css_prefix }}_service_item_key">Categories</span>
 				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.sub_business.all|join:"<br>" }}</span>
 			</div>
-			<p>{{ userprofile.service_desc|linebreaksbr }}</p>
+			<div class="{{ css_prefix }}_service_item">
+				<span class="{{ css_prefix }}_service_item_key">More about your service</span>
+				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.service_desc|linebreaksbr }}</span>
+			</div>
 		</div>
 		<div style="clear:both"></div>
 	</div>
 
 	<div class="{{ css_prefix }}_desc">
 		<div id="preference-display">
-			<span class="{{ css_prefix }}_desc_head">Preferences</span>
+			<h3 class="company-profile-head">Preferences</h3>
 			<div class="{{ css_prefix }}_service_item">
 				<span class="{{ css_prefix }}_service_item_key">Willing to travel to customer</span>
 				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.can_travel|yesno }}</span>
@@ -95,39 +125,71 @@
 		<div style="clear:both"></div>
 	</div>
 </div>
-<div class="{{ css_prefix }}_right col-md-4 top_space">
-	<div class="{{ css_prefix }}_companydetail">
-		<div id="company-detail-display">
-			<div class="{{ css_prefix }}_companydetail_row">
-				<span class="{{ css_prefix }}_companydetail_row_icon"></span>
-				<span class="{{ css_prefix }}_companydetail_row_content">Located in {{ userprofile.address_4|default:'?' }}</span>
-			</div>
-			<div class="{{ css_prefix }}_companydetail_row">
-				<span class="{{ css_prefix }}_companydetail_row_icon"></span>
-				<span class="{{ css_prefix }}_companydetail_row_content">{{ userprofile.employees }} employee{{ userprofile.employees|pluralize }}</span>
-			</div>
-			<div class="{{ css_prefix }}_companydetail_row">
-				<span class="{{ css_prefix }}_companydetail_row_icon"></span>
-				<span class="{{ css_prefix }}_companydetail_row_content">In business for {{ userprofile.business_since|sinceyear }}</span>
-			</div>
-		</div>
-
-		<div style="clear:both"></div>
-	</div>
-
+<div class="{{ css_prefix }}_right col-md-4">
 	<div class="{{ css_prefix }}_companysocial">
-
 		<div id="company-social-display">
-			<span>Facebook: {{ userprofile.facebook|default:'None'}}</span>
-			<span>LinkedIn: {{ userprofile.linkedin|default:'None'}}</span>
-			<span>Twitter: {{ userprofile.twitter|default:'None'}}</span>
-			<span>Printerest: {{ userprofile.pinterest|default:'None'}}</span>
-			<span>Instagram: {{ userprofile.instagram|default:'None'}}</span>
+			<h3  class="company-profile-right-head">Social Media</h3>
+			
+			{% if userprofile.facebook %}
+			<a class="sm sm_facebook" href="{{ userprofile.facebook }}" target="_blank"></a>
+			{% endif %}
+
+			{% if userprofile.linkedin %}
+			<a class="sm sm_linkedin" href="{{ userprofile.linkedin }}" target="_blank"></a>
+			{% endif %}
+			
+			{% if userprofile.twitter %}
+			<a class="sm sm_twitter" href="{{ userprofile.twitter }}" target="_blank"></a>
+			{% endif %}
+
+			{% if userprofile.google %}
+			<a class="sm sm_google" href="{{ userprofile.google }}" target="_blank"></a>
+			{% endif %}
+
+			{% if userprofile.pinterest %}
+			<a class="sm sm_pinterest" href="{{ userprofile.pinterest }}" target="_blank"></a>
+			{% endif %}
+
+			{% if userprofile.instagram %}
+			<a class="sm sm_instagram" href="{{ userprofile.instagram }}" target="_blank"></a>
+			{% endif %}
 		</div>
-		<div style="clear:both"></div>
+
+
+		<div class="clearfix"></div>
 	</div>
 
+	<div class="{{ css_prefix }}_work">
+		<div id="work-display">
+			<h3 class="company-profile-right-head">Work</h3>
+
+			{% if userprofile.work_image_1 %}
+			<img class="{{ css_prefix }}_work_image" src="{% static userprofile.work_image_1 %}">
+			{% endif %}
+			
+			{% if userprofile.work_image_2 %}
+			<img  class="{{ css_prefix }}_work_image" src="{% static userprofile.work_image_2 %}">
+			{% endif %}
+
+			{% if userprofile.work_image_3 %}
+			<img class="{{ css_prefix }}_work_image" src="{% static userprofile.work_image_3 %}">
+			{% endif %}
+		</div>
+	</div>
 </div>
+
+<!--
+<form action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data">
+	{% csrf_token %}
+	<ul>
+		{{ form.as_ul }}
+		<li>
+			<input type="submit" value="Save">
+		</li>
+	</ul>
+</form>
+-->
+
 
 
 {% endwith %}

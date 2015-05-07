@@ -2,3 +2,4 @@ weconnect/settings.py
 *.pyc
 *.pyo
 weconnect/__pycache__
+Thumbs.db

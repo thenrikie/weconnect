@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from pitches import forms
+from projects import forms as project_forms
 from pitches.models import Pitch, Message, MessageAttachment
 from datetime import datetime
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from pitches.forms import Message as MessageForm
+from emails import sender
 
 # Create your views here.
 def list_request(r):
@@ -37,7 +39,7 @@ def accept(r, pitch_id):
 		return redirect('/')
 
 	form = forms.Accept()
-
+	print(form.fields['desc'])
 	if r.method == 'POST':
 		form = forms.Accept(r.POST)
 		if form.is_valid():
@@ -48,6 +50,20 @@ def accept(r, pitch_id):
 			pitch.change_state('accepted')
 
 			pitch.save()
+			#send emails to project creator
+			sender.new_proposal(pitch.project.user.email, {
+				'name' : pitch.project.user.first_name,
+				'pitch': pitch,
+				'company_contact': pitch.company.full_name(),
+				'company_name' : pitch.company.userprofile.business_name,
+				'project_type' : pitch.project.sub_business.first()
+			})
+
+			sender.project_pitched(r.user.email, {
+				'name' : r.user.first_name,
+				'customer_name': pitch.project.user.first_name
+			})
+
 			return HttpResponseRedirect(reverse('pitches:list_quote'))
 			
 	return render(r, 'pitches/accept.html', {'pitch': pitch, 'form' : form})
@@ -109,10 +125,24 @@ def show(r, pitch_id, messageForm=None):
 	#print(pitch.message_set.first().attachment.first())
 
 	if pitch.company == r.user:
-		return render(r, 'pitches/show_company.html', {'project': project, 'pitch': pitch, 'form': messageForm, 'messages': messages})
+		return render(r, 'pitches/show_company.html', {
+			'project': project, 
+			'pitch': pitch, 
+			'form': messageForm, 
+			'messages': messages
+		})
+		
 	elif pitch.project.user == r.user:
 		pitches = project.ready_pitch()
-		return render(r, 'pitches/show_customer.html', {'project': project, 'pitch': pitch, 'pitches': pitches, 'form': messageForm, 'messages': messages})
+		cancel_form = project_forms.Cancel()
+		return render(r, 'pitches/show_customer.html', {
+			'project': project, 
+			'pitch': pitch, 
+			'pitches': pitches, 
+			'form': messageForm, 
+			'messages': messages, 
+			'cancel_form' : cancel_form
+		})
 	else:
 		print('No Access to this project')
 		return redirect('/')
@@ -135,8 +165,18 @@ def hire(r, pitch_id):
 				this_pitch.archived = True
 				this_pitch.save()
 
+				sender.rejected(this_pitch.company.email, {
+					'name' : this_pitch.company.first_name,
+					'customer_name': this_pitch.project.user.first_name
+				})
+
 		pitch.change_state('hired')
 		pitch.save()
+
+		sender.hired(pitch.company.email, {
+			'name' : pitch.company.first_name,
+			'customer_name': pitch.project.user.first_name
+		})
 
 		return HttpResponseRedirect(reverse('pitches:show', args=[pitch.id]))
 
@@ -167,6 +207,26 @@ def post_message(r, pitch_id):
 				message.recipient = pitch.project.user
 		
 			message.save()
+
+			print(message.id)
+			if message.recipient == pitch.company:
+				sender.message_for_company(pitch.company.email,{
+					'name': pitch.company.first_name,
+					'customer_name': r.user.first_name,
+					'project_type': pitch.project.sub_business.first(),
+					'message' : message.id,
+					'pitch': pitch
+				})
+
+			elif message.recipient == pitch.project.user:
+				sender.message_for_customer(pitch.project.user.email,{
+					'name': pitch.project.user.first_name,
+					'company_contact': pitch.company.first_name,
+					'company_name': pitch.company.userprofile.business_name,
+					'project_type': pitch.project.sub_business.first(),
+					'message' : message.id,
+					'pitch': pitch
+				})
 
 			if r.FILES.get('file'):
 				message.attachment.add(MessageAttachment(file=r.FILES.get('file')))

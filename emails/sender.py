@@ -48,4 +48,6 @@ def message_for_company(email, content):
 	subject = 'You have a new message from ' + content['customer_name']
 	send(email, content, subject, 'message_for_company')
 
-
+def request_for_service(email, content):
+	subject = 'Job request from ' + content['customer_name']
+	send(email, content, subject, 'request_for_service')

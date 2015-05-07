@@ -39,6 +39,13 @@ def upload_filename(path, model, filename):
 def logo_filename(model, filename):
 	return upload_filename('logos/companies/', model, filename)
 
+def workimage_filename(model, filename):
+	return 'work_images/companies/' + str(model.id) + '/' + filename
+
+def workattach_filename(model, filename):
+	return 'work_attachs/companies/' + str(model.id) + '/' + filename
+
+
 def person_filename(model, filename):
 	return upload_filename('photos/people/', model, filename)
 
@@ -72,7 +79,7 @@ class UserProfile(models.Model):
 	address_4 = models.CharField(max_length=512, blank=True, verbose_name='Area')
 
 	can_travel = models.BooleanField(default=False, verbose_name='I can travel to my customers')
-	travel_distance = models.ManyToManyField(District, related_name='userprofile_travel_distance_set', verbose_name='How far will you travel')
+	travel_distance = models.ManyToManyField(District, related_name='userprofile_travel_distance_set', verbose_name='How far will you travel', blank=True)
 	
 	only_remote = models.BooleanField(default=False, verbose_name='Only internet or phone')
 	customer_travel = models.BooleanField(default=False, verbose_name='My customer usually travel to me')
@@ -85,9 +92,18 @@ class UserProfile(models.Model):
 	twitter = models.CharField(max_length=255, blank=True, default='')
 	pinterest = models.CharField(max_length=255, blank=True, default='')
 	instagram = models.CharField(max_length=255, blank=True, default='')
+	google = models.CharField(max_length=255, blank=True, default='')
 
 	photo = models.ImageField(upload_to=person_filename, null=True, blank=True)
 	logo = models.ImageField(upload_to=logo_filename, null=True, blank=True)
+
+	work_image_1  = models.ImageField(upload_to=workimage_filename, null=True, blank=True)
+	work_image_2  = models.ImageField(upload_to=workimage_filename, null=True, blank=True)
+	work_image_3  = models.ImageField(upload_to=workimage_filename, null=True, blank=True)
+
+	work_attach_1  = models.FileField(upload_to=workattach_filename, null=True, blank=True)
+	work_attach_2  = models.FileField(upload_to=workattach_filename, null=True, blank=True)
+	work_attach_3  = models.FileField(upload_to=workattach_filename, null=True, blank=True)
 
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)

@@ -1,64 +1,100 @@
 {% extends "weconnect/base.html" %}
 {% block content %}
 {% load staticfiles %}
+{% load addcss %}
 
-<h1>Introduction to {{ project.business.first.name }}</h1>
+<h2>Introduction to {{ project.sub_business.first.name }}</h2>
 
-<div class="pitches_pitch_operations col-md-12">
+<div class="pitches_pitch_operations">
 	<a href="javascript:void(0)" class="btn btn-default" id="pitch-original-request-btn">View original request</a>
-	<!--<a href="javascript:void(0)" class="btn btn-default">Cancel project</a>-->
+	<span class="pitches_pitch_operations_text">Having troblues? Email us at <a href="mailto:support@ratedfrog.com">support@ratedfrog.com</a></span>
+	{% if not project.awarded %}
+	<a href="javascript:void(0)" id="cancel-project" class="btn btn-default">Cancel project</a>
+	{% endif %}
 </div>
 
-<div class="pitches_project col-md-12 hide" id="pitch-original-request">
-	<div class="page_header thick-green-border-bottom">Job Request</div>
+<div class="hide" id="pitch-original-request">
+	<h3>Job Request</h3>
 	{% include 'pitches/project.html' with project=project %}
 </div>
 
-<ul class="pitches_company_select col-md-12">
+<div class="pitches_company_select">
 {% for this_pitch in pitches %}
-	<li {% if this_pitch == pitch %}class="highlighted"{% endif %}>
-		<a href="{% url 'pitches:show' this_pitch.id %}">{{ this_pitch.company.userprofile.business_name}} 
-		{% if this_pitch.hired %}
-			<span class="hired">Hired!</span>
-		{% endif %}
-	</a>
-	</li>
-{% endfor %}
-</ul>
+	<div class="col-md-4">
+		<div class="pitches_company_select_item {% if this_pitch == pitch %}highlighted{% endif %}">
+			<div class="pitches_company_select_item_head">
+				$ <span class="pitches_company_select_item_price">{{ this_pitch.price }}</span> {{ this_pitch.rate }}
+				{% if this_pitch.hired %}
+					<span class="hired">Hired!</span>
+				{% endif %}
+			</div>
 
+			<div class="pitches_company_select_item_content">
+				<span class="pitches_company_select_item_content_logo">
+					{% if this_pitch.company.userprofile.logo %}
+						<img src="{% static this_pitch.company.userprofile.logo %}" alt="{{ this_pitch.company.userprofile.business_name }}">
+					{% else %}
+						?
+					{% endif %}
+				</span>
+				<span class="pitches_company_select_item_content_name">
+					{{ this_pitch.company.userprofile.business_name }}
+				</span>
+			</div>
 
-<div class="pitches_pitch_quotecontact col-md-3">
-	<div class="pitches_pitch_quotecontact_head">
-		<div class="pitches_pitch_quotecontact_price">
-			${{ pitch.price }} {{ pitch.rate }}
+			<a class="pitches_company_select_item_link" href="{% url 'pitches:show' this_pitch.id %}">View Proposal</a>
+			{% if this_pitch == pitch %}
+			<div class="pitches_company_select_item_selected">
+				<img src="/static/image/arrow-down.png">
+			</div>
+			{% endif %}
+
 		</div>
 	</div>
-	<div class="pitches_pitch_quotecontact_content">
-		{% if pitch.company.userprofile.logo %}
-			<img class="business_head_logo_img" src="{% static pitch.company.userprofile.logo %}" alt="{{ pitch.company.userprofile.business_name }}">
-		{% else %}
-			<div class="business_head_logo">?</div>
-		{% endif %}
-		<div class="clearfix"></div>
-		<span class="pitches_pitch_quotecontact_content_business_name">{{ pitch.company.userprofile.business_name}}</span>
-		
-		{% if pitch.company.userprofile.photo %}
-			<img class="ppl_photo_img" src="{% static pitch.company.userprofile.photo %}" alt="{{ pitch.company.full_name }}">
-		{% else %}
-			<div class="ppl_photo">?</div>
-		{% endif %}
-
-		<span class="pitches_pitch_quotecontact_content_contact_name">{{ pitch.company.full_name }}</span>
-		<span>T: {{ pitch.company.userprofile.mobile_number}}</span>
-		<span><a href="{{ pitch.company.userprofile.website }}" target="_blank">View website</a></span>
-		<span><a href="{% url 'users:pub_profile' pitch.company.id %}">View company profile</a></span>
-	</div>
+{% endfor %}
+	<div class="clearfix"></div>
 </div>
 
-<div class="pitches_pitch_right col-md-8">
+<h3 class="bottom-border">Proposal Details</h3>
+<div class="pitches_pitch_quotecontact col-md-3">
+	<div class="pitches_pitch_contact_item">
+		<span class="pitches_pitch_contact_item_icon">
+			<img src="/static/image/contact-name.png" alt="Contact Name">
+		</span>
+		<span class="pitches_pitch_contact_text">{{ pitch.company.full_name }}</span>
+	</div>
+
+	<div class="pitches_pitch_contact_item">
+		<span class="pitches_pitch_contact_item_icon">
+			<img src="/static/image/email.png" alt="Email">
+		</span>
+		<span class="pitches_pitch_contact_text">{{ pitch.company.email }}</span>
+	</div>
+
+	<div class="pitches_pitch_contact_item">
+		<span class="pitches_pitch_contact_item_icon">
+			<img src="/static/image/phone.png" alt="Phone">
+		</span>
+		<span class="pitches_pitch_contact_text">{{ pitch.company.userprofile.mobile_number }}</span>
+	</div>
+
+	<div class="pitches_pitch_contact_item">
+		<span class="pitches_pitch_contact_item_icon">
+			<img src="/static/image/website.png" alt="Website">
+		</span>
+		<span class="pitches_pitch_contact_text">{{ pitch.company.userprofile.website }}</span>
+	</div>
+
+	<div class="pitches_pitch_contact_item">
+		<a class="blue-link" href="{% url 'users:pub_profile' pitch.company.id %}">View Company Profile</a>
+	</div>
+
+</div>
+
+<div class="pitches_pitch_right col-md-9">
 	<div class="pitches_pitch_quotecontent_content">
 		<div class="pitches_pitch_quotecontent_content_head">
-			<span class="pitches_pitch_quotecontent_content_head_name">{{ pitch.company.full_name }}</span>
+			<span class="pitches_pitch_quotecontent_content_head_name">{{ pitch.company.userprofile.business_name }}</span>
 			<span class="pitches_pitch_quotecontent_content_head_time pull-right">{{ pitch.state_changed_at|timesince }}</span>
 		</div>
 
@@ -68,7 +104,8 @@
 		{% if not project.awarded %}
 		<form method="post" action="{% url 'pitches:hire' pitch.id %}" class="pitches_pitch_quotecontent_content_operations">
 			{% csrf_token %}
-			<input type="submit" value="Hire" class="btn btn-success btn-lg">
+			<input type="submit" value="Hire" class="btn btn-blue">
+			<input type="button" value="Decline" class="btn btn-grey">
 		</form>
 		{% endif %}
 	</div>
@@ -77,6 +114,27 @@
 		{% include 'pitches/message.html' with form=form messages=messages pitch=pitch  %}
 	</div>
 </div>
+
+
+<div class="modal fade" id="modal-cancel-project">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <h3 class="text-center">Cancel Project</h3>
+      <form method="post" action="{% url 'projects:cancel' pitch.project.id %}" class="form-v cancel-project" data-parsley-validate>
+      	  {% csrf_token %}
+	      <div class="modal-body">
+	      	
+	        	<div class="form-group">{{ cancel_form.cancelled_reason|addattrs:'required="required"' }}</div>
+	        	<div class="form-group">{{ cancel_form.cancelled_reason_other }}</div>
+	    	
+	      </div>
+	      <div class="modal-footer">
+	        <button type="submit" class="btn btn-blue">Save</button>
+	      </div>
+ 	 </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <script>
 	var toggleRequest = $('#pitch-original-request-btn')
@@ -92,6 +150,9 @@
 		}
 	})
 
+	$('#cancel-project').click(function(){
+		$('#modal-cancel-project').modal()
+	})
 </script>
 {% endblock %}
 

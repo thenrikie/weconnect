@@ -1,0 +1,13 @@
+{% extends "emails/base.html" %}
+{% block content %}
+	Hi {{ name }},
+	<br><br>
+	Great news, we have just received a request from {{ customer_name }} who is looking for someone with your expertise to help them with their {{ project_type }} project. 
+	<br><br>
+	{% url 'pitches:show' pitch.id as url %}
+	{% include 'emails/button.html' with btn_text='View Project Details' btn_url=url %}
+	<br><br>
+	Remember, the quicker you respond the customer the higher your chances of winning the project are.
+	<br><br>
+	The RatedFrog Team
+{% endblock %}

@@ -40,19 +40,27 @@ class ProjectQuestion(forms.Form):
 
 			self.fields['business_question_' + str(i)] = field(**kwargs)
 
+class Cancel(forms.ModelForm):
+	class Meta:
+		model = Project
+		fields = ['cancelled_reason', 'cancelled_reason_other']
+		widgets = {
+			'cancelled_reason' : forms.RadioSelect,
+			'cancelled_reason_other' : forms.Textarea
+		}
+
 
 class Project(forms.ModelForm):
-
 
 	def __init__(self, *args, **kwargs):
 		super(Project, self).__init__(*args, **kwargs)
 		self.fields['my_place'].empty_label = None
 
+ 
 	class Meta:
 		model = Project
-		fields = ['urgency', 'can_travel', 'travel_distance', 'company_travel', 'my_place', 'desc']
+		fields = ['budget_lower', 'budget_upper', 'urgency', 'can_travel', 'travel_distance', 'company_travel', 'my_place', 'desc']
 		widgets = {
 			'travel_distance': forms.CheckboxSelectMultiple,
 			'desc': forms.Textarea
 		}
-

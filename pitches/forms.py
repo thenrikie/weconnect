@@ -7,8 +7,11 @@ from django import forms
 
 class Accept(forms.ModelForm):
 
-	desc = forms.CharField(required=True, widget=forms.Textarea)
-	price = forms.DecimalField(required=True)
+
+	def __init__(self, *args, **kwargs):
+		super(Accept, self).__init__(*args, **kwargs)
+		self.fields['desc'].required = True
+		self.fields['price'].required = True
 
 	class Meta:
 		model = Pitch

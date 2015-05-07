@@ -1,108 +1,109 @@
 {% load staticfiles %}
 
-<div class="pitches_project_row">
-	{% if project.user.userprofile.photo %}
-		<img class="pitches_project_ppl_photo_img" src="{% static project.user.userprofile.photo %}" alt="{{ project.user.full_name }}">
-	{% else %}
-		<div class="pitches_project_head_ppl_photo">?</div>
-	{% endif %}
-
-	<div class="pitches_project_ppl_name">
-		{{ project.user.full_name}}
-	</div>
-</div>
-
-<p class="pitches_project_headerdesc">
-	{{ project.user.full_name }} is looking for someone with your expertise to help them with their project.
-</p>
-
-<p class="pitches_project_header"> 
-	{{ project.user.first_name }} is looking for 
-	<br>
-	<b>{{ project.business.all.first.name }}</b>
-	<br>
-	who does 
-	<br>
-	<b>{{ project.sub_business.first }}</b>
-</p>
-
-{% for question in project.sub_business.first.question_set.all %}
-<div class="pitches_project_row">
-	<div class="pitches_project_row_key">
-		{{ question }}
-	</div>
-	<div class="pitches_project_row_value">
-		{% for ans in project.question_option.all %}
-			{% if ans.question.id == question.id %}
-				{{ ans }}<br>
-			{% endif %}
-		{% endfor %}
-	</div>
-</div>
-{% endfor %}
-
-<div class="pitches_project_row">
-	<div class="pitches_project_row_key">
-		Customer location
-	</div>
-	<div class="pitches_project_row_value">
-		{{ project.my_place}}
-	</div>
-</div>
-
-<div class="pitches_project_row">
-	<div class="pitches_project_row_key">
-		Customer is willing to travel
-	</div>
-	<div class="pitches_project_row_value">
-		{{ project.can_travel|yesno }}
-		{% if project.can_travel %}
-			<br><br>
-			{{ project.travel_distance.all|join:'<br>' }}
-		{% endif %}
-	</div>
-</div>
-
-<div class="pitches_project_row">
-	<div class="pitches_project_row_key">
-		Customer wants you to travel
-	</div>
-	<div class="pitches_project_row_value">
-		{{ project.company_travel}}
-	</div>
-</div>
-
-
-<div class="pitches_project_row">
-	<div class="pitches_project_row_key">
-		Budget
-	</div>
-	<div class="pitches_project_row_value">
-		{% if project.budget_lower and project.budget_upper %}
-			{{ project.budget_lower }} - {{ project.budget_upper }}
+<div class="pitches_project">
+	<div class="pitches_project_row_header">
+		{% if project.user.userprofile.photo %}
+			<img class="pitches_project_ppl_photo_img" src="{% static project.user.userprofile.photo %}" alt="{{ project.user.full_name }}">
 		{% else %}
-			No information
+			<div class="pitches_project_head_ppl_photo">?</div>
 		{% endif %}
+
+		<div class="pitches_project_ppl_name">
+			{{ project.user.full_name}}
+		</div>
+		<div class="pitches_project_posted">Posted on {{ project.created_at|date:'d/m/Y'}} </div>
 	</div>
+
+
+	<p class="pitches_project_header"> 
+		{{ project.user.first_name }} is looking for 
+		<br>
+		<b>{{ project.business.all.first.name }}</b>
+		<br>
+		who does 
+		<br>
+		<b>{{ project.sub_business.first }}</b>
+	</p>
+
+	{% for question in project.sub_business.first.question_set.all %}
+	<div class="pitches_project_row">
+		<div class="pitches_project_row_key">
+			{{ question }}
+		</div>
+		<div class="pitches_project_row_value">
+			{% for ans in project.question_option.all %}
+				{% if ans.question.id == question.id %}
+					{{ ans }}<br>
+				{% endif %}
+			{% endfor %}
+		</div>
+	</div>
+	{% endfor %}
+
+	<div class="pitches_project_row">
+		<div class="pitches_project_row_key">
+			Customer location
+		</div>
+		<div class="pitches_project_row_value">
+			{{ project.my_place}}
+		</div>
+	</div>
+
+	<div class="pitches_project_row">
+		<div class="pitches_project_row_key">
+			Customer is willing to travel
+		</div>
+		<div class="pitches_project_row_value">
+			{{ project.can_travel|yesno }}
+			{% if project.can_travel %}
+				<br><br>
+				{{ project.travel_distance.all|join:'<br>' }}
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="pitches_project_row">
+		<div class="pitches_project_row_key">
+			Customer wants you to travel
+		</div>
+		<div class="pitches_project_row_value">
+			{{ project.company_travel}}
+		</div>
+	</div>
+
+
+	<div class="pitches_project_row">
+		<div class="pitches_project_row_key">
+			Budget
+		</div>
+		<div class="pitches_project_row_value">
+			{% if project.budget_lower and project.budget_upper %}
+				{{ project.budget_lower }} - {{ project.budget_upper }}
+			{% else %}
+				No information
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="pitches_project_row">
+		<div class="pitches_project_row_key">
+			Prefered start date
+		</div>
+		<div class="pitches_project_row_value">
+			{{ project.urgency_text }}
+		</div>
+	</div>
+
+	<div class="pitches_project_row">
+		<div class="pitches_project_row_key">
+			Job description
+		</div>
+		<div class="pitches_project_row_value">
+			{{ project.desc|linebreaksbr }}
+		</div>
+	</div>
+
+
+
+
 </div>
-
-<div class="pitches_project_row">
-	<div class="pitches_project_row_key">
-		Prefered start date
-	</div>
-	<div class="pitches_project_row_value">
-		{{ project.urgency_text }}
-	</div>
-</div>
-
-<div class="pitches_project_row">
-	<div class="pitches_project_row_key">
-		Job description
-	</div>
-	<div class="pitches_project_row_value">
-		{{ project.desc|linebreaksbr }}
-	</div>
-</div>
-
-
-

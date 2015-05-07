@@ -64,7 +64,7 @@ class Project(models.Model):
 	can_travel = models.BooleanField(default=False, verbose_name='I can travel to them')
 	company_travel = models.BooleanField(default=False, verbose_name='They travel to me')
 
-	travel_distance = models.ManyToManyField(District, related_name='project_travel_distance_set')
+	travel_distance = models.ManyToManyField(District, related_name='project_travel_distance_set', blank=True)
 	my_place = models.ForeignKey(District, related_name='my_place')
 
 	desc = models.CharField(max_length=1024, blank=True, verbose_name='Anything else they should know')
@@ -73,14 +73,17 @@ class Project(models.Model):
 	updated_at = models.DateTimeField(auto_now=True)
 
 	cancelled = models.BooleanField(default=False)
-	cancelled_reason = models.CharField(max_length=25, choices=CANCEL_REASON, null=True)
-	cancelled_reason_other = models.CharField(max_length=1024, null=True)
+	cancelled_reason = models.CharField(max_length=25, choices=CANCEL_REASON, null=True, default=None)
+	cancelled_reason_other = models.CharField(max_length=1024, null=True, blank=True)
+
+	def __str__(self):
+		return 'id: ' + str(self.id) + '; creator: ' + self.user.email + '; type: ' + self.sub_business.first().name
 
 	def pitch_count(self):
-		return self.pitch_set.exclude(state__in=['waiting', 'rejected', 'company_rejected']).count()
+		return self.pitch_set.exclude(state__in=['waiting', 'company_rejected']).count()
 
 	def ready_pitch(self):
-		return self.pitch_set.exclude(state__in=['waiting', 'rejected', 'company_rejected'])
+		return self.pitch_set.exclude(state__in=['waiting', 'company_rejected'])
 
 	def awarded(self):
 		if self.pitch_set.filter(state='hired').count() > 0:

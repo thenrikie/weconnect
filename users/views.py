@@ -38,6 +38,7 @@ def profile_business(r):
 	form_business_preference = forms.BusinessPreference(r.POST or None, instance=r.user.userprofile)
 	form_business_company_detail = forms.BusinessCompanyDetail(r.POST or None, instance=r.user.userprofile)
 	form_business_company_social = forms.BusinessCompanySocial(r.POST or None, instance=r.user.userprofile)
+	form_business_work = forms.BusinessWorkImage(r.POST or None, r.FILES or None, instance=r.user.userprofile)
 
 	view_values = {
 	#	'form' : form, 
@@ -47,7 +48,8 @@ def profile_business(r):
 		'form_business_service_desc' : form_business_service_desc,
 		'form_business_preference' : form_business_preference,
 		'form_business_company_detail' : form_business_company_detail,
-		'form_business_company_social' : form_business_company_social
+		'form_business_company_social' : form_business_company_social,
+		'form_business_work' : form_business_work
 	}
 
 	part = {
@@ -56,7 +58,8 @@ def profile_business(r):
 		'service_desc': {'form' : form_business_service_desc, 'error' : 'form_business_service_desc_error'},
 		'preference' : {'form' : form_business_preference, 'error' : 'form_business_preference_error'},
 		'company_detail' : {'form' : form_business_company_detail, 'error' : 'form_business_company_detail_error'},
-		'company_social' : {'form' : form_business_company_social, 'error' : 'form_business_company_social_error'}
+		'company_social' : {'form' : form_business_company_social, 'error' : 'form_business_company_social_error'},
+		'work' : {'form' : form_business_work, 'error': 'form_business_work_error'}
 	}
 
 	if r.method == 'POST':

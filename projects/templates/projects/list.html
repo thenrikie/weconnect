@@ -1,34 +1,44 @@
 {% extends "weconnect/base.html" %}
 {% block content %}
 
-<h1>Your Projects</h1>
+<h2>Your Projects</h2>
 
-<ul class="projects_project_item col-md-12">
+<ul class="projects_project_ul col-md-12">
  {% for project in projects %}
- 	<li class="col-md-3">
- 		<span class="projects_project_item_count">{{ project.pitch_count }}</span> 
- 		<span class="projects_project_item_sp">Service Providers</span>
- 		<p> {{ project.business.all.first.name }}</p>
- 		<p> 
- 			{% for sub in project.sub_business.all %}
- 				{{ sub.name}}
- 				{% if not forloop.last %}
- 				,
- 				{% endif %}
- 			{% endfor %}
- 		</p>
- 		{% if project.pitch_count > 0 %}
- 		<a href="{% url 'pitches:show' project.ready_pitch.first.id %}" class="projects_project_item_view btn btn-primary">
- 			View Project
-	        {% if project.unread_message_count > 0 %}
-	        <span class="unread_message_pop">{{project.unread_message_count}}<span>
-	        {% endif %}
- 		</a>
- 		{% endif %}
- 		{% if project.awarded %}
-			<br>
-			<span class="hired">Hired!</span>
-		{% endif %}
+ 	<li class="col-md-4">
+ 		<div class="projects_project_item">
+	 		<span class="projects_project_item_count">
+	 			{% if project.cancelled %}
+	 				-
+	 			{% else %}
+	 				{{ project.pitch_count }}
+	 			{% endif %}
+	 		</span> 
+	 		<span class="projects_project_item_sp">Service Providers</span>
+	 		<p> {{ project.business.all.first.name }}</p>
+	 		<p> 
+	 			{% for sub in project.sub_business.all %}
+	 				{{ sub.name}}
+	 				{% if not forloop.last %}
+	 				,
+	 				{% endif %}
+	 			{% endfor %}
+	 		</p>
+	 		{% if project.pitch_count > 0 and not project.cancelled %}
+	 		<a href="{% url 'pitches:show' project.ready_pitch.first.id %}" class="projects_project_item_view btn btn-blue">
+	 			View Project
+		        {% if project.unread_message_count > 0 %}
+		        <span class="unread_message_pop">{{project.unread_message_count}}<span>
+		        {% endif %}
+	 		</a>
+	 		{% endif %}
+	 		{% if project.awarded %}
+				<span class="hired">Hired!</span>
+			{% endif %}
+	 		{% if project.cancelled %}
+				<span class="hired">Cancelled</span>
+			{% endif %}
+ 		</div>
  	</li>
  {% endfor %}
 </ul>

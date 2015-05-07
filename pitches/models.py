@@ -2,6 +2,8 @@ from django.db import models
 from authentication.models import User
 from projects.models import Project
 from datetime import datetime
+from django.db.models import signals
+from emails import sender as emailSender
 
 # Create your models here.
 class Pitch(models.Model):
@@ -26,7 +28,13 @@ class Pitch(models.Model):
 	archived = models.BooleanField(default=False)
 
 	price = models.FloatField(blank=True, null=True)
-	desc = models.CharField(max_length=1024, blank=True, verbose_name='description', null=True)
+	desc = models.CharField(
+		verbose_name='Tell us why you would be the best person for this project', 
+		max_length=1024,
+		blank=True, 
+		null=True,
+		
+	)
 
 	rate = models.CharField(max_length=25,
 			choices=RATE,
@@ -40,6 +48,9 @@ class Pitch(models.Model):
 	hired_at = models.DateTimeField(null=True)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
+
+	def __str__(self):
+		return 'id: ' + str(self.id) + '; company: ' + self.company.email + ' for project: ' + str(self.project.id)
 
 	def waiting(self):
 		return self.state == 'waiting'
@@ -72,6 +83,19 @@ class Pitch(models.Model):
 		print('cmessage')
 		print(self.project.user);
 		return self.message_set.filter(read=False, recipient=self.project.user, pitch=self).count()
+
+def create_pitch(sender, instance, created, **kwargs):
+	if created:
+		#send email
+		pitch = instance;
+		emailSender.request_for_service(pitch.company.email,{
+			'name': pitch.company.first_name,
+			'customer_name': pitch.project.user.first_name,
+			'project_type':  pitch.project.sub_business.first(),
+			'pitch' : pitch
+		})
+
+signals.post_save.connect(create_pitch, sender=Pitch, dispatch_uid="create_new_pitch")
 
 class Message(models.Model):
 	pitch = models.ForeignKey(Pitch)

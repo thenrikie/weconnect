@@ -1,19 +1,26 @@
 {% extends "weconnect/base.html" %}
 {% block content %}
 
-	<div class="auth_register_mode col-md-6">
-		<p>
-			I want to find professionals to help me with my projects
-		</p>
-		<a href="{% url 'auth:register_customer' %}" class="btn btn-success btn-lg">Sign up</a>
+	<div class="col-md-6">
+		<div class="auth_register_mode ">
+			<h3>
+				I want to find professionals to help me with my projects
+			</h3>
+			<a href="{% url 'auth:register_customer' %}" class="sign-up-btn btn btn-blue">Sign up</a>
+		</div>
 	</div>
-	<div class="auth_register_mode col-md-6">
-		<p>
-			I want to provide my businesses services to new clients
-		</p>
-		<a href="{% url 'auth:register_business' %}" class="btn btn-success btn-lg">Sign up</a>
+	<div class="col-md-6">
+		<div class="auth_register_mode ">
+			<h3>
+				I want to provide my businesses services to new clients
+			</h3>
+			<a href="{% url 'auth:register_business' %}" class="sign-up-btn btn btn-blue">Sign up</a>
+		</div>
 	</div>
 
-
+	<div class="clearfix"></div>
+	<div class="auth_register_reminder_text">
+		Already signed up? <a href="{% url 'auth:login' %}">Login</a>
+	</div>
 
 {% endblock %}

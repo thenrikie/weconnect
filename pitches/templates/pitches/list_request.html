@@ -2,23 +2,12 @@
 {% block content %}
 
 {% include 'pitches/select.html' with page='request' only %}
-<h1>Request</h1>
+<h2>Requests</h2>
 
 <ul class="pitches_pitch_item col-md-10">
 	{% for pitch in pitches %}
 	<li>
-		<div>
-			<h1>
-				{{ pitch.project.user.full_name }} is looking for {{ pitch.project.business.first.name|lower }}
-			</h1>
-
-			<p>
-				{{ pitch.project.user.first_name }} is looking for someone with your skills to help them with their project
-			</p>
-		</div>
-		<div>
-			<a href="{% url 'pitches:show' pitch.id %}" class="btn btn-primary">View details</a>
-		</div>
+		{% include 'pitches/list_request_item.html' with pitch=pitch %}
 	</li>
 	{% endfor %}
 </ul>

@@ -1,0 +1,26 @@
+{% load staticfiles %}
+
+		<img class="pitches_pitch_item_image col-md-2" src="{% static pitch.project.user.userprofile.photo %}" alt="{{ pitch.project.user.full_name }}">
+		<div class="pitches_pitch_item_text col-md-8">
+			<div class="col-md-7">
+				<h3>
+					You sent a quote to {{  pitch.project.user.first_name }}
+
+					{% if pitch.company_unread_message_count > 0 %}
+					<img src="/static/image/email.png" alt="message">
+					<span class="unread_message_pop">{{pitch.company_unread_message_count}}<span>
+					{% endif %}
+
+				</h3>
+				<a href="{% url 'pitches:show' pitch.id %}" class="blue-link">View request and quote</a>
+			</div>
+			<div class="col-md-5 pitches_pitch_item_quoted_time">
+				{{ pitch.state_changed_at|date:'f'}}{{ pitch.state_changed_at|date:'A, '|lower }}{{ pitch.state_changed_at|date:'j F, Y'}}
+			</div>
+		</div>
+
+		<div class="pitches_pitch_item_button col-md-2">
+			<a href="{% url 'pitches:show' pitch.id %}#message" class="btn btn-blue">	Message             
+        	</a>
+		</div>
+		<div class="clearfix"></div>

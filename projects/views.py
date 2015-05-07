@@ -5,6 +5,7 @@ from projects.models import Project, Question, QuestionOption
 from users.models import Business, SubBusiness
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
+from emails import sender
 import json
 
 # Create your views here.
@@ -61,7 +62,10 @@ def create_project_select_details(r):
 			whiteListProject = {k: r.POST.get(k, False) for k in (
 				'urgency', 
 				'can_travel', 
-				'company_travel', 
+				'company_travel',
+				'budget_lower',
+				'budget_upper',
+				'desc'
 				)
 			}
 
@@ -86,6 +90,7 @@ def create_project_select_details(r):
 					project.question_option.add(question_set)
 
 			del r.session['create_project_business']
+			
 			return redirect('projects:list')
 
 		#print("post not passed")
@@ -99,3 +104,35 @@ def list_project(r):
 
 	projects = Project.objects.all().filter(user=r.user)
 	return render(r, 'projects/list.html', {'projects' : projects})
+
+def cancel(r, project_id):
+
+	if r.method != 'POST':
+		return redirect('/')
+
+	if not r.user.is_authenticated():
+		return redirect('/')
+
+	project = get_object_or_404(Project, pk=project_id)
+	project.cancelled = True
+	form = forms.Cancel(r.POST, instance=project)
+
+	if form.is_valid():
+		print('passed')
+		form.save()
+		#update all pitches status
+		pitches = project.ready_pitch()
+
+		for pitch in pitches:
+			pitch.change_state('rejected')
+			pitch.archived = True
+			pitch.save()
+			sender.project_cancel(pitch.company.email, {
+				'name' : pitch.company.first_name,
+				'customer_name': project.user.first_name,
+				'project_type': project.sub_business.first()
+			})
+		
+		return redirect('projects:list')
+	else:
+		return redirect('/')

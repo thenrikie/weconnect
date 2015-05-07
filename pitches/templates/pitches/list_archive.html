@@ -2,60 +2,19 @@
 {% block content %}
 
 {% include 'pitches/select.html' with page='archive' only %}
-<h1>Archive</h1>
+<h2>Archive</h2>
 
 <ul class="pitches_pitch_item col-md-10">
 	{% for pitch in pitches %}
 	<li>
 		{% if pitch.state == 'accepted' %}
-
-		<div>
-			<h1>
-				You sent a quote to {{  pitch.project.user.first_name }}
-			</h1>
-			<div>
-				Quoted on {{ pitch.state_changed_at|date:'j F, Y'}}
-			</div>
-			<a href="{% url 'pitches:show' pitch.id %}">View request and quote</a> 
-		</div>
-
+			{% include 'pitches/list_quote_item.html' with pitch=pitch %}
 		{% elif pitch.state == 'waiting' or pitch.state == 'company_rejected' %}
-
-		<div>
-			<h1>
-				{{ pitch.project.user.full_name }} is looking for {{ pitch.project.business.first.name|lower }}
-			</h1>
-
-			<p>
-				{{ pitch.project.user.first_name }} is looking for someone with your skills to help them with their project
-			</p>
-		</div>
-
+			{% include 'pitches/list_request_item.html' with pitch=pitch %}
 		{% elif pitch.state == 'hired' %}
-
-		<li>
-			<div>
-				<h1>
-					Hired to help  {{  pitch.project.user.first_name }}
-				</h1>
-				<div>
-					Hired on {{ pitch.hired_at|date:'j F, Y'}}
-				</div>
-				<a href="{% url 'pitches:show' pitch.id %}">View request and quote</a> 
-			</div>
-
-
-		</li>
-
+			{% include 'pitches/list_hired_item.html' with pitch=pitch %}
 		{% elif pitch.state == 'rejected' %}
-
-		<div>
-			<h1>
-				You did not win the job for {{  pitch.project.user.first_name }}
-			</h1>
-			<a href="{% url 'pitches:show' pitch.id %}">View request and quote</a> 
-		</div>
-
+			{% include 'pitches/list_rejected_item.html' with pitch=pitch %}
 		{% endif %}
 	</li>
 	{% endfor %}

@@ -5,41 +5,68 @@
 {% block content %}
 {% with "users_profile_business" as css_prefix %}
 
-<p class="{{ css_prefix }}_head_text page_header">Complete your portfolio to increase your chance of attracting new customers</p>
+<h3 class="profile_header">Complete your portfolio to increase your chance of attracting new customers</h3>
 
 <div class="{{ css_prefix }}_left col-md-8">
 	<div class="{{ css_prefix }}_head">
 		<div id="head-display">
-			<a href="javascript:void(0)" class="pull-right {{ css_prefix }}_edit_btn" id="head" >Click here to edit</a>
-			{% if userprofile.logo %}
-				<img class="{{ css_prefix }}s_head_logo_img" src="{% static userprofile.logo %}" alt="{{ userprofile.business_name }}">
-			{% else %}
-				<div class="{{ css_prefix }}s_head_logo">?</div>
-			{% endif %}
-			
-			<div class="{{ css_prefix }}_head_company">
-				{{ userprofile.business_name }}
-			</div>
-			<div class="{{ css_prefix }}_head_ppl">
-				
-				{% if userprofile.photo %}
-					<img class="{{ css_prefix }}_head_ppl_photo_img" src="{% static userprofile.photo %}" alt="{{ userprofile.business_name }}">
+
+			<a href="javascript:void(0)" class="{{ css_prefix }}_edit_btn blue-link" id="head" ><img alt="Edit" src="/static/image/edit.png"> Edit</a>
+
+			<div class="{{ css_prefix }}_head_logo  col-md-3">
+				{% if userprofile.logo %}
+					<img class="{{ css_prefix }}s_head_logo_img" src="{% static userprofile.logo %}" alt="{{ userprofile.business_name }}">
 				{% else %}
-					<div class="{{ css_prefix }}_head_ppl_photo">?</div>
+					<div class="{{ css_prefix }}s_head_logo">?</div>
 				{% endif %}
-				
-				<div class="{{ css_prefix }}_head_ppl_email">
-					{{ user.email }}
-				</div>
 			</div>
-			<div class="{{ css_prefix }}_head_contact">
-				<div class="{{ css_prefix }}_head_contact_row">
-					<span class="{{ css_prefix }}_head_contact_row_desc">T:</span>
-					<span class="{{ css_prefix }}_head_contact_row_content">{{ userprofile.mobile_number }}</span>
+
+			<div class="{{ css_prefix }}_head_detail  col-md-9">
+				<h3 class="profile_head_company_name">
+					{{ userprofile.business_name }}
+				</h3>			
+				<div class="{{ css_prefix }}_head_company_contact">
+					<div class="{{ css_prefix }}_head_contact_item col-md-6">
+						<div class="{{ css_prefix }}_head_contact_key"><img src="/static/image/phone.png" alt="phone"></div>
+						<div class="{{ css_prefix }}_head_contact_value">{{ userprofile.mobile_number }}</div>
+					</div>
+					<div class="{{ css_prefix }}_head_contact_item col-md-6">
+						<div class="{{ css_prefix }}_head_contact_key"><img src="/static/image/employees.png" alt="employees"></div>
+						<div class="{{ css_prefix }}_head_contact_value">{{ userprofile.employees }} Employee{{ userprofile.employees|pluralize }}</div>
+					</div>
+					<div class="{{ css_prefix }}_head_contact_item col-md-6">
+						<div class="{{ css_prefix }}_head_contact_key"><img src="/static/image/website.png" alt="website"></div>
+						<div class="{{ css_prefix }}_head_contact_value">{{ userprofile.website }}</div>
+					</div>
+					<div class="{{ css_prefix }}_head_contact_item col-md-6">
+						<div class="{{ css_prefix }}_head_contact_key"><img src="/static/image/since.png" alt="since"></div>
+						<div class="{{ css_prefix }}_head_contact_value">Since {{ userprofile.business_since|date:'Y' }}</div>
+					</div>
+					<div class="{{ css_prefix }}_head_contact_item col-md-6">
+						<div class="{{ css_prefix }}_head_contact_key"><img src="/static/image/location.png" alt="location"></div>
+						<div class="{{ css_prefix }}_head_contact_value">{{ userprofile.address_4|default:'N/A' }}</div>
+					</div>
+					<div class="clearfix"></div>
 				</div>
-				<div class="{{ css_prefix }}_head_contact_row">
-					<span class="{{ css_prefix }}_head_contact_row_desc">W:</span>
-					<span class="{{ css_prefix }}_head_contact_row_content">{{ userprofile.website }}</span>
+				<div class="{{ css_prefix }}_head_person_contact">
+					{% if userprofile.photo %}
+						<img class="{{ css_prefix }}_head_ppl_photo_img col-md-4" src="{% static userprofile.photo %}" alt="{{ userprofile.business_name }}">
+					{% else %}
+						<div class="{{ css_prefix }}_head_ppl_photo col-md-4">?</div>
+					{% endif %}
+
+					<div class="col-md-8">
+						<div class="{{ css_prefix }}_head_contact_item">
+							<div class="{{ css_prefix }}_head_contact_key"><img src="/static/image/contact-name.png" alt="contact"></div>
+							<div class="{{ css_prefix }}_head_contact_value">{{ user.full_name }}</div>
+						</div>
+
+						<div class="{{ css_prefix }}_head_contact_item">
+							<div class="{{ css_prefix }}_head_contact_key"><img src="/static/image/email.png" alt="email"></div>
+							<div class="{{ css_prefix }}_head_contact_value">{{ user.email }}</div>
+						</div>
+					</div>
+
 				</div>
 			</div>
 		</div>
@@ -52,7 +79,12 @@
 				{{ form_business_head.website|hformrow:'Website'}}
 				{{ form_business_head.mobile_number|hformrow:'Mobile number'}}
 				{{ form_business_head.photo|hformrow:'Your photo'}}
-
+				{{ form_business_head.address_1|hformrow:'Address' }}
+				{{ form_business_head.address_2|hformrow:'' }}
+				{{ form_business_head.address_3|hformrow:'' }}
+				{{ form_business_head.address_4|hformrow:'Area' }}
+				{{ form_business_head.employees|hformrow:'No. of employees' }}
+				{{ form_business_head.business_since|hformrow:'Business started since' }}
 				<input type="hidden" value="head" name="part">
 				<input type="submit" value="Save" class="btn btn-primary pull-right">
 			</form>
@@ -63,8 +95,8 @@
 
 	<div class="{{ css_prefix }}_desc">
 		<div id="company-desc-display">
-			<a href="javascript:void(0)" class="pull-right {{ css_prefix }}_edit_btn" id="company-desc" >Click here to edit</a>
-			<span class="{{ css_prefix }}_desc_head">About the company</span>
+			<a href="javascript:void(0)" class="{{ css_prefix }}_edit_btn blue-link" id="company-desc"><img alt="Edit" src="/static/image/edit.png"> Edit</a>
+			<h3 class="company-profile-head">About the company</h3>
 			<p>{{ userprofile.desc|linebreaksbr }}</p>
 		</div>
 		<div id="company-desc-form" class="hide">
@@ -82,8 +114,8 @@
 
 	<div class="{{ css_prefix }}_desc">
 		<div id="service-desc-display">
-			<a href="javascript:void(0)" class="pull-right {{ css_prefix }}_edit_btn" id="service-desc" >Click here to edit</a>
-			<span class="{{ css_prefix }}_desc_head">Services</span>
+			<a href="javascript:void(0)" class="{{ css_prefix }}_edit_btn blue-link" id="service-desc"><img alt="Edit" src="/static/image/edit.png"> Edit</a>
+			<h3 class="company-profile-head">Services</h3>
 			<div class="{{ css_prefix }}_service_item">
 				<span class="{{ css_prefix }}_service_item_key">Business Nature</span>
 				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.business.first }}</span>
@@ -92,7 +124,10 @@
 				<span class="{{ css_prefix }}_service_item_key">Categories</span>
 				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.sub_business.all|join:"<br>" }}</span>
 			</div>
-			<p>{{ userprofile.service_desc|linebreaksbr }}</p>
+			<div class="{{ css_prefix }}_service_item">
+				<span class="{{ css_prefix }}_service_item_key">More about your service</span>
+				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.service_desc|linebreaksbr }}</span>
+			</div>
 		</div>
 		<div id="service-desc-form" class="hide">
 			<form action="{% url 'users:profile' %}" method="post" class="form-horizontal">
@@ -115,8 +150,8 @@
 
 	<div class="{{ css_prefix }}_desc">
 		<div id="preference-display">
-			<a href="javascript:void(0)" class="pull-right {{ css_prefix }}_edit_btn" id="preference" >Click here to edit</a>
-			<span class="{{ css_prefix }}_desc_head">Preferences</span>
+			<a href="javascript:void(0)" class="{{ css_prefix }}_edit_btn blue-link" id="preference" ><img alt="Edit" src="/static/image/edit.png"> Edit</a>
+			<h3 class="company-profile-head">Preferences</h3>
 			<div class="{{ css_prefix }}_service_item">
 				<span class="{{ css_prefix }}_service_item_key">Willing to travel to customer</span>
 				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.can_travel|yesno }}</span>
@@ -149,64 +184,82 @@
 	</div>
 </div>
 <div class="{{ css_prefix }}_right col-md-4">
-	<div class="{{ css_prefix }}_companydetail">
-		<div id="company-detail-display">
-			<a href="javascript:void(0)" class="pull-right {{ css_prefix }}_edit_btn" id="company-detail" >Click here to edit</a>
-			<div class="{{ css_prefix }}_companydetail_row">
-				<span class="{{ css_prefix }}_companydetail_row_icon"></span>
-				<span class="{{ css_prefix }}_companydetail_row_content">Located in {{ userprofile.address_4|default:'?' }}</span>
-			</div>
-			<div class="{{ css_prefix }}_companydetail_row">
-				<span class="{{ css_prefix }}_companydetail_row_icon"></span>
-				<span class="{{ css_prefix }}_companydetail_row_content">{{ userprofile.employees }} employee{{ userprofile.employees|pluralize }}</span>
-			</div>
-			<div class="{{ css_prefix }}_companydetail_row">
-				<span class="{{ css_prefix }}_companydetail_row_icon"></span>
-				<span class="{{ css_prefix }}_companydetail_row_content">In business for {{ userprofile.business_since|sinceyear }}</span>
-			</div>
-		</div>
-		<div id="company-detail-form" class="hide">
-			<form action="{% url 'users:profile' %}" method="post" class="form-horizontal">
-				{% csrf_token %}
-				{{ form_business_company_detail.address_1|hformrow:'Address' }}
-				{{ form_business_company_detail.address_2|hformrow:'' }}
-				{{ form_business_company_detail.address_3|hformrow:'' }}
-				{{ form_business_company_detail.address_4|hformrow:'Area' }}
-				{{ form_business_company_detail.employees|hformrow:'No. of employees' }}
-				{{ form_business_company_detail.business_since|hformrow:'Business started since' }}
-				<input type="hidden" value="company_detail" name="part">
-				<input type="submit" value="Save" class="btn btn-primary">
-			</form>
-		</div>
-		<div style="clear:both"></div>
-	</div>
-
 	<div class="{{ css_prefix }}_companysocial">
-
 		<div id="company-social-display">
-			<a href="javascript:void(0)" class="pull-right {{ css_prefix }}_edit_btn" id="company-social" >Click here to edit</a>
-			<span>Facebook: {{ userprofile.facebook|default:'None'}}</span>
-			<span>LinkedIn: {{ userprofile.linkedin|default:'None'}}</span>
-			<span>Twitter: {{ userprofile.twitter|default:'None'}}</span>
-			<span>Printerest: {{ userprofile.pinterest|default:'None'}}</span>
-			<span>Instagram: {{ userprofile.instagram|default:'None'}}</span>
+			<a href="javascript:void(0)" class="pull-right {{ css_prefix }}_edit_btn blue-link" id="company-social" ><img alt="Edit" src="/static/image/edit.png"> Edit</a>
+			<h3  class="company-profile-right-head">Social Media</h3>
+			
+			{% if userprofile.facebook %}
+			<a class="sm sm_facebook" href="{{ userprofile.facebook }}" target="_blank"></a>
+			{% endif %}
+
+			{% if userprofile.linkedin %}
+			<a class="sm sm_linkedin" href="{{ userprofile.linkedin }}" target="_blank"></a>
+			{% endif %}
+			
+			{% if userprofile.twitter %}
+			<a class="sm sm_twitter" href="{{ userprofile.twitter }}" target="_blank"></a>
+			{% endif %}
+
+			{% if userprofile.google %}
+			<a class="sm sm_google" href="{{ userprofile.google }}" target="_blank"></a>
+			{% endif %}
+
+			{% if userprofile.pinterest %}
+			<a class="sm sm_pinterest" href="{{ userprofile.pinterest }}" target="_blank"></a>
+			{% endif %}
+
+			{% if userprofile.instagram %}
+			<a class="sm sm_instagram" href="{{ userprofile.instagram }}" target="_blank"></a>
+			{% endif %}
 		</div>
 		<div id="company-social-form" class="hide">
 			<form action="{% url 'users:profile' %}" method="post" class="form-horizontal">
 				{% csrf_token %}
-				{{ form_business_company_social.facebook|hformrow:'Facebook' }}
-				{{ form_business_company_social.linkedin|hformrow:'LinkedIn' }}
-				{{ form_business_company_social.twitter|hformrow:'Twitter' }}
-				{{ form_business_company_social.pinterest|hformrow:'Printerest' }}
-				{{ form_business_company_social.instagram|hformrow:'Instagram' }}
+				{{ form_business_company_social.facebook|hformrow:'<div class="sm sm_facebook"></div>' }}
+				{{ form_business_company_social.linkedin|hformrow:'<div class="sm sm_linkedin"></div>' }}
+				{{ form_business_company_social.twitter|hformrow:'<div class="sm sm_twitter"></div>' }}
+				{{ form_business_company_social.google|hformrow:'<div class="sm sm_google"></div>' }}
+				{{ form_business_company_social.pinterest|hformrow:'<div class="sm sm_pinterest"></div>' }}
+				{{ form_business_company_social.instagram|hformrow:'<div class="sm sm_instagram"></div>' }}
 
 				<input type="hidden" value="company_social" name="part">
-				<input type="submit" value="Save" class="btn btn-primary">
+				<input type="submit" value="Save" class="btn btn-blue pull-right">
 			</form>
 		</div>
-		<div style="clear:both"></div>
+
+
+		<div class="clearfix"></div>
 	</div>
 
+	<div class="{{ css_prefix }}_work">
+		<div id="work-display">
+			<a href="javascript:void(0)" class="pull-right {{ css_prefix }}_edit_btn blue-link" id="work" ><img alt="Edit" src="/static/image/edit.png"> Edit</a>
+			<h3 class="company-profile-right-head">Work</h3>
+
+			{% if userprofile.work_image_1 %}
+			<img class="{{ css_prefix }}_work_image" src="{% static userprofile.work_image_1 %}">
+			{% endif %}
+			
+			{% if userprofile.work_image_2 %}
+			<img  class="{{ css_prefix }}_work_image" src="{% static userprofile.work_image_2 %}">
+			{% endif %}
+
+			{% if userprofile.work_image_3 %}
+			<img class="{{ css_prefix }}_work_image" src="{% static userprofile.work_image_3 %}">
+			{% endif %}
+		</div>
+		<div id="work-form" class="hide">
+			<form action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data" class="form-horizontal">
+				{% csrf_token %}
+				{{ form_business_work.work_image_1|hformrow:'Image'}}
+				{{ form_business_work.work_image_2|hformrow:'Image'}}
+				{{ form_business_work.work_image_3|hformrow:'Image'}}
+				<input type="hidden" value="work" name="part">
+				<input type="submit" value="Save" class="btn btn-blue pull-right">
+			</form>
+		</div>
+	</div>
 </div>
 
 <!--
@@ -252,6 +305,11 @@
 			btn: $('#company-social'),
 			display: $('#company-social-display'),
 			form: $('#company-social-form')
+		},
+		'work' :{
+			btn: $('#work'),
+			display: $('#work-display'),
+			form: $('#work-form')
 		}
 	}
 
@@ -284,6 +342,10 @@
 
 	{% if form_business_company_social_error %}
 		edit['company-social'].btn.trigger('click')
+	{% endif %}
+
+	{% if form_business_work_error %}
+		edit['work'].btn.trigger('click')
 	{% endif %}
 
 </script>

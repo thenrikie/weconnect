@@ -53,7 +53,11 @@ class User(AbstractBaseUser):
 	    return self.email
 
 	def __str__(self):              # __unicode__ on Python 2
-	    return self.email
+		if hasattr(self,'userprofile') and self.userprofile.is_company():
+			return self.userprofile.business_name + " <" + self.email + ">"
+		else: 
+			return self.email
+
 
 	def has_perm(self, perm, obj=None):
 	    "Does the user have a specific permission?"

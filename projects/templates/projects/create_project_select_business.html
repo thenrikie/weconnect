@@ -1,8 +1,8 @@
 {% extends "weconnect/base.html" %}
 {% block content %}
 {% load hformrow %}
-
-<div class="col-md-10 top_space">
+<h2>Let us know more about what you need and we will introduce you to people ready to help</h2>
+<div class="col-md-10">
 	<form action="{% url 'projects:create' %}" method="post" class="form-horizontal">
 		{% csrf_token %}
 		{{ form.non_field_errors }}
@@ -16,7 +16,7 @@
 		</div>
 		<div class="form-group">
 			<div class="col-sm-offset-3 col-sm-9">
-				<input type="submit" value="Continue" class="btn btn-primary btn-lg">
+				<input type="submit" value="Continue" class="btn btn-blue">
 			</div>
 		</div>
 
