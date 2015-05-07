@@ -39,6 +39,23 @@ def register(r):
 		return redirect('/')
 	return render(r, 'auth/register.html')
 
+def create_customer(user_detail):
+	# Create user object
+	user = User.objects.create_user(
+		email=user_detail['email'], 
+		first_name=user_detail['first_name'], 
+		last_name=user_detail['last_name'], 
+		password=user_detail['password']
+	);
+	
+	#Create user profile
+	userProfile = UserProfile(role='CUSTOMER', user=user);
+	userProfile.save()
+
+	user = auth.authenticate(username=user_detail['email'], password=user_detail['password'])
+
+	return user
+
 def register_customer(r):
 	#redirect if logged in
 	if r.user.is_authenticated():
@@ -48,14 +65,7 @@ def register_customer(r):
 	if r.method == 'POST':
 		form = forms.Register(r.POST, label_suffix='');
 		if form.is_valid():
-			# Create user object
-			user = User.objects.create_user(email=r.POST['email'], first_name=r.POST['first_name'], last_name=r.POST['last_name'], password=r.POST['password']);
-			
-			#Create user profile
-			userProfile = UserProfile(role='CUSTOMER', user=user);
-			userProfile.save()
-
-			user = auth.authenticate(username=r.POST['email'], password=r.POST['password'])
+			user = create_customer(r.POST)
 			if user is not None and user.is_active:
 				auth.login(r, user)
 				sender.signup_customer(user.email, {'name': user.full_name()})

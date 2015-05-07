@@ -17,7 +17,7 @@ class Question(models.Model):
 	text = models.CharField(max_length=512)
 
 	def __str__(self):
-		return self.text
+		return self.text + " <" + self.sub_business.business_set.first().name + ": " + self.sub_business.name + ">"
 
 
 class QuestionOption(models.Model):

@@ -47,11 +47,24 @@
 	}
 
 	//init
-	renderSubBusiness();
+	renderSubBusiness()
 
 	//on select change
-	businessSelect.change(renderSubBusiness);
+	businessSelect.change(renderSubBusiness)
 
+	// preselect business if business in querystring
+	$(function(){
+		var business
+		_.each(window.location.search.substr(1).split('&'), function(item){
+			var kv = item.split("=")
+			if(kv[0] === "business"){
+				business = kv[1]
+			}
+		})
+
+		businessSelect.val(business).trigger('change')
+
+	})
 
 
 </script>

@@ -29,13 +29,17 @@ RatedFrog: Grow your business by meeting new customers
         </div>
         <div>
     			<form id="contact-form" class="index-action-form form-horizontal" action="{% url 'auth:register_business' %}" method="get" data-parsley-validate>
-                <div class="index-block">Launching May 2015</div>
     	        	<div class="form-group">
                   <div class="col-md-9 no-padding">
-                    <input type="email" class="form-control big-control" placeholder="Your email address" id="email" data-parsley-error-message="Please enter a valid email address" required>
+                    <select name="business" id="id_business" class="form-control big-control" required data-parsley-error-message="Please select your business">
+                      <option selected="selected" value="">Select your business</option>
+                      <option value="1">Marketing</option>
+                      <option value="2">Design, web and tech services</option>
+                      <option value="3">Photography</option>
+                    </select>
                   </div>
                   <div class="col-md-3 no-padding">
-                    <input type="button" class="btn btn-blue" id="get-notified-btn" value="Get Notified">
+                    <input type="submit" class="btn btn-blue" value="Let's do it!">
                   </div>
 
                 </div>

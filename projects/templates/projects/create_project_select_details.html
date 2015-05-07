@@ -3,7 +3,7 @@
 {% load bigformrow %}
 {% load addcss %}
 <h2>Let us know more about what you need and we will introduce you to people ready to help</h2>
-<div class="col-md-10">
+<div class="col-md-7">
 	<form action="{% url 'projects:create_details' %}" method="post" class="form-horizontal">
 		{% csrf_token %}
 	
@@ -16,7 +16,7 @@
 		{{ form.non_field_errors }}
 
 <div class="form-group {%if form.budget_lower.errors or form.budget_upper.errors %}has-error{% endif %}">
-	<label for="id_urgency" class="create_project_question control-label">What is your budget?</label>
+	<label class="create_project_question control-label">What is your budget?</label>
 	<div class="create_project_answers">
 		<label><input type="checkbox" id="no-budget"> I don't have a budget in my mind just yet</label>
 		<div>
@@ -34,7 +34,18 @@
 		{% endif %}
 		{% endfor %}
 
-			
+		{% if not r.user %}
+			<h3 class="project_create_account_header">Create your account, it's super quick</h3>
+
+			{{ registerForm.non_field_errors }}
+			{{ registerForm.first_name|bigformrow:'First Name' }}
+			{{ registerForm.last_name|bigformrow:'Last Name' }}
+			{{ registerForm.email|bigformrow:'Email' }}
+			{{ registerForm.password|bigformrow:'Password' }}
+		{% endif %}
+
+
+		<br><br>
 		<div class="form-group">
 				<input type="submit" value="Send Request" class="btn btn-blue">
 		</div>

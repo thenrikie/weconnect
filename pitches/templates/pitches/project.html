@@ -28,7 +28,7 @@
 	{% for question in project.sub_business.first.question_set.all %}
 	<div class="pitches_project_row">
 		<div class="pitches_project_row_key">
-			{{ question }}
+			{{ question.text }}
 		</div>
 		<div class="pitches_project_row_value">
 			{% for ans in project.question_option.all %}

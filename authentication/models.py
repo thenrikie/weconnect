@@ -75,7 +75,13 @@ class User(AbstractBaseUser):
 	    # Simplest possible answer: All admins are staff
 	    return self.is_admin
 
+	@property
+	def is_company(self):
+		return self.userprofile.is_company()
 
+	@property
+	def is_customer(self):
+		return self.userprofile.is_customer()
 
 
 

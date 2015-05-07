@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from projects import forms
 from pitches.forms import Message as MessageForm
+from authentication.forms import Register
+from authentication.views import create_customer
 from projects.models import Project, Question, QuestionOption
 from users.models import Business, SubBusiness
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
+from django.contrib import auth
 from emails import sender
 import json
 
@@ -12,14 +15,9 @@ import json
 
 
 def create(r):
-	if not r.user.is_authenticated():
-		return redirect('/')
-
 	return create_project_select_business(r)
 
 def create_details(r):
-	if not r.user.is_authenticated():
-		return redirect('/')
 	return create_project_select_details(r);
 
 
@@ -54,10 +52,25 @@ def create_project_select_details(r):
 
 	questionForm = forms.ProjectQuestion(r.POST or None, extra=extra);
 	form = forms.Project(r.POST or None)
+	registerForm = Register(r.POST or None)
+
+	#check if logged in
+	loggedIn = False
+	if r.user.is_authenticated():
+		loggedIn = True
 
 	if r.method == 'POST':
-		if form.is_valid() and questionForm.is_valid():
+		if form.is_valid() and questionForm.is_valid() and (loggedIn or registerForm.is_valid()):
 			print('passed')
+
+			if not loggedIn:
+				print('Not logged in, create user first')
+				user = create_customer(r.POST)
+				if user is not None and user.is_active:
+					auth.login(r, user)
+					sender.signup_customer(user.email, {'name': user.full_name()})
+				else:
+					return redirect('/')
 
 			whiteListProject = {k: r.POST.get(k, False) for k in (
 				'urgency', 
@@ -95,7 +108,7 @@ def create_project_select_details(r):
 
 		#print("post not passed")
 
-	return render(r, 'projects/create_project_select_details.html', {'form' : form, 'questionForm': questionForm})
+	return render(r, 'projects/create_project_select_details.html', {'form' : form, 'questionForm': questionForm, 'registerForm': registerForm})
 
 def list_project(r):
 

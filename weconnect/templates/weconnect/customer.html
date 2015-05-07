@@ -1,5 +1,5 @@
 {% extends "weconnect/base.html" %}
-
+{% load addcss %}
 {% block title %}
 RatedFrog: Find trusted and rated professionals to help you with your projects
 {% endblock %}
@@ -25,14 +25,13 @@ RatedFrog: Find trusted and rated professionals to help you with your projects
       <div class="container index-action-block">
         <h1>Find trusted and rated professionals to help you with your projects</h1>
         <div>
-    			<form id="contact-form" class="index-action-form form-horizontal" action="{% url 'auth:register_business' %}" method="get" data-parsley-validate>
-                <div class="index-block">Launching May 2015</div>
+    			<form id="contact-form" class="index-action-form form-horizontal" action="{% url 'projects:create' %}" method="get" data-parsley-validate>
     	        	<div class="form-group">
                   <div class="col-md-9 no-padding">
-                    <input type="email" class="form-control big-control" placeholder="Your email address" id="email" data-parsley-error-message="Please enter a valid email address" required>
+                    {{ form.business|addattrs:'class=form-control big-control,required=required,data-parsley-error-message=Please select a business type'}}
                   </div>
                   <div class="col-md-3 no-padding">
-                    <input type="button" class="btn btn-blue" id="get-notified-btn" value="Get Notified">
+                    <input type="submit" class="btn btn-blue" value="Let's do this">
                   </div>
 
                 </div>

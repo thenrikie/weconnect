@@ -1,8 +1,12 @@
 /* Move down content because we have a fixed navbar that is 50px tall */
+html{
+  height: 100%;
+}
 body {
   padding-top: 50px; 
   font-size: 16px;   
   color: #1a1a1a;
+  min-height: 100%;
 }
 
 h1 {
@@ -695,8 +699,9 @@ h1 {
 footer {
     background-color: #080808;
     color: white;
-    padding: 40px 40px 10px 40px;
-    margin-top:40px;
+    margin-top: 40px;
+    padding: 40px 40px 10px;
+    width: 100%;
 }
 .footer_copyright {
     margin-top: 20px;
@@ -910,4 +915,11 @@ h3, .h3{
 }
 .create_project_answers {
     margin-top: 10px;
+}
+.project_create_account_header {
+    border-bottom: 1px solid #e5e5e5;
+    margin-bottom: 20px;
+    margin-left: -20px;
+    margin-top: 40px;
+    padding: 20px 0;
 }
