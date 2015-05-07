@@ -721,8 +721,7 @@ footer {
     margin-bottom: 5px;
 }
 .footer_logo {
-    font-size: 18px;
-    padding: 20px;
+    padding: 20px 0;
 }
 
 h2, .h2{
