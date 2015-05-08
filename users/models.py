@@ -85,7 +85,7 @@ class UserProfile(models.Model):
 	customer_travel = models.BooleanField(default=False, verbose_name='My customer usually travel to me')
 	employees = models.IntegerField(verbose_name='Employees number', default=0)
 
-	business_since = models.DateTimeField(verbose_name='Business since', null=True)
+	business_since = models.CharField(max_length=255, verbose_name='Business since', null=True)
 
 	facebook = models.CharField(max_length=255, blank=True, default='')
 	linkedin = models.CharField(max_length=255, blank=True, default='')

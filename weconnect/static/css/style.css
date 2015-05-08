@@ -835,6 +835,7 @@ h3, .h3{
 }
 .navbar-brand {
     padding: 9px 0 0;
+    margin-left:10px;
 }
 #id_cancelled_reason_other {
     width: 100%;
