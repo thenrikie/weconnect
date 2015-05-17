@@ -46,6 +46,12 @@ class Project(models.Model):
 		('other', 'Other')
 	)
 
+	TRAVEL = (
+ 		('anywhere', 'Anywhere in Hong Kong'),
+ 		('some_areas', 'Only some areas in Hong Kong'),
+ 		('no', 'I need the pro only to travel to me'),
+	)
+
 	business = models.ManyToManyField(Business)
 	sub_business = models.ManyToManyField(SubBusiness)
 	question_option = models.ManyToManyField(QuestionOption)
@@ -55,17 +61,28 @@ class Project(models.Model):
 			choices=URGENCY,
 			default='flexible'
 	)
+
+	specific_date = models.DateTimeField(null=True, blank=True, verbose_name='Date')
 	deadline = models.DateTimeField(null=True)
 	user = models.ForeignKey(User)
 
 	budget_lower = models.FloatField(blank=True, null=True)
 	budget_upper = models.FloatField(blank=True, null=True)
 
-	can_travel = models.BooleanField(default=False, verbose_name='I can travel to them')
+	#to be deleted
+	can_travel = models.BooleanField(default=False, verbose_name='I can travel to the pro')
+	travel_to_pro = models.CharField(
+		max_length=25, 
+		verbose_name='I can travel to the pro',
+		choices=TRAVEL,
+		default='anywhere'
+	)
+
+	#to be deleted
 	company_travel = models.BooleanField(default=False, verbose_name='They travel to me')
 
 	travel_distance = models.ManyToManyField(District, related_name='project_travel_distance_set', blank=True)
-	my_place = models.ForeignKey(District, related_name='my_place')
+	my_place = models.ForeignKey(District, related_name='my_place', verbose_name='The pro travel to me')
 
 	desc = models.CharField(max_length=1024, blank=True, verbose_name='Anything else they should know')
 	

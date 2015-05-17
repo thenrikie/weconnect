@@ -32,7 +32,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser):
 	email = models.EmailField(max_length=255, unique=True, verbose_name='email address')
 	first_name = models.CharField(max_length=100, verbose_name='First Name')
-	last_name = models.CharField(max_length=100, verbose_name='Last Name')
+	last_name = models.CharField(max_length=100, verbose_name='Last Name', blank=True)
 	is_active = models.BooleanField(default=True)
 	is_admin = models.BooleanField(default=False)
 

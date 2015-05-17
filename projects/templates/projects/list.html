@@ -40,6 +40,10 @@
 			{% endif %}
  		</div>
  	</li>
+ {% empty %}
+   <div>
+   	<a href="{% url 'projects:create' %}">Submit a request</a> and start getting introduced to professionals that can help you right away
+   </div>
  {% endfor %}
 </ul>
 

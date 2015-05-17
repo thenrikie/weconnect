@@ -54,12 +54,24 @@ class Project(forms.ModelForm):
 
 	def __init__(self, *args, **kwargs):
 		super(Project, self).__init__(*args, **kwargs)
-		self.fields['my_place'].empty_label = None
-
- 
+		self.fields['my_place'].empty_label = 'Please select'
+		if args[0] and args[0]['urgency'] == 'specific':
+			self.fields['specific_date'].required = True
+		
+	
 	class Meta:
 		model = Project
-		fields = ['budget_lower', 'budget_upper', 'urgency', 'can_travel', 'travel_distance', 'company_travel', 'my_place', 'desc']
+		fields = [
+			'budget_lower', 
+			'budget_upper', 
+			'urgency', 
+			'specific_date', 
+			'travel_to_pro', 
+			'travel_distance', 
+			'my_place', 
+			'desc'
+		]
+
 		widgets = {
 			'travel_distance': forms.CheckboxSelectMultiple,
 			'desc': forms.Textarea

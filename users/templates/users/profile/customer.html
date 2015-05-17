@@ -5,7 +5,10 @@
 
 	<form action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data" class="form-horizontal">
 		{% csrf_token %}
-	
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">Email</label>
+			<div class="col-sm-9">{{user.email}}</div>
+		</div>
 		{{ form.non_field_errors }}
 		{% for field in form %}
 			{{ field|hformrow:field.label }}

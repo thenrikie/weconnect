@@ -11,7 +11,7 @@ def hformrow(field, name):
 	#print(field.field.widget.__class__.__name__)
 
 	if field.field.__class__.__name__ == 'ImageField' or field.field.__class__.__name__  == 'FileField' :
-		str =  '<div class="form-group">'
+		str =  '<div id="form-group-' + field.id_for_label + '" class="form-group">'
 		str += '	<label for="' + field.id_for_label + '" class="col-sm-3 control-label">' + name + '</label>'
 		str += '		    <div class="col-sm-9">'
 		str += '					<input type="file" name="' + field.html_name + '" id="' + field.id_for_label + '">'
@@ -28,7 +28,7 @@ def hformrow(field, name):
 		if field.errors:
 			error_class = 'has-error'
 		
-		str =  '<div class="form-group ' + error_class + '">'
+		str =  '<div id="form-group-' + field.id_for_label + '" class="form-group ' + error_class + '">'
 		str += '	<label for="' + field.id_for_label + '" class="col-sm-3 control-label">' + name + '</label>'
 		str += '		    <div class="col-sm-9">'
 		str += 					field.as_widget()
@@ -43,7 +43,7 @@ def hformrow(field, name):
 		if field.errors:
 			error_class = 'has-error'
 
-		str =  '<div class="form-group ' + error_class + '">'
+		str =  '<div id="form-group-' + field.id_for_label + '" class="form-group ' + error_class + '">'
 		str += '	<label for="' + field.id_for_label + '" class="col-sm-3 control-label">' + name + '</label>'
 		str += '		    <div class="col-sm-9">'
 		str += 					field.as_widget()
@@ -57,7 +57,7 @@ def hformrow(field, name):
 		if field.errors:
 			error_class = 'has-error'
 		
-		str =  '<div class="form-group ' + error_class + '">'
+		str =  '<div id="form-group-' + field.id_for_label + '" class="form-group ' + error_class + '">'
 		str += '	<label for="' + field.id_for_label + '" class="col-sm-3 control-label">' + name + '</label>'
 		str += '		    <div class="col-sm-9">'
 		str += 					field.as_widget(attrs={"class":"form-control"})

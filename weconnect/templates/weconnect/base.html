@@ -12,6 +12,7 @@
 
     <!-- Bootstrap core CSS -->
     <link href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    {% block css %}{% endblock %}
 
     <!-- Custom styles for this template -->
     <link href="/static/css/style.css" rel="stylesheet">
@@ -19,6 +20,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="/static/bower_components/lodash/lodash.min.js"></script>
     <script src="/static/bower_components/parsleyjs/dist/parsley.min.js"></script>
+    {% block js %}{% endblock %}
+    
 
   </head>
 

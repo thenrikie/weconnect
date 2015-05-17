@@ -3,7 +3,7 @@
 {% load hformrow %}
 <h2>Let us know more about what you need and we will introduce you to people ready to help</h2>
 <div class="col-md-10">
-	<form action="{% url 'projects:create' %}" method="post" class="form-horizontal">
+	<form action="{% url 'projects:create' %}" method="post" class="form-horizontal" data-parsley-validate>
 		{% csrf_token %}
 		{{ form.non_field_errors }}
 		{% for field in form %}
@@ -37,7 +37,8 @@
 			return o.business == businessSelect.val()
 		});
 
-		var subBusinessSelect = $('<select class="form-control" id="id_sub_business" name="sub_business">');
+		var subBusinessSelect = $('<select class="form-control" id="id_sub_business" name="sub_business" required>');
+		subBusinessSelect.append(new Option('Please select',''));
 		_.each(filteredSubBusiness, function(business){
 			subBusinessSelect.append(new Option(business.name, business.id));
 		});

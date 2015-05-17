@@ -2,32 +2,78 @@
 {% block content %}
 {% load hformrow %}
 <h2>Sign Up</h2>
-<div class="col-md-8 auth_register">
+<div class="col-md-10 auth_register">
 	<form action="{% url 'auth:register_business' %}" method="post" class="form-horizontal">
 		{% csrf_token %}
-
-		{{ form.non_field_errors }}
-		{{ form.first_name|hformrow:'First Name' }}
-		{{ form.last_name|hformrow:'Last Name' }}
-		{{ form.email|hformrow:'Email' }}
-		{{ form.password|hformrow:'Password' }}
-
-
+		{{ businessForm.non_field_errors }}
+		{{ businessForm.business|hformrow:'Business' }}
 		<div class="form-group">
-			<div class="col-sm-offset-3 col-sm-9">
-				<input type="checkbox" value="1" id="tos"> I have read and agree to the terms of use
+			<div class="col-sm-offset-3 col-sm-9" id="subBusiness">
+
 			</div>
 		</div>
-		
+
+		{{ form.non_field_errors }}
+		{% for field in form %}
+			{{ field|hformrow:field.label }}
+		{% endfor %}
+
+		<h3 class="business_create_account_header">Your account</h3>
+		{{ accountForm.non_field_errors }}
+		{{ accountForm.first_name|hformrow:'Your Name' }}
+		{{ accountForm.email|hformrow:'Email' }}
+		{{ accountForm.password|hformrow:'Password' }}
+
 		<div class="form-group">
 			<div class="col-sm-offset-3 col-sm-9">
 				<input type="submit" value="Sign Up" class="btn btn-blue btn-lg">
 			</div>
 		</div>
-
 	</form>
-
 </div>
+<script>
+	var subBusiness = {{ sub_business_json | safe }};
+	var businessSelect = $('#id_business');
+	
+	var renderSubBusiness = function(){
 
+		if (!businessSelect.val()){
+			$('#subBusiness').html('');
+			return;
+		}
 
+		var filteredSubBusiness = _.filter(subBusiness, function(o){
+			return o.business == businessSelect.val()
+		});
+
+		var subBusinessUl = $('<ul id="id_sub_business"></ul>');
+		_.each(filteredSubBusiness, function(business){
+			subBusinessUl.append($('<li><label><input type="checkbox" name="sub_business" value="' + business.id + '"> ' + business.name + '</label></li>'));
+		});
+
+		$('#subBusiness').html(subBusinessUl);
+
+	}
+
+	//init
+	renderSubBusiness();
+
+	//on select change
+	businessSelect.change(renderSubBusiness);
+
+	// preselect business if business in querystring
+	$(function(){
+		var business
+		_.each(window.location.search.substr(1).split('&'), function(item){
+			var kv = item.split("=")
+			if(kv[0] === "business"){
+				business = kv[1]
+			}
+		})
+
+		businessSelect.val(business).trigger('change')
+
+	})
+
+</script>
 {% endblock %}

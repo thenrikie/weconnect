@@ -1,4 +1,10 @@
 {% extends "weconnect/base.html" %}
+{% block css %}
+    <link rel="stylesheet" href="/static/bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css">
+{% endblock %}
+{% block js %}
+	<script src="/static/bower_components/jquery-ui/jquery-ui.min.js"></script>
+{% endblock %}
 {% block content %}
 {% load bigformrow %}
 {% load addcss %}
@@ -19,9 +25,21 @@
 	<label class="create_project_question control-label">What is your budget?</label>
 	<div class="create_project_answers">
 		<label><input type="checkbox" id="no-budget"> I don't have a budget in my mind just yet</label>
-		<div>
-			<div class="col-md-6">From {{ form.budget_lower|addcss:'form-control' }}</div>
-			<div class="col-md-6">To {{ form.budget_upper|addcss:'form-control' }}</div>
+		<div id="form-group-budget-range">
+			<div class="col-md-6">
+				<div class="create_project_budget_range">From</div> 
+				<div>
+					<div class="create_project_budget_currency">HKD</div>
+					<div class="create_project_budget_money">{{ form.budget_lower|addcss:'form-control' }}</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="create_project_budget_range">To</div> 
+				<div>
+					<div class="create_project_budget_currency">HKD</div>
+					<div class="create_project_budget_money">{{ form.budget_upper|addcss:'form-control' }}</div>
+				</div>
+			</div>
 		</div>
 		{{ form.budget_lower.errors }}
 		{{ form.budget_upper.errors }}
@@ -35,13 +53,27 @@
 		{% endfor %}
 
 		{% if not user.is_authenticated %}
-			<h3 class="project_create_account_header">Create your account, it's super quick</h3>
+			<h3 class="project_create_account_header">
+				<a href="javascript:void(0)" id="login-form-btn">Login</a> or 
+				<a href="javascript:void(0)" id="register-form-btn">Create your account, it's super quick</a></h3>
 
-			{{ registerForm.non_field_errors }}
-			{{ registerForm.first_name|bigformrow:'First Name' }}
-			{{ registerForm.last_name|bigformrow:'Last Name' }}
-			{{ registerForm.email|bigformrow:'Email' }}
-			{{ registerForm.password|bigformrow:'Password' }}
+			<div id="login-form" class="">
+				{{ loginForm.non_field_errors }}
+				{% if auth_error %}
+				<ul class="errorlist"><li>{{auth_error}}</li></ul>
+				{% endif %}
+				{{ loginForm.username|bigformrow:'Email address' }}
+				{{ loginForm.password|bigformrow:'Password' }}
+			</div>
+
+			<div id="register-form" class="hide">
+				{{ registerForm.non_field_errors }}
+				{{ registerForm.first_name|bigformrow:'Your Name' }}
+				{{ registerForm.email|bigformrow:'Email' }}
+				{{ registerForm.password|bigformrow:'Password' }}
+			</div>
+			<input id="auth-mode" type="hidden" name="auth_mode" value="{{auth_mode}}">
+
 		{% endif %}
 
 
@@ -55,25 +87,109 @@
 </div>
 
 <script type="text/javascript">
+
+	// budget select toggle
 	var noBudget = $('#no-budget')
 	var budgetFrom = $('#id_budget_lower')
 	var budgetTo = $('#id_budget_upper')
+	var budgetRangeBlock = $('#form-group-budget-range')
 
 	noBudget.click(function(){
 		if(noBudget.prop('checked')){
 			budgetFrom.val('').prop('disabled', true)
 			budgetTo.val('').prop('disabled', true)
+			budgetRangeBlock.addClass('hide')
 		} else {
 			budgetFrom.prop('disabled', false)
 			budgetTo.prop('disabled', false)
+			budgetRangeBlock.removeClass('hide')
 		}
 	})	
 
+
+	// Urgency select toggle
+	var urgencySelect = $('#id_urgency')
+	var specificDateBlock = $('#form-group-id_specific_date')
+	var specificDateInput = $('#id_specific_date')
+
+	urgencySelect.change(function(){
+		if(urgencySelect.val() === 'specific'){
+			specificDateInput.prop('disabled', false)
+			specificDateBlock.removeClass('hide')
+		} else {
+			specificDateInput.prop('disabled', true)
+			specificDateBlock.addClass('hide')
+		}
+	})
+
+	//travel distance
+	var travelDistanceBlock = $('#form-group-id_travel_distance_0')
+	var travelToProSelect = $('#id_travel_to_pro')
+	var travelDistanceInputs = $('#id_travel_distance input');
+
+	travelToProSelect.change(function(){
+		if(travelToProSelect.val() === 'some_areas'){
+			travelDistanceBlock.removeClass('hide')
+
+			var allEmpty = true;
+			_.each(travelDistanceInputs, function(input){ 
+				allEmpty = allEmpty && !input.checked
+			})
+
+			//only check all by default if all unchecked
+			if(allEmpty){
+				travelDistanceInputs.prop('checked', true)
+			}
+
+		} else {
+			travelDistanceBlock.addClass('hide')
+			travelDistanceInputs.prop('checked', false)
+		}
+	})
+
+	var loginFormBtn = $("#login-form-btn")
+	var loginForm = $("#login-form")
+	var registerFormBtn = $("#register-form-btn")
+	var registerForm = $("#register-form")
+	var authMode = $('#auth-mode')
+
+	loginFormBtn.click(function(){
+		loginForm.removeClass("hide")
+		registerForm.addClass("hide")
+		authMode.val('login')
+		$('#register-form input').prop('disabled', true)
+		$('#login-form input').prop('disabled', false)
+	})
+
+	registerFormBtn.click(function(){
+		loginForm.addClass("hide")
+		registerForm.removeClass("hide")
+		authMode.val('register')
+		$('#login-form input').prop('disabled', true)
+		$('#register-form input').prop('disabled', false)
+	})
 
 	$(function(){	
 		if (budgetFrom.val() == "" && budgetTo.val() == ""){
 			noBudget.trigger('click')
 		}
+
+		specificDateInput.datepicker()
+		urgencySelect.trigger('change')
+		travelToProSelect.trigger('change')
+
+		if(authMode.val() === 'login'){
+			loginFormBtn.trigger('click')
+		} else if (authMode.val() === 'register'){
+			registerFormBtn.trigger('click')
+		}
+
+		var emailLabel = $('#form-group-id_email label');
+		emailLabel.html(
+			emailLabel.html() + 
+			'<span class="help_text">We will send quote here</span>'
+		)
+
 	})
 
 </script>

@@ -44,7 +44,7 @@ def create_customer(user_detail):
 	user = User.objects.create_user(
 		email=user_detail['email'], 
 		first_name=user_detail['first_name'], 
-		last_name=user_detail['last_name'], 
+		last_name=user_detail.get('last_name', ''), 
 		password=user_detail['password']
 	);
 	
@@ -79,30 +79,12 @@ def register_customer(r):
 
 
 def register_business(r):
-	#redirect if logged in
-	if r.user.is_authenticated():
-		return redirect('/')
-
-	form = forms.Register(label_suffix='');
-
-	if r.method == 'POST':
-		form = forms.Register(r.POST, label_suffix='')
-		if form.is_valid():
-			r.session['register_business_user'] = {'email' : r.POST['email'], 'first_name': r.POST['first_name'], 'last_name': r.POST['last_name'], 'password': r.POST['password']}
-			return redirect('auth:register_business_details')
-
-	return render(r, 'auth/register_business.html', {'form' : form})
-
-
-def register_business_details(r):
 
 	if r.user.is_authenticated():
 		#redirect if logged in
 		return redirect('/')
-	elif not r.session.get('register_business_user'):
-		#redirect if not from previous page
-		return redirect('auth:register_business')
 
+	accountForm = forms.Register(r.POST or None, label_suffix='');
 	businessForm = forms.Business(r.POST or None)
 	form = forms.RegisterBusiness(r.POST or None, label_suffix='')
 
@@ -111,14 +93,13 @@ def register_business_details(r):
 
 	if r.method == 'POST':
 
-		if form.is_valid() and businessForm.is_valid():
+		if form.is_valid() and businessForm.is_valid() and accountForm.is_valid():
 			# Create user object
-			session_user = r.session.get('register_business_user')
 			user = User.objects.create_user(
-				email=session_user['email'], 
-				first_name=session_user['first_name'], 
-				last_name=session_user['last_name'], 
-				password=session_user['password']
+				email=accountForm.cleaned_data['email'], 
+				first_name=accountForm.cleaned_data['first_name'], 
+				last_name='', 
+				password=accountForm.cleaned_data['password']
 			)
 			
 			#Create user profile
@@ -138,18 +119,16 @@ def register_business_details(r):
 			for d in form.cleaned_data['travel_distance']:
 				userProfile.travel_distance.add(d)
 
-			user = auth.authenticate(username=session_user['email'], password=session_user['password'])
+			user = auth.authenticate(username=accountForm.cleaned_data['email'], password=accountForm.cleaned_data['password'])
 
-			#clear the saved registion session
-			del r.session['register_business_user']
-			
 			if user is not None and user.is_active:
 				auth.login(r, user)
 				sender.signup_company(user.email, {'name': user.full_name()})
 				return redirect('users:profile')
 
-	return render(r, 'auth/register_business_details.html', {
+	return render(r, 'auth/register_business.html', {
 		'form' : form, 
 		'businessForm' : businessForm, 
-		'sub_business_json': sub_business_json
+		'sub_business_json': sub_business_json,
+		'accountForm': accountForm
 	})

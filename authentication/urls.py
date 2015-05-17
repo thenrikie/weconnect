@@ -8,5 +8,4 @@ urlpatterns = patterns('',
 	url(r'^register/$', views.register, name='register'),
 	url(r'^register/customer$', views.register_customer, name='register_customer'),
 	url(r'^register/business/$', views.register_business, name='register_business'),
-	url(r'^register/business/details/$', views.register_business_details, name='register_business_details')
 )

@@ -916,10 +916,33 @@ h3, .h3{
 .create_project_answers {
     margin-top: 10px;
 }
-.project_create_account_header {
+.project_create_account_header,
+.business_create_account_header {
     border-bottom: 1px solid #e5e5e5;
     margin-bottom: 20px;
     margin-left: -20px;
     margin-top: 40px;
     padding: 20px 0;
+
 }
+.navbar-inverse .navbar-nav > li > a {
+    color: white;
+}
+.create_project_budget_range {
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+.create_project_budget_currency {
+    display: inline-block;
+}
+.create_project_budget_money {
+    display: inline-block;
+    vertical-align: middle;
+}
+.help_text {
+    color: #666666;
+    font-size: 13px;
+    font-weight: normal;
+    margin-left: 5px;
+}
+
