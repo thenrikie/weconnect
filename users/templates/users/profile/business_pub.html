@@ -56,12 +56,12 @@
 					<div class="col-md-8">
 						<div class="{{ css_prefix }}_head_contact_item">
 							<div class="{{ css_prefix }}_head_contact_key"><img src="/static/image/contact-name.png" alt="contact"></div>
-							<div class="{{ css_prefix }}_head_contact_value">{{ user.full_name }}</div>
+							<div class="{{ css_prefix }}_head_contact_value">{{ userprofile.user.full_name }}</div>
 						</div>
 
 						<div class="{{ css_prefix }}_head_contact_item">
 							<div class="{{ css_prefix }}_head_contact_key"><img src="/static/image/email.png" alt="email"></div>
-							<div class="{{ css_prefix }}_head_contact_value">{{ user.email }}</div>
+							<div class="{{ css_prefix }}_head_contact_value">{{ userprofile.user.email }}</div>
 						</div>
 					</div>
 
@@ -87,15 +87,15 @@
 		<div id="service-desc-display">
 			<h3 class="company-profile-head">Services</h3>
 			<div class="{{ css_prefix }}_service_item">
-				<span class="{{ css_prefix }}_service_item_key">Business Nature</span>
-				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.business.first }}</span>
+				<span class="{{ css_prefix }}_service_item_key_inline">Business Nature</span>
+				<span class="{{ css_prefix }}_service_item_value_inline">{{ userprofile.business.first }}</span>
 			</div>
 			<div class="{{ css_prefix }}_service_item">
-				<span class="{{ css_prefix }}_service_item_key">Categories</span>
-				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.sub_business.all|join:"<br>" }}</span>
+				<span class="{{ css_prefix }}_service_item_key_inline">Areas of expertise</span>
+				<span class="{{ css_prefix }}_service_item_value_inline">{{ userprofile.sub_business.all|join:"<br>" }}</span>
 			</div>
 			<div class="{{ css_prefix }}_service_item">
-				<span class="{{ css_prefix }}_service_item_key">More about your service</span>
+				<span class="{{ css_prefix }}_service_item_key">Tell us more about your services</span>
 				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.service_desc|linebreaksbr }}</span>
 			</div>
 		</div>
@@ -106,20 +106,18 @@
 		<div id="preference-display">
 			<h3 class="company-profile-head">Preferences</h3>
 			<div class="{{ css_prefix }}_service_item">
-				<span class="{{ css_prefix }}_service_item_key">Willing to travel to customer</span>
-				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.can_travel|yesno }}</span>
+				<span class="{{ css_prefix }}_service_item_key">I can travel to my customers</span>
+				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.travel_to_customer_text }}</span>
 			</div>
-			<div class="{{ css_prefix }}_service_item">
-				<span class="{{ css_prefix }}_service_item_key">Customer usually travel to me</span>
-				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.customer_travel|yesno }}</span>
-			</div>
-			<div class="{{ css_prefix }}_service_item">
-				<span class="{{ css_prefix }}_service_item_key">Remote only</span>
-				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.only_remote|yesno }}</span>
-			</div>
+			{% if userprofile.travel_to_customer != 'anywhere' %}
 			<div class="{{ css_prefix }}_service_item">
 				<span class="{{ css_prefix }}_service_item_key">Travel distance</span>
 				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.travel_distance.all|join:"<br>" }}</span>
+			</div>
+			{% endif %}
+			<div class="{{ css_prefix }}_service_item">
+				<span class="{{ css_prefix }}_service_item_key">Customer usually travel to me</span>
+				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.customer_travel|yesno }}</span>
 			</div>
 		</div>
 		<div style="clear:both"></div>

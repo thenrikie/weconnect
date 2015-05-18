@@ -2,13 +2,15 @@
 {% block content %}
 
 {% include 'pitches/select.html' with page='quote' only %}
-<h2>Quotes</h2>
+
 
 <ul class="pitches_pitch_item col-md-10">
 	{% for pitch in pitches %}
 	<li>
 		{% include 'pitches/list_quote_item.html' with pitch=pitch %}
 	</li>
+	{% empty %}
+	<li class="pitches_empty_item">You do not currently have any pending quotes</li>
 	{% endfor %}
 </ul>
 

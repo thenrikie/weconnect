@@ -2,13 +2,15 @@
 {% block content %}
 
 {% include 'pitches/select.html' with page='hired' only %}
-<h2>Hired</h2>
+
 
 <ul class="pitches_pitch_item col-md-10 pitch_item_hired">
 	{% for pitch in pitches %}
 	<li>
 		{% include 'pitches/list_hired_item.html' with pitch=pitch %}
 	</li>
+	{% empty %}
+	<li class="pitches_empty_item">You have not recently been hired</li>
 	{% endfor %}
 </ul>
 

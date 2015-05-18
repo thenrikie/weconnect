@@ -7,7 +7,7 @@ from django.forms import ModelForm, PasswordInput, Textarea, CheckboxSelectMulti
 class Credential(ModelForm):
 	class Meta:
 		model = User
-		fields = ['first_name', 'last_name']
+		fields = ['first_name']
 
 
 class Customer(ModelForm):
@@ -34,7 +34,19 @@ class Business(ModelForm):
 class BusinessHead(ModelForm):
 	class Meta:
 		model = UserProfile
-		fields = ['business_name', 'website', 'mobile_number', 'logo', 'photo', 'address_1', 'address_2', 'address_3', 'address_4','employees','business_since']
+		fields = [
+			'business_name', 
+			'website', 
+			'mobile_number', 
+			'photo', 
+			'address_1', 
+			'address_2', 
+			'address_3', 
+			'address_4',
+			'employees',
+			'business_since',
+			'logo'
+		]
 
 class BusinessCompanyDesc(ModelForm):
 	class Meta:
@@ -61,7 +73,7 @@ class BusinessSerivceDesc(ModelForm):
 class BusinessPreference(ModelForm):
 	class Meta:
 		model = UserProfile
-		fields = ['can_travel','customer_travel','only_remote','travel_distance']
+		fields = ['travel_to_customer','customer_travel','travel_distance']
 		widgets = {
 			'travel_distance': CheckboxSelectMultiple
 		}

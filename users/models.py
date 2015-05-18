@@ -60,6 +60,11 @@ class UserProfile(models.Model):
 		('COMPANY', 'Company')
 	)
 
+	TRAVEL = (
+ 		('anywhere', 'Anywhere in Hong Kong'),
+ 		('some_areas', 'Only some areas in Hong Kong')
+	)
+
 	#user profile goes here
 	role = models.CharField(max_length=25, choices=ROLE, editable=False)
 
@@ -78,11 +83,22 @@ class UserProfile(models.Model):
 	address_3 = models.CharField(max_length=512, blank=True, verbose_name='')
 	address_4 = models.CharField(max_length=512, blank=True, verbose_name='Area')
 
+	#to be removed
 	can_travel = models.BooleanField(default=False, verbose_name='I can travel to my customers')
+	
+	travel_to_customer = models.CharField(
+		max_length=25, 
+		verbose_name='I can travel to my customers',
+		choices=TRAVEL,
+		default='anywhere'
+	)
+
 	travel_distance = models.ManyToManyField(District, related_name='userprofile_travel_distance_set', verbose_name='How far will you travel', blank=True)
 	
 	only_remote = models.BooleanField(default=False, verbose_name='Only internet or phone')
+	
 	customer_travel = models.BooleanField(default=False, verbose_name='My customer usually travel to me')
+
 	employees = models.IntegerField(verbose_name='Employees number', default=0)
 
 	business_since = models.CharField(max_length=255, verbose_name='Business since', null=True)
@@ -117,6 +133,12 @@ class UserProfile(models.Model):
 	def unread_message_count(self):
 		from pitches.models import Message
 		return Message.objects.filter(recipient=self.user, read=False).count();
+
+	def travel_to_customer_text(self):
+		for i in self.TRAVEL:
+			if i[0] == self.travel_to_customer:
+				return i[1]
+
 
 	def __str__(self):
 		return self.user.email

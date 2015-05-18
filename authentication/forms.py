@@ -1,6 +1,6 @@
 from authentication.models import User
 from users.models import UserProfile, Business
-from django.forms import ModelForm, PasswordInput, Textarea, CheckboxSelectMultiple
+from django.forms import TextInput, ModelForm, PasswordInput, Textarea, CheckboxSelectMultiple
 from django import forms
 
 """
@@ -41,9 +41,10 @@ class RegisterBusiness(ModelForm):
 		model = UserProfile
 		fields = ['business_name', 'website', 'mobile_number', 'desc', 'get_sms',
 		 'address_1', 'address_2', 'address_3', 'address_4',
-		 'can_travel', 'travel_distance', 'customer_travel', 'only_remote'
+		 'travel_to_customer', 'travel_distance', 'customer_travel'
 		]
 		widgets = {
 			'travel_distance': CheckboxSelectMultiple,
+			'website': TextInput,
 			'desc': Textarea
 		}

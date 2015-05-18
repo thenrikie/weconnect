@@ -2,13 +2,14 @@
 {% block content %}
 
 {% include 'pitches/select.html' with page='request' only %}
-<h2>Requests</h2>
 
 <ul class="pitches_pitch_item col-md-10">
 	{% for pitch in pitches %}
 	<li>
 		{% include 'pitches/list_request_item.html' with pitch=pitch %}
 	</li>
+	{% empty %}
+	<li class="pitches_empty_item">You do not currently have any project requests</li>
 	{% endfor %}
 </ul>
 

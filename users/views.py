@@ -32,6 +32,7 @@ def profile_customer(r):
 def profile_business(r):
 
 	# form = forms.Business(instance=r.user.userprofile)
+	form_credential = forms.Credential(r.POST or None, instance=r.user)
 	form_business_head = forms.BusinessHead(r.POST or None, r.FILES or None, instance=r.user.userprofile)
 	form_business_company_desc = forms.BusinessCompanyDesc(r.POST or None, instance=r.user.userprofile)
 	form_business_service_desc = forms.BusinessSerivceDesc(r.POST or None, instance=r.user.userprofile)
@@ -43,6 +44,7 @@ def profile_business(r):
 	view_values = {
 	#	'form' : form, 
 		'userprofile' : r.user.userprofile,
+		'form_credential' : form_credential,
 		'form_business_head': form_business_head,
 		'form_business_company_desc' : form_business_company_desc,
 		'form_business_service_desc' : form_business_service_desc,
@@ -53,24 +55,30 @@ def profile_business(r):
 	}
 
 	part = {
-		'head' : {'form' : form_business_head, 'error' : 'form_business_head_error'},
-		'company_desc': {'form' : form_business_company_desc, 'error' : 'form_business_company_desc_error'},
-		'service_desc': {'form' : form_business_service_desc, 'error' : 'form_business_service_desc_error'},
-		'preference' : {'form' : form_business_preference, 'error' : 'form_business_preference_error'},
-		'company_detail' : {'form' : form_business_company_detail, 'error' : 'form_business_company_detail_error'},
-		'company_social' : {'form' : form_business_company_social, 'error' : 'form_business_company_social_error'},
-		'work' : {'form' : form_business_work, 'error': 'form_business_work_error'}
+		'head' : {'forms' : [form_business_head, form_credential], 'error' : 'form_business_head_error'},
+		'company_desc': {'forms' : [form_business_company_desc], 'error' : 'form_business_company_desc_error'},
+		'service_desc': {'forms' : [form_business_service_desc], 'error' : 'form_business_service_desc_error'},
+		'preference' : {'forms' : [form_business_preference], 'error' : 'form_business_preference_error'},
+		'company_detail' : {'forms' : [form_business_company_detail], 'error' : 'form_business_company_detail_error'},
+		'company_social' : {'forms' : [form_business_company_social], 'error' : 'form_business_company_social_error'},
+		'work' : {'forms' : [form_business_work], 'error': 'form_business_work_error'}
 	}
 
 	if r.method == 'POST':
 
 		if r.POST.get('part'):
 			
-			part_form = part[r.POST.get('part')]['form']
+			part_forms = part[r.POST.get('part')]['forms']
 			part_form_error = part[r.POST.get('part')]['error']
 
-			if part_form.is_valid():
-				part_form.save()
+			allFormValid = True
+
+			for form in part_forms:
+				allFormValid = allFormValid and form.is_valid() 
+
+			if allFormValid:
+				for form in part_forms:
+					form.save()
 				return redirect('users:profile')
 			else:
 				view_values[part_form_error] = True

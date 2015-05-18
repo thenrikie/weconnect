@@ -2,7 +2,7 @@
 {% block content %}
 
 {% include 'pitches/select.html' with page='archive' only %}
-<h2>Archive</h2>
+
 
 <ul class="pitches_pitch_item col-md-10">
 	{% for pitch in pitches %}
@@ -17,6 +17,8 @@
 			{% include 'pitches/list_rejected_item.html' with pitch=pitch %}
 		{% endif %}
 	</li>
+	{% empty %}
+	<li class="pitches_empty_item">You do not have any archived items yet</li>
 	{% endfor %}
 </ul>
 

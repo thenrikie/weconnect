@@ -61,17 +61,48 @@
 	//on select change
 	businessSelect.change(renderSubBusiness);
 
+
+	//travel distance
+	var travelDistanceBlock = $('#form-group-id_travel_distance_0')
+	var travelToCustomerSelect = $('#id_travel_to_customer')
+	var travelDistanceInputs = $('#id_travel_distance input');
+
+	travelToCustomerSelect.change(function(){
+		if(travelToCustomerSelect.val() === 'some_areas'){
+			travelDistanceBlock.removeClass('hide')
+
+			var allEmpty = true;
+			_.each(travelDistanceInputs, function(input){ 
+				allEmpty = allEmpty && !input.checked
+			})
+
+			//only check all by default if all unchecked
+			if(allEmpty){
+				travelDistanceInputs.prop('checked', true)
+			}
+
+		} else {
+			travelDistanceBlock.addClass('hide')
+			travelDistanceInputs.prop('checked', false)
+		}
+	})
+
 	// preselect business if business in querystring
 	$(function(){
-		var business
-		_.each(window.location.search.substr(1).split('&'), function(item){
-			var kv = item.split("=")
-			if(kv[0] === "business"){
-				business = kv[1]
-			}
-		})
 
-		businessSelect.val(business).trigger('change')
+		if (window.location.search.substr(1)){
+			var business
+			_.each(window.location.search.substr(1).split('&'), function(item){
+				var kv = item.split("=")
+				if(kv[0] === "business"){
+					business = kv[1]
+				}
+			})
+
+			businessSelect.val(business).trigger('change')
+		}
+
+		travelToCustomerSelect.trigger('change')
 
 	})
 

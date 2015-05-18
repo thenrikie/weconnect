@@ -1,4 +1,10 @@
 {% extends "weconnect/base.html" %}
+{% block css %}
+    <link rel="stylesheet" href="/static/bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css">
+{% endblock %}
+{% block js %}
+	<script src="/static/bower_components/jquery-ui/jquery-ui.min.js"></script>
+{% endblock %}
 {% load staticfiles %}
 {% load sinceyear %}
 {% load hformrow %}
@@ -17,7 +23,7 @@
 				{% if userprofile.logo %}
 					<img class="{{ css_prefix }}s_head_logo_img" src="{% static userprofile.logo %}" alt="{{ userprofile.business_name }}">
 				{% else %}
-					<div class="{{ css_prefix }}s_head_logo">?</div>
+					<div class="{{ css_prefix }}s_head_logo">Add your logo</div>
 				{% endif %}
 			</div>
 
@@ -52,7 +58,7 @@
 					{% if userprofile.photo %}
 						<img class="{{ css_prefix }}_head_ppl_photo_img col-md-4" src="{% static userprofile.photo %}" alt="{{ userprofile.business_name }}">
 					{% else %}
-						<div class="{{ css_prefix }}_head_ppl_photo col-md-4">?</div>
+						<img class="{{ css_prefix }}_head_ppl_photo_img col-md-4" src="/static/image/no-image.png" alt="{{ userprofile.business_name }}">
 					{% endif %}
 
 					<div class="col-md-8">
@@ -75,17 +81,21 @@
 				{% csrf_token %}
 				{{ form_business_head.non_field_errors }}
 				{{ form_business_head.business_name|hformrow:'Business Name'}}
+
+				{{ form_business_head.photo|hformrow:'Your photo'}}
+				{{ form_credential.first_name|hformrow:'Your name' }}
+
 				{{ form_business_head.logo|hformrow:'Company Logo'}}
 				{{ form_business_head.website|hformrow:'Website'}}
 				{{ form_business_head.mobile_number|hformrow:'Mobile number'}}
-				{{ form_business_head.photo|hformrow:'Your photo'}}
+				{{ form_business_head.employees|hformrow:'No. of employees' }}
+				{{ form_business_head.business_since|hformrow:'Business started since' }}
 				{{ form_business_head.address_1|hformrow:'Address' }}
 				{{ form_business_head.address_2|hformrow:'' }}
 				{{ form_business_head.address_3|hformrow:'' }}
 				{{ form_business_head.address_4|hformrow:'Area' }}
-				{{ form_business_head.employees|hformrow:'No. of employees' }}
-				{{ form_business_head.business_since|hformrow:'Business started since' }}
 				<input type="hidden" value="head" name="part">
+				<input id="head-cancel" type="button" value="Cancel" class="cancel_button btn btn-default pull-right"> 
 				<input type="submit" value="Save" class="btn btn-primary pull-right">
 			</form>
 		</div>
@@ -94,10 +104,14 @@
 
 
 	<div class="{{ css_prefix }}_desc">
+		<a href="javascript:void(0)" class="{{ css_prefix }}_edit_btn blue-link" id="company-desc"><img alt="Edit" src="/static/image/edit.png"> Edit</a>
+		<h3 class="company-profile-head">About the company</h3>
 		<div id="company-desc-display">
-			<a href="javascript:void(0)" class="{{ css_prefix }}_edit_btn blue-link" id="company-desc"><img alt="Edit" src="/static/image/edit.png"> Edit</a>
-			<h3 class="company-profile-head">About the company</h3>
+			{% if userprofile.desc %}
 			<p>{{ userprofile.desc|linebreaksbr }}</p>
+			{% else %}
+			<p><i>Tell us more about your company. This will be essential for gaining new customers.</i></p>
+			{% endif %}
 		</div>
 		<div id="company-desc-form" class="hide">
 			<form action="{% url 'users:profile' %}" method="post" class="form-horizontal">
@@ -105,6 +119,7 @@
 				{{ form_business_company_desc.non_field_errors }}
 				{{ form_business_company_desc.desc|hformrow:'About the company' }}
 				<input type="hidden" value="company_desc" name="part">
+				<input id="company-desc-cancel" type="button" value="Cancel" class="cancel_button btn btn-default pull-right"> 
 				<input type="submit" value="Save" class="btn btn-primary pull-right">
 			</form>
 		</div>
@@ -113,19 +128,19 @@
 	</div>
 
 	<div class="{{ css_prefix }}_desc">
+		<a href="javascript:void(0)" class="{{ css_prefix }}_edit_btn blue-link" id="service-desc"><img alt="Edit" src="/static/image/edit.png"> Edit</a>
+		<h3 class="company-profile-head">Services</h3>
 		<div id="service-desc-display">
-			<a href="javascript:void(0)" class="{{ css_prefix }}_edit_btn blue-link" id="service-desc"><img alt="Edit" src="/static/image/edit.png"> Edit</a>
-			<h3 class="company-profile-head">Services</h3>
 			<div class="{{ css_prefix }}_service_item">
-				<span class="{{ css_prefix }}_service_item_key">Business Nature</span>
-				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.business.first }}</span>
+				<span class="{{ css_prefix }}_service_item_key_inline">Business Nature</span>
+				<span class="{{ css_prefix }}_service_item_value_inline">{{ userprofile.business.first }}</span>
 			</div>
 			<div class="{{ css_prefix }}_service_item">
-				<span class="{{ css_prefix }}_service_item_key">Categories</span>
-				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.sub_business.all|join:"<br>" }}</span>
+				<span class="{{ css_prefix }}_service_item_key_inline">Areas of expertise</span>
+				<span class="{{ css_prefix }}_service_item_value_inline">{{ userprofile.sub_business.all|join:"<br>" }}</span>
 			</div>
 			<div class="{{ css_prefix }}_service_item">
-				<span class="{{ css_prefix }}_service_item_key">More about your service</span>
+				<span class="{{ css_prefix }}_service_item_key">Tell us more about your services</span>
 				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.service_desc|linebreaksbr }}</span>
 			</div>
 		</div>
@@ -139,9 +154,10 @@
 						<div class="form-control-static">{{ userprofile.business.first }}</div>			
 					</div>
 				</div>
-				{{ form_business_service_desc.sub_business|hformrow:'Categories' }}
+				{{ form_business_service_desc.sub_business|hformrow:'Areas of expertise' }}
 				{{ form_business_service_desc.service_desc|hformrow:'Tell us more about your services' }}
 				<input type="hidden" value="service_desc" name="part">
+				<input id="service-desc-cancel" type="button" value="Cancel" class="cancel_button btn btn-default pull-right"> 
 				<input type="submit" value="Save" class="btn btn-primary pull-right">
 			</form>
 		</div>
@@ -149,34 +165,33 @@
 	</div>
 
 	<div class="{{ css_prefix }}_desc">
+		<a href="javascript:void(0)" class="{{ css_prefix }}_edit_btn blue-link" id="preference" ><img alt="Edit" src="/static/image/edit.png"> Edit</a>
+		<h3 class="company-profile-head">Preferences</h3>
 		<div id="preference-display">
-			<a href="javascript:void(0)" class="{{ css_prefix }}_edit_btn blue-link" id="preference" ><img alt="Edit" src="/static/image/edit.png"> Edit</a>
-			<h3 class="company-profile-head">Preferences</h3>
 			<div class="{{ css_prefix }}_service_item">
-				<span class="{{ css_prefix }}_service_item_key">Willing to travel to customer</span>
-				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.can_travel|yesno }}</span>
+				<span class="{{ css_prefix }}_service_item_key">I can travel to my customers</span>
+				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.travel_to_customer_text }}</span>
 			</div>
-			<div class="{{ css_prefix }}_service_item">
-				<span class="{{ css_prefix }}_service_item_key">Customer usually travel to me</span>
-				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.customer_travel|yesno }}</span>
-			</div>
-			<div class="{{ css_prefix }}_service_item">
-				<span class="{{ css_prefix }}_service_item_key">Remote only</span>
-				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.only_remote|yesno }}</span>
-			</div>
+			{% if userprofile.travel_to_customer != 'anywhere' %}
 			<div class="{{ css_prefix }}_service_item">
 				<span class="{{ css_prefix }}_service_item_key">Travel distance</span>
 				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.travel_distance.all|join:"<br>" }}</span>
 			</div>
+			{% endif %}
+			<div class="{{ css_prefix }}_service_item">
+				<span class="{{ css_prefix }}_service_item_key">Customer usually travel to me</span>
+				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.customer_travel|yesno }}</span>
+			</div>
+
 		</div>
 		<div id="preference-form" class="hide">
 			<form action="{% url 'users:profile' %}" method="post" class="form-horizontal">
 				{% csrf_token %}
-				{{ form_business_preference.can_travel|hformrow:'Willing to travel to customer' }}
-				{{ form_business_preference.customer_travel|hformrow:'Customer usually travel to me' }}
-				{{ form_business_preference.only_remote|hformrow:'Remote only' }}
+				{{ form_business_preference.travel_to_customer|hformrow:'I can travel to my customers' }}
 				{{ form_business_preference.travel_distance|hformrow:'Travel distance' }}
+				{{ form_business_preference.customer_travel|hformrow:'Customer usually travel to me' }}
 				<input type="hidden" value="preference" name="part">
+				<input id="preference-cancel" type="button" value="Cancel" class="cancel_button btn btn-default pull-right"> 
 				<input type="submit" value="Save" class="btn btn-primary pull-right">
 			</form>
 		</div>
@@ -185,10 +200,9 @@
 </div>
 <div class="{{ css_prefix }}_right col-md-4">
 	<div class="{{ css_prefix }}_companysocial">
+		<a href="javascript:void(0)" class="pull-right {{ css_prefix }}_edit_btn blue-link" id="company-social" ><img alt="Edit" src="/static/image/edit.png"> Edit</a>
+		<h3  class="company-profile-right-head">Social Media</h3>
 		<div id="company-social-display">
-			<a href="javascript:void(0)" class="pull-right {{ css_prefix }}_edit_btn blue-link" id="company-social" ><img alt="Edit" src="/static/image/edit.png"> Edit</a>
-			<h3  class="company-profile-right-head">Social Media</h3>
-			
 			{% if userprofile.facebook %}
 			<a class="sm sm_facebook" href="{{ userprofile.facebook }}" target="_blank"></a>
 			{% endif %}
@@ -212,6 +226,8 @@
 			{% if userprofile.instagram %}
 			<a class="sm sm_instagram" href="{{ userprofile.instagram }}" target="_blank"></a>
 			{% endif %}
+			<div class="clearfix"></div>
+			<a href="javascript:void(0)" id="company-social-add"> + Add your photos, brochures or videos here</a>
 		</div>
 		<div id="company-social-form" class="hide">
 			<form action="{% url 'users:profile' %}" method="post" class="form-horizontal">
@@ -224,7 +240,8 @@
 				{{ form_business_company_social.instagram|hformrow:'<div class="sm sm_instagram"></div>' }}
 
 				<input type="hidden" value="company_social" name="part">
-				<input type="submit" value="Save" class="btn btn-blue pull-right">
+				<input id="company-social-cancel" type="button" value="Cancel" class="cancel_button btn btn-default pull-right"> 
+				<input type="submit" value="Save" class="btn btn-primary pull-right">
 			</form>
 		</div>
 
@@ -233,10 +250,9 @@
 	</div>
 
 	<div class="{{ css_prefix }}_work">
+		<a href="javascript:void(0)" class="pull-right {{ css_prefix }}_edit_btn blue-link" id="work" ><img alt="Edit" src="/static/image/edit.png"> Edit</a>
+		<h3 class="company-profile-right-head">Work</h3>
 		<div id="work-display">
-			<a href="javascript:void(0)" class="pull-right {{ css_prefix }}_edit_btn blue-link" id="work" ><img alt="Edit" src="/static/image/edit.png"> Edit</a>
-			<h3 class="company-profile-right-head">Work</h3>
-
 			{% if userprofile.work_image_1 %}
 			<img class="{{ css_prefix }}_work_image" src="{% static userprofile.work_image_1 %}">
 			{% endif %}
@@ -248,6 +264,9 @@
 			{% if userprofile.work_image_3 %}
 			<img class="{{ css_prefix }}_work_image" src="{% static userprofile.work_image_3 %}">
 			{% endif %}
+			<div class="clearfix"></div>
+			<a href="javascript:void(0)" id="work-add">+ Add links to your social media</a>
+		
 		</div>
 		<div id="work-form" class="hide">
 			<form action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data" class="form-horizontal">
@@ -256,7 +275,8 @@
 				{{ form_business_work.work_image_2|hformrow:'Image'}}
 				{{ form_business_work.work_image_3|hformrow:'Image'}}
 				<input type="hidden" value="work" name="part">
-				<input type="submit" value="Save" class="btn btn-blue pull-right">
+				<input id="work-cancel" type="button" value="Cancel" class="cancel_button btn btn-default pull-right">
+				<input type="submit" value="Save" class="btn btn-primary pull-right">
 			</form>
 		</div>
 	</div>
@@ -278,36 +298,43 @@
 	var edit = {
 		'head' : {
 			btn: $('#head'),
+			cancelBtn: $('#head-cancel'),
 			display: $('#head-display'),
 			form: $('#head-form')
 		},
 		'company-desc' : {
 			btn: $('#company-desc'),
+			cancelBtn: $('#company-desc-cancel'),
 			display: $('#company-desc-display'),
 			form: $('#company-desc-form')
 		},
 		'service-desc' : {
 			btn: $('#service-desc'),
+			cancelBtn: $('#service-desc-cancel'),
 			display: $('#service-desc-display'),
 			form: $('#service-desc-form')
 		},
 		'preference' : {
 			btn: $('#preference'),
+			cancelBtn: $('#preference-cancel'),
 			display: $('#preference-display'),
 			form: $('#preference-form')
 		},
 		'company-detail':{
 			btn: $('#company-detail'),
+			cancelBtn: $('#company-detail-cancel'),
 			display: $('#company-detail-display'),
 			form: $('#company-detail-form')
 		},
 		'company-social':{
 			btn: $('#company-social'),
+			cancelBtn: $('#company-social-cancel'),
 			display: $('#company-social-display'),
 			form: $('#company-social-form')
 		},
 		'work' :{
 			btn: $('#work'),
+			cancelBtn: $('#work-cancel'),
 			display: $('#work-display'),
 			form: $('#work-form')
 		}
@@ -317,7 +344,22 @@
 		item.btn.click(function(){
 			item.display.addClass('hide')
 			item.form.removeClass('hide')
+			item.btn.addClass('hide')
 		})
+
+		item.cancelBtn.click(function(){
+			item.display.removeClass('hide')
+			item.form.addClass('hide')
+			item.btn.removeClass('hide')
+		})
+	})
+
+	$('#company-social-add').click(function(){
+		edit['company-social'].btn.trigger('click')
+	})
+
+	$('#work-add').click(function(){
+		edit['work'].btn.trigger('click')
 	})
 
 	{% if form_business_head_error %}
@@ -348,6 +390,36 @@
 		edit['work'].btn.trigger('click')
 	{% endif %}
 
+	$('#id_business_since').datepicker()
+
+	//travel distance
+	var travelDistanceBlock = $('#form-group-id_travel_distance_0')
+	var travelToCustomerSelect = $('#id_travel_to_customer')
+	var travelDistanceInputs = $('#id_travel_distance input');
+
+	travelToCustomerSelect.change(function(){
+		if(travelToCustomerSelect.val() === 'some_areas'){
+			travelDistanceBlock.removeClass('hide')
+
+			var allEmpty = true;
+			_.each(travelDistanceInputs, function(input){ 
+				allEmpty = allEmpty && !input.checked
+			})
+
+			//only check all by default if all unchecked
+			if(allEmpty){
+				travelDistanceInputs.prop('checked', true)
+			}
+
+		} else {
+			travelDistanceBlock.addClass('hide')
+			travelDistanceInputs.prop('checked', false)
+		}
+	})
+
+	$(function(){
+		travelToCustomerSelect.trigger('change')
+	})
 </script>
 
 {% endwith %}
