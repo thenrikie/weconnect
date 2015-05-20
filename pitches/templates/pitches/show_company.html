@@ -13,11 +13,11 @@
 	<div class="pitches_company_operations">
 		<form class="col-md-5" method="post" action="{% url 'pitches:reject' pitch.id %}">
 			{% csrf_token %}
-			<input type="submit" value="Reject" class="btn btn-grey btn-block">
+			<input type="submit" value="I will pass on this project" class="btn btn-grey btn-block">
 		</form>
 
 		<form class="col-md-5" method="get" action="{% url 'pitches:accept' pitch.id %}">
-			<input type="submit" value="Accept" class="btn btn-blue btn-block">
+			<input type="submit" value="I want to work on this project" class="btn btn-blue btn-block">
 		</form>
 	</div>
 	{% endif %}
@@ -41,9 +41,11 @@
 				<div class="pitches_quote_head_company">
 					{{ pitch.company.userprofile.business_name }}
 				</div>
+				{%  if pitch.rate != 'NA' %}
 				<div class="pitches_quote_price">
-					$ <span class="pitches_company_select_item_price">{{ pitch.price }}</span> {{ pitch.rate }}
+					HKD <span class="pitches_company_select_item_price">{{ pitch.price }}</span> {{ pitch.rate }}
 				</div>
+				{% endif %}
 				<div class="clearfix"></div>
 			</div>
 
@@ -81,7 +83,7 @@
 					{%  if pitch.rate == 'NA' %}
 						I do not want to provide a price yet
 					{% else %}
-						{{ pitch.price }} {{ pitch.rate }}
+						HKD {{ pitch.price }} {{ pitch.rate }}
 					{% endif %}
 				</div>
 			</div>

@@ -23,11 +23,12 @@ def login(r):
 			user = auth.authenticate(username=r.POST['username'], password=r.POST['password'])
 			if user is not None and user.is_active:
 				auth.login(r, user)
-				return redirect('/')
+
+				return redirect(r.GET.get('next', '/'))
 	else:
 		form = AuthenticationForm();
 	
-	return render(r, 'auth/login.html', {'form' : form})
+	return render(r, 'auth/login.html', {'form' : form, 'next' : r.GET.get('next','/')})
 
 def logout(r):
 	auth.logout(r)

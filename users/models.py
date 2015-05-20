@@ -5,7 +5,8 @@ from authentication.models import User
 # Create your models here.
 class SubBusiness(models.Model):
 	name = models.CharField(max_length=255)
-	desc = models.CharField(max_length=255)
+	role = models.CharField(max_length=255, blank=True)
+	desc = models.CharField(max_length=255, blank=True)
 
 	def __str__(self):
 		return self.name

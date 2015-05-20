@@ -102,26 +102,6 @@
 		<div style="clear:both"></div>
 	</div>
 
-	<div class="{{ css_prefix }}_desc">
-		<div id="preference-display">
-			<h3 class="company-profile-head">Preferences</h3>
-			<div class="{{ css_prefix }}_service_item">
-				<span class="{{ css_prefix }}_service_item_key">I can travel to my customers</span>
-				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.travel_to_customer_text }}</span>
-			</div>
-			{% if userprofile.travel_to_customer != 'anywhere' %}
-			<div class="{{ css_prefix }}_service_item">
-				<span class="{{ css_prefix }}_service_item_key">Travel distance</span>
-				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.travel_distance.all|join:"<br>" }}</span>
-			</div>
-			{% endif %}
-			<div class="{{ css_prefix }}_service_item">
-				<span class="{{ css_prefix }}_service_item_key">Customer usually travel to me</span>
-				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.customer_travel|yesno }}</span>
-			</div>
-		</div>
-		<div style="clear:both"></div>
-	</div>
 </div>
 <div class="{{ css_prefix }}_right col-md-4">
 	<div class="{{ css_prefix }}_companysocial">

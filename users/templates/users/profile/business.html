@@ -390,7 +390,7 @@
 		edit['work'].btn.trigger('click')
 	{% endif %}
 
-	$('#id_business_since').datepicker()
+	$('#id_business_since').datepicker({ dateFormat: 'yy-mm-dd' })
 
 	//travel distance
 	var travelDistanceBlock = $('#form-group-id_travel_distance_0')

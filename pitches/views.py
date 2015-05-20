@@ -7,25 +7,42 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from pitches.forms import Message as MessageForm
 from emails import sender
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+@login_required
 def list_request(r):
+	if not r.user.is_company:
+		return redirect("/")
+
 	pitches = Pitch.objects.filter(company=r.user, state='waiting', archived=False)
-	print(pitches)
 	return render(r, 'pitches/list_request.html', { 'pitches': pitches})
 
+@login_required
 def list_quote(r):
+	if not r.user.is_company:
+		return redirect("/")
+
 	pitches = Pitch.objects.filter(company=r.user, state='accepted', archived=False)
 	return render(r, 'pitches/list_quote.html', { 'pitches': pitches})
 
+@login_required
 def list_hired(r):
+	if not r.user.is_company:
+		return redirect("/")
+
 	pitches = Pitch.objects.filter(company=r.user, state='hired', archived=False)
 	return render(r, 'pitches/list_hired.html', { 'pitches': pitches})
 
+@login_required
 def list_archive(r):
+	if not r.user.is_company:
+		return redirect("/")
+
 	pitches = Pitch.objects.filter(company=r.user, archived=True)
 	return render(r, 'pitches/list_archive.html', { 'pitches': pitches})
 
+@login_required
 def accept(r, pitch_id):
 	pitch = get_object_or_404(Pitch, pk=pitch_id)
 
@@ -68,6 +85,7 @@ def accept(r, pitch_id):
 			
 	return render(r, 'pitches/accept.html', {'pitch': pitch, 'form' : form})
 
+@login_required
 def reject(r, pitch_id):
 
 	if r.method == 'POST':
@@ -89,6 +107,7 @@ def reject(r, pitch_id):
 
 	return redirect('/')
 
+@login_required
 def archive(r, pitch_id):
 	if r.method == 'POST':
 		pitch = get_object_or_404(Pitch, pk=pitch_id)
@@ -108,9 +127,8 @@ def archive(r, pitch_id):
 
 	return redirect('/')
 
+@login_required
 def show(r, pitch_id, messageForm=None):
-	if not r.user.is_authenticated():
-		return redirect('/')
 
 	pitch = get_object_or_404(Pitch, pk=pitch_id)
 
@@ -132,7 +150,7 @@ def show(r, pitch_id, messageForm=None):
 			'messages': messages
 		})
 		
-	elif pitch.project.user == r.user:
+	elif pitch.project.user == r.user and not pitch.waiting():
 		pitches = project.ready_pitch()
 		cancel_form = project_forms.Cancel()
 		return render(r, 'pitches/show_customer.html', {
@@ -148,6 +166,7 @@ def show(r, pitch_id, messageForm=None):
 		return redirect('/')
 
 
+@login_required
 def hire(r, pitch_id):
 
 	if r.method == 'POST':
@@ -181,7 +200,7 @@ def hire(r, pitch_id):
 		return HttpResponseRedirect(reverse('pitches:show', args=[pitch.id]))
 
 
-
+@login_required
 def post_message(r, pitch_id):
 
 	if r.method == 'POST':
@@ -238,6 +257,7 @@ def post_message(r, pitch_id):
 	else:
 		return redirect(reverse('pitches:show', args=[pitch_id]))
 
+@login_required
 def download_attachment(r, pitch_id, message_id):
 	from django.conf import settings
 	message = get_object_or_404(Message, pk=message_id)

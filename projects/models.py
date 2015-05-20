@@ -62,7 +62,7 @@ class Project(models.Model):
 			default='flexible'
 	)
 
-	specific_date = models.DateTimeField(null=True, blank=True, verbose_name='Date')
+	specific_date = models.DateField(null=True, blank=True, verbose_name='Date')
 	deadline = models.DateTimeField(null=True)
 	user = models.ForeignKey(User)
 
@@ -111,6 +111,13 @@ class Project(models.Model):
 		for u in self.URGENCY:
 			if u[0] == self.urgency:
 				return u[1]
+		return "?"
+
+	def travel_to_pro_text(self):
+		for t in self.TRAVEL:
+			if t[0] == self.travel_to_pro:
+				return t[1]
+		return "?"
 
 	def unread_message_count(self):
 		from pitches.models import Message

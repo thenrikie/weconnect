@@ -967,3 +967,12 @@ h3, .h3{
     font-size: 20px;
     margin-top: 20px;
 }
+.pitches_pitch_quotecontent_content_head_time {
+    font-size: 12px;
+}
+.pitches_pitch_message_item_head_date {
+    font-size: 12px;
+}
+.blue-link > span {
+    vertical-align: middle;
+}

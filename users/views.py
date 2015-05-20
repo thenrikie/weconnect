@@ -5,8 +5,9 @@ from authentication.models import User
 from django.db import connection
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-
+from django.contrib.auth.decorators import login_required
 # Create your views here.
+
 
 def profile_customer(r):
 	form = forms.Credential(initial={'first_name': r.user.first_name, 'last_name': r.user.last_name})
@@ -91,7 +92,7 @@ def profile_business(r):
 
 	return render(r, 'users/profile/business.html', view_values)
 
-
+@login_required
 def profile(r):
 	if hasattr(r.user, 'userprofile') and r.user.userprofile.role == 'COMPANY':
 		return profile_business(r)
@@ -100,6 +101,7 @@ def profile(r):
 	else:
 		return redirect('/')
 
+@login_required
 def pub_profile(r, company_id):
 	user = get_object_or_404(User, pk=company_id)
 	if user.userprofile.role != 'COMPANY':

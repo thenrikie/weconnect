@@ -3,7 +3,7 @@
 {% load staticfiles %}
 {% load addcss %}
 
-<h2>Introduction to {{ project.sub_business.first.name }}</h2>
+<h2>Introduction to {{ project.sub_business.first.role }}</h2>
 
 <div class="pitches_pitch_operations">
 	<a href="javascript:void(0)" class="btn btn-default" id="pitch-original-request-btn">View original request</a>
@@ -61,7 +61,7 @@
 		<span class="pitches_pitch_contact_item_icon">
 			<img src="/static/image/contact-name.png" alt="Contact Name">
 		</span>
-		<span class="pitches_pitch_contact_text">{{ pitch.company.full_name }}</span>
+		<span class="pitches_pitch_contact_text">{{ pitch.company.userprofile.business_name }}</span>
 	</div>
 
 	<div class="pitches_pitch_contact_item">
@@ -86,7 +86,7 @@
 	</div>
 
 	<div class="pitches_pitch_contact_item">
-		<a class="blue-link" href="{% url 'users:pub_profile' pitch.company.id %}">View Company Profile</a>
+		<a class="blue-link" href="{% url 'users:pub_profile' pitch.company.id %}" target="_blank">View Company Profile</a>
 	</div>
 
 </div>
@@ -94,11 +94,11 @@
 <div class="pitches_pitch_right col-md-9">
 	<div class="pitches_pitch_quotecontent_content">
 		<div class="pitches_pitch_quotecontent_content_head">
-			<span class="pitches_pitch_quotecontent_content_head_name">{{ pitch.company.userprofile.business_name }}</span>
+			<a id="reply-btn" href="javascript:void(0)" class="blue-link"><img src="/static/image/re.png"> <span>Reply</span></a>
 			<span class="pitches_pitch_quotecontent_content_head_time pull-right">{{ pitch.state_changed_at|timesince }}</span>
 		</div>
 
-		<div class="pitches_pitch_quotecontent_desc_head">Why you would be the best person for this project? </div>
+
 		<p class="pitches_pitch_quotecontent_desc">{{ pitch.desc }}</p>
 
 		{% if not project.awarded %}
@@ -111,8 +111,9 @@
 	</div>
 
 	<div class="pitches_pitch_message" id="message">
-		{% include 'pitches/message.html' with form=form messages=messages pitch=pitch  %}
+		{% include 'pitches/message.html' with form=form messages=messages pitch=pitch message_from_class='hide' %}
 	</div>
+	
 </div>
 
 
@@ -152,6 +153,10 @@
 
 	$('#cancel-project').click(function(){
 		$('#modal-cancel-project').modal()
+	})
+
+	$('#reply-btn').click(function(){
+		$('#message-form').removeClass('hide')
 	})
 </script>
 {% endblock %}

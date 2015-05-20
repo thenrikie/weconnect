@@ -42,7 +42,7 @@
 
 	<div class="pitches_project_row">
 		<div class="pitches_project_row_key">
-			Customer location
+			The pro travel to me
 		</div>
 		<div class="pitches_project_row_value">
 			{{ project.my_place}}
@@ -51,25 +51,17 @@
 
 	<div class="pitches_project_row">
 		<div class="pitches_project_row_key">
-			Customer is willing to travel
+			I can travel to the pro
 		</div>
 		<div class="pitches_project_row_value">
-			{{ project.can_travel|yesno }}
-			{% if project.can_travel %}
+			{{ project.travel_to_pro_text }}
+			{% if project.travel_to_pro == 'some_areas' %}
 				<br><br>
 				{{ project.travel_distance.all|join:'<br>' }}
 			{% endif %}
 		</div>
 	</div>
 
-	<div class="pitches_project_row">
-		<div class="pitches_project_row_key">
-			Customer wants you to travel
-		</div>
-		<div class="pitches_project_row_value">
-			{{ project.company_travel}}
-		</div>
-	</div>
 
 
 	<div class="pitches_project_row">
@@ -78,7 +70,7 @@
 		</div>
 		<div class="pitches_project_row_value">
 			{% if project.budget_lower and project.budget_upper %}
-				{{ project.budget_lower }} - {{ project.budget_upper }}
+				HKD {{ project.budget_lower }} - HKD {{ project.budget_upper }}
 			{% else %}
 				No information
 			{% endif %}
@@ -90,7 +82,11 @@
 			Prefered start date
 		</div>
 		<div class="pitches_project_row_value">
+			{% if project.urgency == 'specific' %}
+			{{ project.specific_date|date:'d/m/Y'}}
+			{% else %}
 			{{ project.urgency_text }}
+			{% endif %}
 		</div>
 	</div>
 

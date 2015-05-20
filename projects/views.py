@@ -10,6 +10,7 @@ from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.contrib.auth.forms import AuthenticationForm
 from emails import sender
+from django.contrib.auth.decorators import login_required
 import json
 
 # Create your views here.
@@ -92,12 +93,12 @@ def create_project_select_details(r):
 						})			
 
 			whiteListProject = {k: r.POST.get(k, False) for k in (
-				'urgency', 
-				'can_travel', 
-				'company_travel',
-				'budget_lower',
-				'budget_upper',
-				'desc'
+					'budget_lower', 
+					'budget_upper', 
+					'urgency', 
+					'specific_date', 
+					'travel_to_pro', 
+					'desc'
 				)
 			}
 
@@ -143,12 +144,10 @@ def list_project(r):
 	projects = Project.objects.all().filter(user=r.user)
 	return render(r, 'projects/list.html', {'projects' : projects})
 
+@login_required
 def cancel(r, project_id):
 
 	if r.method != 'POST':
-		return redirect('/')
-
-	if not r.user.is_authenticated():
 		return redirect('/')
 
 	project = get_object_or_404(Project, pk=project_id)

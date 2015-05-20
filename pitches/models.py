@@ -27,7 +27,7 @@ class Pitch(models.Model):
 
 	archived = models.BooleanField(default=False)
 
-	price = models.FloatField(blank=True, null=True)
+	price = models.FloatField(blank=True, null=True, verbose_name='Estimated Price')
 	desc = models.CharField(
 		verbose_name='Tell us why you would be the best person for this project', 
 		max_length=1024,

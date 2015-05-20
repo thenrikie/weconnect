@@ -2,7 +2,7 @@
 {% load hformrow %}
 {% block content %}
 <div class="auth_login center-block">
-	<form action="{% url 'auth:login' %}" method="post" class="form-horizontal">
+	<form action="{% url 'auth:login' %}?next={{ next }}" method="post" class="form-horizontal">
 		{% csrf_token %}
 		{{ form.non_field_errors }}
 		{{ form.username|hformrow:'Email address' }}

@@ -11,7 +11,6 @@ class Accept(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		super(Accept, self).__init__(*args, **kwargs)
 		self.fields['desc'].required = True
-		self.fields['price'].required = True
 
 	class Meta:
 		model = Pitch
@@ -20,6 +19,13 @@ class Accept(forms.ModelForm):
 			'desc' : forms.Textarea,
 			'rate' : forms.RadioSelect
 		}
+
+	def clean(self):
+		cleaned_data = super(Accept, self).clean()
+		rate = cleaned_data.get('rate')
+		price = cleaned_data.get('price')
+		if rate != "NA" and price is None:
+			self.add_error('price', 'This value is required')
 
 
 class Message(forms.Form):
