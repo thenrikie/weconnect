@@ -1,6 +1,11 @@
 {% load staticfiles %}
 
+		{% if pitch.project.user.userprofile.photo %}
 		<img class="pitches_pitch_item_image col-md-2" src="{% static pitch.project.user.userprofile.photo %}" alt="{{ pitch.project.user.full_name }}">
+		{% else %}
+		<img class="pitches_pitch_item_image col-md-2" src="/static/image/no-image.png" alt="{{ pitch.project.user.full_name  }}">
+		{% endif %}
+
 		<div class="pitches_pitch_item_text col-md-8">
 			<div class="col-md-7">
 				<h3>
@@ -15,7 +20,7 @@
 				<a href="{% url 'pitches:show' pitch.id %}" class="blue-link">View request and quote</a>
 			</div>
 			<div class="col-md-5 pitches_pitch_item_quoted_time">
-				{{ pitch.state_changed_at|date:'f'}}{{ pitch.state_changed_at|date:'A, '|lower }}{{ pitch.state_changed_at|date:'j F, Y'}}
+				{{ pitch.accepted_at|date:'f'}}{{ pitch.accepted_at|date:'A, '|lower }}{{ pitch.accepted_at|date:'j F, Y'}}
 			</div>
 		</div>
 

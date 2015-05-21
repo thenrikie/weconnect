@@ -15,7 +15,7 @@
 				{% if userprofile.logo %}
 					<img class="{{ css_prefix }}s_head_logo_img" src="{% static userprofile.logo %}" alt="{{ userprofile.business_name }}">
 				{% else %}
-					<div class="{{ css_prefix }}s_head_logo">?</div>
+					<img class="{{ css_prefix }}s_head_logo_img" src="/static/image/no-image.png" alt="{{ userprofile.business_name }}">
 				{% endif %}
 			</div>
 
@@ -50,7 +50,7 @@
 					{% if userprofile.photo %}
 						<img class="{{ css_prefix }}_head_ppl_photo_img col-md-4" src="{% static userprofile.photo %}" alt="{{ userprofile.business_name }}">
 					{% else %}
-						<div class="{{ css_prefix }}_head_ppl_photo col-md-4">?</div>
+						<img class="{{ css_prefix }}_head_ppl_photo_img col-md-4" src="/static/image/no-image.png" alt="{{ userprofile.business_name }}">
 					{% endif %}
 
 					<div class="col-md-8">

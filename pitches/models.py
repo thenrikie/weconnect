@@ -44,7 +44,7 @@ class Pitch(models.Model):
 
 	state = models.CharField(max_length=25, choices=STATE, default='waiting')
 	state_changed_at = models.DateTimeField()
-
+	accepted_at  = models.DateTimeField(null=True)
 	hired_at = models.DateTimeField(null=True)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
@@ -75,6 +75,8 @@ class Pitch(models.Model):
 			self.state_changed_at = datetime.now()
 			if self.state == 'hired':
 				self.hired_at = datetime.now()
+			elif self.state == 'accepted':
+				self.accepted_at = datetime.now()
 
 	def company_unread_message_count(self):
 		return self.message_set.filter(read=False, recipient=self.company, pitch=self).count()

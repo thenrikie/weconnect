@@ -141,7 +141,7 @@ def list_project(r):
 	if not r.user.is_authenticated():
 		return redirect('/')
 
-	projects = Project.objects.all().filter(user=r.user)
+	projects = Project.objects.all().filter(user=r.user).order_by('-created_at')
 	return render(r, 'projects/list.html', {'projects' : projects})
 
 @login_required

@@ -235,12 +235,14 @@ h1 {
 }
 
 .pitches_pitch_quotecontent_content_operations {
+    display: inline-block;
     padding: 15px;
+    vertical-align: middle;
  
 }
 
 .pitches_pitch_message_item {
-    border-top: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
     padding: 30px 0;
 }
 
@@ -535,9 +537,28 @@ h1 {
     padding: 60px;
     text-align: center;
 }
-.auth_register{
-
+.auth_register {
+    padding-right: 50px;
 }
+.auth_register_right {
+    border-left: 1px solid #e5e5e5;
+    margin-top: -20px;
+    padding-left: 50px;
+}
+.signup-step-title {
+    display: inline-block;
+    margin-left: 10px;
+    vertical-align: middle;
+    width: 280px;
+}
+.signup-step-box > img {
+    width: 100px;
+}
+
+.signup-step-box {
+    margin-top: 50px;
+}
+
 .top_space{
     margin-top: 30px;
 }
@@ -625,6 +646,9 @@ h1 {
     font-size: 11px;
     font-weight: bold;
     padding: 5px;
+    position: absolute;
+    right: 40px;
+    top: 20px;
 }
 .pitches_pitch_item_btns form {
     display: inline-block;
@@ -975,4 +999,13 @@ h3, .h3{
 }
 .blue-link > span {
     vertical-align: middle;
+}
+.projects_project_item_text {
+    height: 40px;
+}
+.projects_project_item_date {
+    bottom: 45px;
+    color: #666666;
+    font-size: 12px;
+    position: absolute;
 }

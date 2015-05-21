@@ -7,6 +7,14 @@
  {% for project in projects %}
  	<li class="col-md-4">
  		<div class="projects_project_item">
+	 		{% if project.awarded %}
+			<span class="hired">Hired!</span>
+			{% endif %}
+
+	 		{% if project.cancelled %}
+			<span class="hired">Cancelled</span>
+			{% endif %}
+
 	 		<span class="projects_project_item_count">
 	 			{% if project.cancelled %}
 	 				-
@@ -14,16 +22,16 @@
 	 				{{ project.pitch_count }}
 	 			{% endif %}
 	 		</span> 
-	 		<span class="projects_project_item_sp">Service Providers</span>
-	 		<p> {{ project.business.all.first.name }}</p>
-	 		<p> 
-	 			{% for sub in project.sub_business.all %}
-	 				{{ sub.name}}
-	 				{% if not forloop.last %}
-	 				,
-	 				{% endif %}
-	 			{% endfor %}
-	 		</p>
+	 		<span class="projects_project_item_sp">{{ project.sub_business.first.role }}</span>
+	 		
+	 		{% if project.awarded %}
+	 		<p class="projects_project_item_text"> Congratulations on hiring a pro! </p>
+	 		{% elif project.pitch_count == 0 %}
+	 		<p class="projects_project_item_text"> We are currently connecting with Pros, you will be able to view quotes here soon. </p>
+	 		{% else %}
+	 		<p class="projects_project_item_text"> Have contacted you and are ready to get started on your project. </p>
+	 		{% endif %}
+
 	 		{% if project.pitch_count > 0 and not project.cancelled %}
 	 		<a href="{% url 'pitches:show' project.ready_pitch.first.id %}" class="projects_project_item_view btn btn-blue">
 	 			View Project
@@ -32,12 +40,7 @@
 		        {% endif %}
 	 		</a>
 	 		{% endif %}
-	 		{% if project.awarded %}
-				<span class="hired">Hired!</span>
-			{% endif %}
-	 		{% if project.cancelled %}
-				<span class="hired">Cancelled</span>
-			{% endif %}
+	 		<div class="projects_project_item_date">Posted: {{ project.created_at|date:'d/m/Y'}}</div>
  		</div>
  	</li>
  {% empty %}

@@ -73,6 +73,7 @@ class UserProfile(models.Model):
 
 	business_name = models.CharField(max_length=256, verbose_name='business name')
 	mobile_number = models.CharField(max_length=100, blank=True, verbose_name='mobile number')
+
 	website = models.URLField(max_length=512, blank=True)
 
 	desc = models.CharField(max_length=1024, blank=True, verbose_name='About Your Company')

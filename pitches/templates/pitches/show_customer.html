@@ -23,7 +23,12 @@
 	<div class="col-md-4">
 		<div class="pitches_company_select_item {% if this_pitch == pitch %}highlighted{% endif %}">
 			<div class="pitches_company_select_item_head">
-				$ <span class="pitches_company_select_item_price">{{ this_pitch.price }}</span> {{ this_pitch.rate }}
+				{% if this_pitch.rate != 'NA' %}
+				HKD <span class="pitches_company_select_item_price">{{ this_pitch.price }}</span> {{ this_pitch.rate }}
+				{% else %}
+				No price provided
+				{% endif %}
+
 				{% if this_pitch.hired %}
 					<span class="hired">Hired!</span>
 				{% endif %}
@@ -92,16 +97,11 @@
 </div>
 
 <div class="pitches_pitch_right col-md-9">
-	<div class="pitches_pitch_quotecontent_content">
-		<div class="pitches_pitch_quotecontent_content_head">
-			<a id="reply-btn" href="javascript:void(0)" class="blue-link"><img src="/static/image/re.png"> <span>Reply</span></a>
-			<span class="pitches_pitch_quotecontent_content_head_time pull-right">{{ pitch.state_changed_at|timesince }}</span>
-		</div>
-
-
-		<p class="pitches_pitch_quotecontent_desc">{{ pitch.desc }}</p>
-
-		{% if not project.awarded %}
+	<div>
+		<a id="reply-btn" href="javascript:void(0)" class="blue-link"><img src="/static/image/re.png"> 
+			<span>Reply</span>
+		</a>
+	{% if not project.awarded %}
 		<form method="post" action="{% url 'pitches:hire' pitch.id %}" class="pitches_pitch_quotecontent_content_operations">
 			{% csrf_token %}
 			<input type="submit" value="Hire" class="btn btn-blue">
@@ -110,10 +110,36 @@
 		{% endif %}
 	</div>
 
+	{% include 'pitches/message_box.html' with form=form pitch=pitch message_from_class='hide' %}
 	<div class="pitches_pitch_message" id="message">
-		{% include 'pitches/message.html' with form=form messages=messages pitch=pitch message_from_class='hide' %}
+		{% include 'pitches/message.html' with messages=messages pitch=pitch %}
 	</div>
-	
+
+
+	<div class="pitches_pitch_message_item col-md-12">
+		<div class="col-md-12">
+			<div class="pitches_pitch_messge_item_head">
+				{% if pitch.company.userprofile.photo %}
+					<img class="name_card_ppl_photo_img" src="{% static pitch.company.userprofile.photo %}" alt="{{ pitch.company.full_name }}">
+				{% endif %}
+				<span class="pitches_pitch_messge_item_head_author">
+					{{  pitch.company.full_name }}
+				</span>
+				<span class="pitches_pitch_message_item_head_date pull-right">
+					{{ pitch.accepted_at|timesince }}
+				</span>
+			
+			</div>
+
+			<p class="pitches_pitch_message_item_content">
+				{{ pitch.desc|linebreaksbr }}
+			</p>
+
+		</div>
+		<div class="clearfix"></div>		
+	</div>
+
+
 </div>
 
 

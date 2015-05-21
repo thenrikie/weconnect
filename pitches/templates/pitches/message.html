@@ -3,49 +3,6 @@
 {% load hformrow %}
 
 
-<form id="message-form" class="pitches_pitch_message_form {{ message_from_class }}" method="post" enctype="multipart/form-data" action="{% url 'pitches:post_message' pitch.id %}#message">
-	{% csrf_token %}
-	{{ form.non_field_errors }}
-	<div class="pitches_pitch_message_leave">
-		<div class="form-group {{ form.content.errors|yesno:'has-error,'}}">
-			<!--
-			<div class="name_card col-md-12">
-				{% if user.userprofile.photo %}
-					<img class="name_card_ppl_photo_img" src="{% static user.userprofile.photo %}" alt="{{ user.full_name }}">
-				{% else %}
-					<div class="name_card_head_ppl_photo">?</div>
-				{% endif %}
-
-				<div class="name_card_ppl_name">
-					{{ user.full_name}}
-				</div>
-			</div>
-			-->
-			<div class="pitches_pitch_message_leave_content col-md-12">
-				{{ form.content|addattrs:'class=form-control,placeholder=Leave message here,rows=4,cols=1' }}
-				{{ form.content.errors }}
-			</div>
-			<div class="clearfix"></div>
-		</div>
-
-		<div class="clearfix"></div>
-
-		<div class="col-md-8">
-			{{ form.file|hformrow:'Attachment' }}
-		</div>
-		<div class="col-md-4">
-			<div class="pitches_pitch_message_button">
-				<input type="submit" class="btn btn-blue" value="Send">
-			</div>
-		</div>
-		
-		
-		<div class="clearfix"></div>		
-
-
-	</div>
-
-</form>
 
 <div class="pitches_pitch_message_block">
 {% for message in messages %}

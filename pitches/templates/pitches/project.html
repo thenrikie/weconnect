@@ -5,7 +5,7 @@
 		{% if project.user.userprofile.photo %}
 			<img class="pitches_project_ppl_photo_img" src="{% static project.user.userprofile.photo %}" alt="{{ project.user.full_name }}">
 		{% else %}
-			<div class="pitches_project_head_ppl_photo">?</div>
+			<img class="pitches_project_ppl_photo_img" src="/static/image/no-image.png" alt="{{ project.user.full_name }}">
 		{% endif %}
 
 		<div class="pitches_project_ppl_name">

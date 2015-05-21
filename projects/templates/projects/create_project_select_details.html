@@ -9,7 +9,7 @@
 {% load bigformrow %}
 {% load addcss %}
 <h2>Let us know more about what you need and we will introduce you to people ready to help</h2>
-<div class="col-md-7">
+<div class="col-md-7 auth_register">
 	<form action="{% url 'projects:create_details' %}" method="post" class="form-horizontal">
 		{% csrf_token %}
 	
@@ -21,31 +21,32 @@
 		
 		{{ form.non_field_errors }}
 
-<div class="form-group {%if form.budget_lower.errors or form.budget_upper.errors %}has-error{% endif %}">
-	<label class="create_project_question control-label">What is your budget?</label>
-	<div class="create_project_answers">
-		<label><input type="checkbox" id="no-budget"> I don't have a budget in my mind just yet</label>
-		<div id="form-group-budget-range">
-			<div class="col-md-6">
-				<div class="create_project_budget_range">From</div> 
-				<div>
-					<div class="create_project_budget_currency">HKD</div>
-					<div class="create_project_budget_money">{{ form.budget_lower|addcss:'form-control' }}</div>
+		<div class="form-group {%if form.budget_lower.errors or form.budget_upper.errors %}has-error{% endif %}">
+			<label class="create_project_question control-label">What is your budget?</label>
+			<div class="create_project_answers">
+				<label><input type="checkbox" id="no-budget"> I don't have a budget in my mind just yet</label>
+				<div id="form-group-budget-range">
+					<div class="col-md-6">
+						<div class="create_project_budget_range">From</div> 
+						<div>
+							<div class="create_project_budget_currency">HKD</div>
+							<div class="create_project_budget_money">{{ form.budget_lower|addcss:'form-control' }}</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="create_project_budget_range">To</div> 
+						<div>
+							<div class="create_project_budget_currency">HKD</div>
+							<div class="create_project_budget_money">{{ form.budget_upper|addcss:'form-control' }}</div>
+						</div>
+					</div>
 				</div>
+				{{ form.budget_lower.errors }}
+				{{ form.budget_upper.errors }}
 			</div>
-			<div class="col-md-6">
-				<div class="create_project_budget_range">To</div> 
-				<div>
-					<div class="create_project_budget_currency">HKD</div>
-					<div class="create_project_budget_money">{{ form.budget_upper|addcss:'form-control' }}</div>
-				</div>
-			</div>
+			<div class="clearfix"></div>
 		</div>
-		{{ form.budget_lower.errors }}
-		{{ form.budget_upper.errors }}
-	</div>
-	<div class="clearfix"></div>
-</div>
+
 		{% for field in form %}
 		{% if field.name != 'budget_lower' and field.name != 'budget_upper' %}
 			{{ field|bigformrow:field.label }}
@@ -83,9 +84,37 @@
 		</div>
 
 	</form>
+</div>
+<div class="col-md-5 auth_register_right">
+	<h3>How it works</h3>
+	<div class="signup-step-box">
+		<img src="/static/image/customer-1.png">
+		<span class="signup-step-title">
+			<span class="blue index-step-number ">1.</span> 
+			Tell us what you are looking for
+		</span>
+
+	</div>
+
+	<div class="signup-step-box">
+		<img src="/static/image/customer-2.png">
+		<span class="signup-step-title">
+			<span class="blue index-step-number">2.</span> 
+			Receive 3 proposals within 24 hours
+		</span>
+
+	</div>
+
+	<div class="signup-step-box">
+		<img src="/static/image/customer-3.png">
+		<span class="signup-step-title">
+			<span class="blue index-step-number">3.</span> 
+			Compare and decide who to work with
+		</span>
+
+	</div>
 
 </div>
-
 <script type="text/javascript">
 
 	// budget select toggle

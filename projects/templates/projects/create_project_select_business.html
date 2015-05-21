@@ -6,9 +6,9 @@
 	<form action="{% url 'projects:create' %}" method="post" class="form-horizontal" data-parsley-validate>
 		{% csrf_token %}
 		{{ form.non_field_errors }}
-		{% for field in form %}
-			{{ field|hformrow:field.label }}
-		{% endfor %}
+
+		{{ form.business|hformrow:'Looking for' }}
+
 		<div class="form-group">
 			<div class="col-sm-offset-3 col-sm-9" id="subBusiness">
 

@@ -99,7 +99,8 @@
 		<h3>
 			Message
 		</h3>
-		{% include 'pitches/message.html' with form=form messages=messages pitch=pitch  %}
+		{% include 'pitches/message_box.html' with form=form pitch=pitch %}
+		{% include 'pitches/message.html' with messages=messages pitch=pitch  %}
 	</div>
 {% endif %}
 

@@ -48,3 +48,10 @@ class RegisterBusiness(ModelForm):
 			'website': TextInput,
 			'desc': Textarea
 		}
+
+	def clean_website(self):
+		website = self.cleaned_data.get('website', '')
+		if not website.startswith("http://") and not website.startswith("https://"):
+			raise forms.ValidationError("URL must start with http:// or https://")	
+		else:
+			return website

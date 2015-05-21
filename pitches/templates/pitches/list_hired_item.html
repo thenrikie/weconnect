@@ -1,6 +1,11 @@
 {% load staticfiles %}
 
+		{% if pitch.project.user.userprofile.photo %}
 		<img class="pitches_pitch_item_image col-md-2" src="{% static pitch.project.user.userprofile.photo %}" alt="{{ pitch.project.user.full_name }}">
+		{% else %}
+		<img class="pitches_pitch_item_image col-md-2" src="/static/image/no-image.png" alt="{{ pitch.project.user.full_name  }}">
+		{% endif %}
+		
 		<div class="pitches_pitch_item_text col-md-8">
 			<div class="col-md-8">
 				<h3>
