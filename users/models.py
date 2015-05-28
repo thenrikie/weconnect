@@ -1,6 +1,6 @@
 from django.db import models
 from authentication.models import User
-
+from  django.core.validators import URLValidator
 
 # Create your models here.
 class SubBusiness(models.Model):
@@ -74,7 +74,8 @@ class UserProfile(models.Model):
 	business_name = models.CharField(max_length=256, verbose_name='business name')
 	mobile_number = models.CharField(max_length=100, blank=True, verbose_name='mobile number')
 
-	website = models.URLField(max_length=512, blank=True)
+	urlValidator = URLValidator(schemes=['https', 'http'])
+	website = models.CharField(max_length=512, blank=True, validators=[urlValidator])
 
 	desc = models.CharField(max_length=1024, blank=True, verbose_name='About Your Company')
 	service_desc = models.CharField(max_length=1024, blank=True, verbose_name='Your Services')
