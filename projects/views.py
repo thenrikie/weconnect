@@ -92,7 +92,7 @@ def create_project_select_details(r):
 							'auth_error' : 'Only user with customer role can create a project'
 						})			
 
-			whiteListProject = {k: r.POST.get(k, False) for k in (
+			whiteListProject = {k: r.POST.get(k, None) for k in (
 					'budget_lower', 
 					'budget_upper', 
 					'urgency', 
@@ -101,6 +101,8 @@ def create_project_select_details(r):
 					'desc'
 				)
 			}
+
+			print(whiteListProject)
 
 			project = Project(user=r.user, my_place=form.cleaned_data['my_place'], **whiteListProject)
 			project.save()
