@@ -10,7 +10,8 @@ def business(r):
 	elif r.user.is_authenticated() and r.user.is_customer:
 		return redirect('home_customer')
 
-	return render(r, 'weconnect/business.html')
+	form = forms.BusinessIndex()
+	return render(r, 'weconnect/business.html', { 'form': form})
 
 def customer(r):
 	if r.user.is_authenticated() and r.user.is_admin:

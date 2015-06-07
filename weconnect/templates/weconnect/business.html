@@ -1,5 +1,5 @@
 {% extends "weconnect/base.html" %}
-
+{% load addcss %}
 {% block title %}
 RatedFrog: Grow your business by meeting new customers
 {% endblock %}
@@ -31,15 +31,10 @@ RatedFrog: Grow your business by meeting new customers
     			<form id="contact-form" class="index-action-form form-horizontal" action="{% url 'auth:register_business' %}" method="get" data-parsley-validate>
     	        	<div class="form-group">
                   <div class="col-md-9 no-padding">
-                    <select name="business" id="id_business" class="form-control big-control" required data-parsley-error-message="Please select your business">
-                      <option selected="selected" value="">Select your business</option>
-                      <option value="1">Marketing</option>
-                      <option value="2">Design, web and tech services</option>
-                      <option value="3">Photography</option>
-                    </select>
+                    {{ form.business|addattrs:'class=form-control big-control,required=required,data-parsley-error-message=Please select a business type'}}
                   </div>
                   <div class="col-md-3 no-padding">
-                    <input type="submit" class="btn btn-blue" value="Let's do it!">
+                    <input type="submit" class="btn btn-blue" value="Get Started">
                   </div>
 
                 </div>
@@ -100,6 +95,7 @@ RatedFrog: Grow your business by meeting new customers
 
 
       <div class="clearfix"></div>
+      <!--
       <h2 class="text-center index-h2">
         Some of the professionals are already using
       </h2>
@@ -124,7 +120,7 @@ RatedFrog: Grow your business by meeting new customers
     
         </div>
       </div>
-
+    -->
 <div class="modal fade" id="modal-email-success">
   <div class="modal-dialog">
     <div class="modal-content">

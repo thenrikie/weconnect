@@ -5,6 +5,9 @@ from pitches.models import Pitch
 from django import forms
 
 
+class BusinessIndex(forms.Form):
+	business = forms.ModelChoiceField(queryset=Business.objects.all(), empty_label='What\'s your business?')
+
 class Business(forms.Form):
 	business = forms.ModelChoiceField(queryset=Business.objects.all(), empty_label='What are you looking for?')
 
