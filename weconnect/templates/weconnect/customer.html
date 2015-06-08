@@ -25,7 +25,7 @@ RatedFrog: Find trusted and rated professionals to help you with your projects
       <div class="container index-action-block">
         <h1>Find trusted and rated professionals to help you with your projects</h1>
         <div>
-    			<form id="contact-form" class="index-action-form form-horizontal" action="{% url 'projects:create_details' %}" method="post" data-parsley-validate>
+    			<form id="contact-form" class="index-action-form form-horizontal" action="{% url 'projects:create' %}" method="post" data-parsley-validate>
                 {% csrf_token %}
     	        	<div class="form-group">
                   <div class="col-md-9 no-padding">

@@ -12,9 +12,10 @@
 <h2>Let us know more about what you need and we will introduce you to people ready to help</h2>
 <div class="col-md-7 auth_register">
 
-	<form action="{% url 'projects:create_details' %}"  id="form-business" method="post" class="form-horizontal" data-parsley-validate>
+	<form action="{% url 'projects:create' %}"  id="form-business" method="post" class="form-horizontal" data-parsley-validate>
 		{% csrf_token %}
 
+		<input type="hidden" value="1" name="no_validate" disabled id="no-validate">
 		{{ businessForm.non_field_errors }}
 
 		{{ businessForm.business|bigformrow:'What are you looking for?' }}
@@ -25,73 +26,75 @@
 			</div>
 		</div>
 
-		{{ questionForm.non_field_errors }}
-		{% for field in questionForm %}
-			{{ field|bigformrow:field.label }}
-		{% endfor %}
-		
-		{{ form.non_field_errors }}
+		<div id="detail-form" class="hide">
+			{{ questionForm.non_field_errors }}
+			{% for field in questionForm %}
+				{{ field|bigformrow:field.label }}
+			{% endfor %}
+			
+			{{ form.non_field_errors }}
 
-		<div class="form-group {%if form.budget_lower.errors or form.budget_upper.errors %}has-error{% endif %}">
-			<label class="create_project_question control-label">What is your budget?</label>
-			<div class="create_project_answers">
-				<label><input type="checkbox" id="no-budget"> I don't have a budget in my mind just yet</label>
-				<div id="form-group-budget-range">
-					<div class="col-md-6">
-						<div class="create_project_budget_range">From</div> 
-						<div>
-							<div class="create_project_budget_currency">HKD</div>
-							<div class="create_project_budget_money">{{ form.budget_lower|addcss:'form-control' }}</div>
+			<div class="form-group {%if form.budget_lower.errors or form.budget_upper.errors %}has-error{% endif %}">
+				<label class="create_project_question control-label">What is your budget?</label>
+				<div class="create_project_answers">
+					<label><input type="checkbox" id="no-budget"> I don't have a budget in my mind just yet</label>
+					<div id="form-group-budget-range">
+						<div class="col-md-6">
+							<div class="create_project_budget_range">From</div> 
+							<div>
+								<div class="create_project_budget_currency">HKD</div>
+								<div class="create_project_budget_money">{{ form.budget_lower|addcss:'form-control' }}</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="create_project_budget_range">To</div> 
+							<div>
+								<div class="create_project_budget_currency">HKD</div>
+								<div class="create_project_budget_money">{{ form.budget_upper|addcss:'form-control' }}</div>
+							</div>
 						</div>
 					</div>
-					<div class="col-md-6">
-						<div class="create_project_budget_range">To</div> 
-						<div>
-							<div class="create_project_budget_currency">HKD</div>
-							<div class="create_project_budget_money">{{ form.budget_upper|addcss:'form-control' }}</div>
-						</div>
-					</div>
+					{{ form.budget_lower.errors }}
+					{{ form.budget_upper.errors }}
 				</div>
-				{{ form.budget_lower.errors }}
-				{{ form.budget_upper.errors }}
-			</div>
-			<div class="clearfix"></div>
-		</div>
-
-		{% for field in form %}
-		{% if field.name != 'budget_lower' and field.name != 'budget_upper' %}
-			{{ field|bigformrow:field.label }}
-		{% endif %}
-		{% endfor %}
-
-		{% if not user.is_authenticated %}
-			<h3 class="project_create_account_header">
-				<a href="javascript:void(0)" id="login-form-btn">Login</a> or 
-				<a href="javascript:void(0)" id="register-form-btn">Create your account, it's super quick</a></h3>
-
-			<div id="login-form" class="">
-				{{ loginForm.non_field_errors }}
-				{% if auth_error %}
-				<ul class="errorlist"><li>{{auth_error}}</li></ul>
-				{% endif %}
-				{{ loginForm.username|bigformrow:'Email address' }}
-				{{ loginForm.password|bigformrow:'Password' }}
+				<div class="clearfix"></div>
 			</div>
 
-			<div id="register-form" class="hide">
-				{{ registerForm.non_field_errors }}
-				{{ registerForm.first_name|bigformrow:'Your Name' }}
-				{{ registerForm.email|bigformrow:'Email' }}
-				{{ registerForm.password|bigformrow:'Password' }}
+			{% for field in form %}
+			{% if field.name != 'budget_lower' and field.name != 'budget_upper' %}
+				{{ field|bigformrow:field.label }}
+			{% endif %}
+			{% endfor %}
+
+			{% if not user.is_authenticated %}
+				<h3 class="project_create_account_header">
+					<a href="javascript:void(0)" id="login-form-btn">Login</a> or 
+					<a href="javascript:void(0)" id="register-form-btn">Create your account, it's super quick</a></h3>
+
+				<div id="login-form" class="">
+					{{ loginForm.non_field_errors }}
+					{% if auth_error %}
+					<ul class="errorlist"><li>{{auth_error}}</li></ul>
+					{% endif %}
+					{{ loginForm.username|bigformrow:'Email address' }}
+					{{ loginForm.password|bigformrow:'Password' }}
+				</div>
+
+				<div id="register-form" class="hide">
+					{{ registerForm.non_field_errors }}
+					{{ registerForm.first_name|bigformrow:'Your Name' }}
+					{{ registerForm.email|bigformrow:'Email' }}
+					{{ registerForm.password|bigformrow:'Password' }}
+				</div>
+				<input id="auth-mode" type="hidden" name="auth_mode" value="{{auth_mode}}">
+
+			{% endif %}
+
+
+			<br><br>
+			<div class="form-group">
+					<input type="submit" value="Send Request" class="btn btn-blue">
 			</div>
-			<input id="auth-mode" type="hidden" name="auth_mode" value="{{auth_mode}}">
-
-		{% endif %}
-
-
-		<br><br>
-		<div class="form-group">
-				<input type="submit" value="Send Request" class="btn btn-blue">
 		</div>
 
 	</form>
@@ -130,11 +133,14 @@
 
 	var subBusiness = {{ sub_business_json | safe }};
 	var businessSelect = $('#id_business');
+	var detailForm = $('#detail-form');
 
 	var renderSubBusiness = function(){
 
+		$('#subBusiness').html('');
+		detailForm.addClass('hide')
+
 		if (!businessSelect.val()){
-			$('#subBusiness').html('');
 			return;
 		}
 
@@ -146,7 +152,10 @@
 		//on sub business change form post
 		subBusinessSelect.change(function(){
 			if(subBusinessSelect.val() !== ""){
+				$('#no-validate').prop('disabled', false)
 				$('#form-business').submit()
+			} else {
+				detailForm.addClass('hide')
 			}
 			
 		})
@@ -169,6 +178,7 @@
 
 	//sub business prepopulation
 	{% if sub_business %}
+		detailForm.removeClass('hide')
 		$('#id_sub_business').val('{{sub_business}}');
 	{% endif %}
 

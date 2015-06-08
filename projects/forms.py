@@ -58,7 +58,7 @@ class Project(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		super(Project, self).__init__(*args, **kwargs)
 		self.fields['my_place'].empty_label = 'Please select'
-		if args[0] and args[0]['urgency'] == 'specific':
+		if args[0] and args[0].get('urgency') == 'specific':
 			self.fields['specific_date'].required = True
 		
 	

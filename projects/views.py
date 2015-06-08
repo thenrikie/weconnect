@@ -17,29 +17,7 @@ import json
 
 
 def create(r):
-	return create_project_select_business(r)
-
-def create_details(r):
-	return create_project_select_details(r);
-
-
-def create_project_select_business(r):
-	subBusinesses = SubBusiness.objects.all();
-	sub_business_json = json.dumps([ob.as_json() for ob in subBusinesses])
-
-	form = forms.Business()
-
-	if r.method == 'POST':
-		form = forms.Business(r.POST)
-		if form.is_valid():
-			r.session['create_project_business'] = { 'business' : form.cleaned_data['business'].id, 'sub_business': r.POST['sub_business']}
-			return redirect('projects:create_details')
-
-	return render(r, 'projects/create_project_select_business.html', {'form' : form, 'sub_business_json': sub_business_json})
-
-def create_project_select_details(r):
 	
-
 	#get question set based on business selected
 
 	extra = []
@@ -49,11 +27,16 @@ def create_project_select_details(r):
 		for q in questions:
 			extra.append({'question': q.text, 'type': q.type, 'queryset': QuestionOption.objects.filter(question=q)})
 
+	formData = r.POST or None
+	if r.POST.get('no_validate'):
+		formData = None
+
+	#forms
 	businessForm = forms.Business(r.POST or None)
-	questionForm = forms.ProjectQuestion(r.POST or None, extra=extra);
-	form = forms.Project(r.POST or None)
-	registerForm = Register(r.POST or None)
-	loginForm = AuthenticationForm(data=r.POST or None)
+	questionForm = forms.ProjectQuestion(formData, extra=extra);
+	form = forms.Project(formData)
+	registerForm = Register(formData)
+	loginForm = AuthenticationForm(data=formData)
 
 	subBusinesses = SubBusiness.objects.all();
 	sub_business_json = json.dumps([ob.as_json() for ob in subBusinesses])
@@ -66,7 +49,9 @@ def create_project_select_details(r):
 	checkRegister = r.POST.get('auth_mode') == 'register' and registerForm.is_valid()
 	checkLogin = r.POST.get('auth_mode') == 'login' and loginForm.is_valid()
 	checkAuthCond = loggedIn or checkRegister or checkLogin
+
 	if r.method == 'POST':
+		
 		if businessForm.is_valid() and form.is_valid() and questionForm.is_valid() and checkAuthCond:
 			print('passed')
 
@@ -84,7 +69,7 @@ def create_project_select_details(r):
 					if user is not None and user.is_active and user.is_customer:
 						auth.login(r, user)
 					else:
-						return render(r, 'projects/create_project_select_details.html', {
+						return render(r, 'projects/create_project.html', {
 							'form' : form, 
 							'questionForm': questionForm, 
 							'registerForm': registerForm,
@@ -108,11 +93,11 @@ def create_project_select_details(r):
 			project = Project(user=r.user, my_place=form.cleaned_data['my_place'], **whiteListProject)
 			project.save()
 
-			project.business.add(session_business['business'])
+			project.business.add(businessForm.cleaned_data['business'].id)
 
 			##for var in form.cleaned_data['sub_business']:
 			##	project.sub_business.add(var)
-			project.sub_business.add(session_business['sub_business'])
+			project.sub_business.add(r.POST.get('sub_business'))
 
 			for var in form.cleaned_data['travel_distance']:
 				project.travel_distance.add(var)
@@ -125,13 +110,11 @@ def create_project_select_details(r):
 				except TypeError:
 					project.question_option.add(question_set)
 
-			del r.session['create_project_business']
-			
 			return redirect('projects:list')
 
 		#print("post not passed")
 
-	return render(r, 'projects/create_project_select_details.html', {
+	return render(r, 'projects/create_project.html', {
 		'form' : form, 
 		'sub_business_json': sub_business_json,
 		'sub_business' : r.POST.get('sub_business'),
