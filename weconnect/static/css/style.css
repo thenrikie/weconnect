@@ -754,7 +754,7 @@ footer {
     font-weight: bold;
 }
 .footer_row li {
-    margin-bottom: 5px;
+    margin-bottom: 15px;
 }
 .footer_logo {
     padding: 20px 0;
@@ -1019,4 +1019,15 @@ h3, .h3{
 }
 .footer_logo > img {
     width: 180px;
+}
+.trusted_title {
+    display: inline-block;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+img.trusted_icon {
+    display: inline-block;
+    margin: 0;
+    vertical-align: middle;
+    width: 30px;
 }

@@ -6,10 +6,10 @@ from django import forms
 
 
 class BusinessIndex(forms.Form):
-	business = forms.ModelChoiceField(queryset=Business.objects.all(), empty_label='What\'s your business?')
+	business = forms.ModelChoiceField(queryset=Business.objects.all().order_by('rank'), empty_label='What\'s your business?')
 
 class Business(forms.Form):
-	business = forms.ModelChoiceField(queryset=Business.objects.all(), empty_label='What are you looking for?')
+	business = forms.ModelChoiceField(queryset=Business.objects.all().order_by('rank'), empty_label='What are you looking for?')
 
 class ProjectQuestion(forms.Form):
 	def __init__(self, *args, **kwargs):

@@ -20,7 +20,8 @@ class SubBusiness(models.Model):
 
 class Business(models.Model):
 	name = models.CharField(max_length=255)
-	desc = models.CharField(max_length=255)
+	desc = models.CharField(max_length=255, blank=True)
+	rank = models.IntegerField(default=1)
 	sub_business = models.ManyToManyField(SubBusiness)
 
 	def __str__(self):

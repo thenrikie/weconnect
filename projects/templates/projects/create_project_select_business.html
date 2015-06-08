@@ -1,31 +1,66 @@
 {% extends "weconnect/base.html" %}
 {% block content %}
 {% load hformrow %}
+{% load bigformrow %}
 <h2>Let us know more about what you need and we will introduce you to people ready to help</h2>
-<div class="col-md-10">
-	<form action="{% url 'projects:create' %}" method="post" class="form-horizontal" data-parsley-validate>
+<div class="col-md-7 auth_register">
+	<form action="{% url 'projects:create' %}" id="form-business" method="post" class="form-horizontal" data-parsley-validate>
 		{% csrf_token %}
 		{{ form.non_field_errors }}
 
-		{{ form.business|hformrow:'Looking for' }}
+		{{ form.business|bigformrow:'What are you looking for?' }}
 
 		<div class="form-group">
-			<div class="col-sm-offset-3 col-sm-9" id="subBusiness">
+			<div id="subBusiness">
 
 			</div>
 		</div>
+
+		<!--
 		<div class="form-group">
-			<div class="col-sm-offset-3 col-sm-9">
+			<div>
 				<input type="submit" value="Continue" class="btn btn-blue">
 			</div>
 		</div>
+		-->
 
 	</form>
+</div>
+<div class="col-md-5 auth_register_right">
+	<h3>How it works</h3>
+	<div class="signup-step-box">
+		<img src="/static/image/customer-1.png">
+		<span class="signup-step-title">
+			<span class="blue index-step-number ">1.</span> 
+			Tell us what you are looking for
+		</span>
+
+	</div>
+
+	<div class="signup-step-box">
+		<img src="/static/image/customer-2.png">
+		<span class="signup-step-title">
+			<span class="blue index-step-number">2.</span> 
+			Receive 3 proposals within 24 hours
+		</span>
+
+	</div>
+
+	<div class="signup-step-box">
+		<img src="/static/image/customer-3.png">
+		<span class="signup-step-title">
+			<span class="blue index-step-number">3.</span> 
+			Compare and decide who to work with
+		</span>
+
+	</div>
+
 </div>
 <script>
 	var subBusiness = {{ sub_business_json | safe }};
 	var businessSelect = $('#id_business');
-	
+	var subBusinessSelect = $('<select class="form-control" id="id_sub_business" name="sub_business" required>');
+
 	var renderSubBusiness = function(){
 
 		if (!businessSelect.val()){
@@ -37,7 +72,7 @@
 			return o.business == businessSelect.val()
 		});
 
-		var subBusinessSelect = $('<select class="form-control" id="id_sub_business" name="sub_business" required>');
+		subBusinessSelect.html('');
 		subBusinessSelect.append(new Option('Please select',''));
 		_.each(filteredSubBusiness, function(business){
 			subBusinessSelect.append(new Option(business.name, business.id));
@@ -52,6 +87,11 @@
 
 	//on select change
 	businessSelect.change(renderSubBusiness)
+
+	//on sub business change form post
+	subBusinessSelect.change(function(){
+		$('#form-business').submit();
+	})
 
 	// preselect business if business in querystring
 	$(function(){

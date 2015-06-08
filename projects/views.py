@@ -39,23 +39,24 @@ def create_project_select_business(r):
 
 def create_project_select_details(r):
 	
-	#get session from first create page
-	session_business = r.session.get('create_project_business')
-
-	if not session_business or not session_business.get('business') or not session_business.get('sub_business'):
-		return redirect('projects:create')
 
 	#get question set based on business selected
-	questions = Question.objects.filter(sub_business=session_business['sub_business'])
+
 	extra = []
 
-	for q in questions:
-		extra.append({'question': q.text, 'type': q.type, 'queryset': QuestionOption.objects.filter(question=q)})
+	if r.POST.get('sub_business', None) is not None:
+		questions = Question.objects.filter(sub_business=r.POST['sub_business'])
+		for q in questions:
+			extra.append({'question': q.text, 'type': q.type, 'queryset': QuestionOption.objects.filter(question=q)})
 
+	businessForm = forms.Business(r.POST or None)
 	questionForm = forms.ProjectQuestion(r.POST or None, extra=extra);
 	form = forms.Project(r.POST or None)
 	registerForm = Register(r.POST or None)
 	loginForm = AuthenticationForm(data=r.POST or None)
+
+	subBusinesses = SubBusiness.objects.all();
+	sub_business_json = json.dumps([ob.as_json() for ob in subBusinesses])
 
 	#check if logged in
 	loggedIn = False
@@ -66,7 +67,7 @@ def create_project_select_details(r):
 	checkLogin = r.POST.get('auth_mode') == 'login' and loginForm.is_valid()
 	checkAuthCond = loggedIn or checkRegister or checkLogin
 	if r.method == 'POST':
-		if form.is_valid() and questionForm.is_valid() and checkAuthCond:
+		if businessForm.is_valid() and form.is_valid() and questionForm.is_valid() and checkAuthCond:
 			print('passed')
 
 			if not loggedIn:
@@ -132,6 +133,9 @@ def create_project_select_details(r):
 
 	return render(r, 'projects/create_project_select_details.html', {
 		'form' : form, 
+		'sub_business_json': sub_business_json,
+		'sub_business' : r.POST.get('sub_business'),
+		'businessForm': businessForm,
 		'questionForm': questionForm, 
 		'registerForm': registerForm,
 		'loginForm': loginForm,

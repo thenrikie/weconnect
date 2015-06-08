@@ -25,7 +25,8 @@ RatedFrog: Find trusted and rated professionals to help you with your projects
       <div class="container index-action-block">
         <h1>Find trusted and rated professionals to help you with your projects</h1>
         <div>
-    			<form id="contact-form" class="index-action-form form-horizontal" action="{% url 'projects:create' %}" method="get" data-parsley-validate>
+    			<form id="contact-form" class="index-action-form form-horizontal" action="{% url 'projects:create_details' %}" method="post" data-parsley-validate>
+                {% csrf_token %}
     	        	<div class="form-group">
                   <div class="col-md-9 no-padding">
                     {{ form.business|addattrs:'class=form-control big-control,required=required,data-parsley-error-message=Please select a business type'}}
@@ -129,6 +130,86 @@ RatedFrog: Find trusted and rated professionals to help you with your projects
           <p>Creative photographers for your event, wedding or product.</p>
  
     
+        </div>
+      </div>
+
+
+      <div class="clearfix"></div>
+      <h2 class="text-center index-h2">
+        Why trust RatedFrog?
+      </h2>
+      <div class="row index-desc-flow">
+        <div class="col-md-6">
+          <h3 class="index-step-title">
+            <img src="/static/image/icon-1.png" class="trusted_icon">
+            <span class="trusted_title"> Save time and let us do the work </span>
+          </h3>
+          <p>
+            We take your project needs and search through our growing community to find pro's who are interested in working on your project.
+          </p>
+        </div>
+        <div class="col-md-6">
+          <h3 class="index-step-title">
+            <img src="/static/image/icon-2.png" class="trusted_icon">
+            <span class="trusted_title"> Its free, you'll never pay to find Pro's </span>
+          </h3>
+          <p>
+            There is absolutely no cost for receiving quotes from Pro's through RatedFrog. Simply submit a project request and wait for your personal quotes.
+          </p>
+        </div>
+
+        <div class="col-md-6">
+          <h3 class="index-step-title">
+            <img src="/static/image/icon-3.png" class="trusted_icon">
+            <span class="trusted_title"> Trusted and Verified </span>
+          </h3>
+          <p>
+            We personally verify all of the Pro's within our community to ensure they are trustworthy and have the experience required to deliver the best work.
+          </p>
+        </div>
+
+        <div class="col-md-6">
+          <h3 class="index-step-title">
+            <img src="/static/image/icon-4.png" class="trusted_icon">
+            <span class="trusted_title">Your details are safe with us</span>
+          </h3>
+          <p>
+            Your details are always safe with us, we never give your private details to anyone.
+          </p>
+        </div>
+      </div>
+
+      <div class="clearfix"></div>
+      <h2 class="text-center index-h2">
+        Customer Stories
+      </h2>
+      <div class="row index-desc-flow">
+        <div class="col-md-6">
+          <h3 class="index-step-title">
+            <span>New iPhone game app</span>
+          </h3>
+          <p>
+            "I found an affordable app development
+
+company quickly and easily through
+
+RatedFrog and now have my very own App
+
+in the Apple App Store. Best of all it cost me
+
+me nothing to find the developer. Thank you
+
+RatedFrog!"
+          </p>
+          <p>David Wong, HK Island</p>
+        </div>
+        <div class="col-md-6">
+          <h3 class="index-step-title">
+            <span>Photography for my launch</span>
+          </h3>
+          <p>
+            "I spent ages trying to find a photographer until I finally discovered RatedFrog. I received quotes from 3 photographers and ended up working with one to shoot at the launch event of my new company."          </p>
+          <p>Sarah Lee, Tsim Sha Tsui</p>
         </div>
       </div>
 
