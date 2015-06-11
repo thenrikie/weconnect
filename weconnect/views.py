@@ -26,3 +26,9 @@ def index(r):
 	if r.user.is_authenticated() and r.user.is_admin:
 		return redirect('/admin')
 	return customer(r)
+
+
+def index_redirect(r):
+	if r.user.is_authenticated() and r.user.is_admin:
+		return redirect('/admin')
+	return redirect('home_index')

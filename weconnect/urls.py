@@ -8,8 +8,9 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'weconnect.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
-    url(r'^$', views.index, name='home_index'),
-    url(r'^customer$', views.customer, name='home_customer'),
+    url(r'^$', views.index_redirect, name='home'),
+    url(r'^hk/$', views.index, name='home_index'),
+    url(r'^customer/$', views.customer, name='home_customer'),
     url(r'^business/$', views.business, name='home_business'),
 
     url(r'^auth/', include('authentication.urls', namespace='auth')),

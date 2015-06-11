@@ -15,7 +15,7 @@ def list_request(r):
 	if not r.user.is_company:
 		return redirect("/")
 
-	pitches = Pitch.objects.filter(company=r.user, state='waiting', archived=False)
+	pitches = Pitch.objects.filter(company=r.user, state='waiting', archived=False).order_by('-created_at')
 	return render(r, 'pitches/list_request.html', { 'pitches': pitches})
 
 @login_required
@@ -23,7 +23,7 @@ def list_quote(r):
 	if not r.user.is_company:
 		return redirect("/")
 
-	pitches = Pitch.objects.filter(company=r.user, state='accepted', archived=False)
+	pitches = Pitch.objects.filter(company=r.user, state='accepted', archived=False).order_by('-created_at')
 	return render(r, 'pitches/list_quote.html', { 'pitches': pitches})
 
 @login_required
@@ -31,7 +31,7 @@ def list_hired(r):
 	if not r.user.is_company:
 		return redirect("/")
 
-	pitches = Pitch.objects.filter(company=r.user, state='hired', archived=False)
+	pitches = Pitch.objects.filter(company=r.user, state='hired', archived=False).order_by('-created_at')
 	return render(r, 'pitches/list_hired.html', { 'pitches': pitches})
 
 @login_required
@@ -39,7 +39,7 @@ def list_archive(r):
 	if not r.user.is_company:
 		return redirect("/")
 
-	pitches = Pitch.objects.filter(company=r.user, archived=True)
+	pitches = Pitch.objects.filter(company=r.user, archived=True).order_by('-created_at')
 	return render(r, 'pitches/list_archive.html', { 'pitches': pitches})
 
 @login_required

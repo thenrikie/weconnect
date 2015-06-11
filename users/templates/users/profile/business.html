@@ -81,11 +81,9 @@
 				{% csrf_token %}
 				{{ form_business_head.non_field_errors }}
 				{{ form_business_head.business_name|hformrow:'Business Name'}}
-
-				{{ form_business_head.photo|hformrow:'Your photo'}}
-				{{ form_credential.first_name|hformrow:'Your name' }}
-
 				{{ form_business_head.logo|hformrow:'Company Logo'}}
+				{{ form_credential.first_name|hformrow:'Your name' }}
+				{{ form_business_head.photo|hformrow:'Your photo'}}
 				{{ form_business_head.website|hformrow:'Website'}}
 				{{ form_business_head.mobile_number|hformrow:'Mobile number'}}
 				{{ form_business_head.employees|hformrow:'No. of employees' }}
@@ -227,7 +225,7 @@
 			<a class="sm sm_instagram" href="{{ userprofile.instagram }}" target="_blank"></a>
 			{% endif %}
 			<div class="clearfix"></div>
-			<a href="javascript:void(0)" id="company-social-add"> + Add your photos, brochures or videos here</a>
+			<a href="javascript:void(0)" id="company-social-add">+ Add links to your social media</a>
 		</div>
 		<div id="company-social-form" class="hide">
 			<form action="{% url 'users:profile' %}" method="post" class="form-horizontal">
@@ -265,7 +263,7 @@
 			<img class="{{ css_prefix }}_work_image" src="{% static userprofile.work_image_3 %}">
 			{% endif %}
 			<div class="clearfix"></div>
-			<a href="javascript:void(0)" id="work-add">+ Add links to your social media</a>
+			<a href="javascript:void(0)" id="work-add">+ Add your photos, brochures or videos here</a>
 		
 		</div>
 		<div id="work-form" class="hide">

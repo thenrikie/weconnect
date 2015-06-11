@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from projects import forms
 from pitches.forms import Message as MessageForm
 from authentication.forms import Register
+from authentication.forms import RegisterCustomerProfile
 from authentication.views import create_customer
 from projects.models import Project, Question, QuestionOption
 from users.models import Business, SubBusiness
@@ -36,6 +37,8 @@ def create(r):
 	questionForm = forms.ProjectQuestion(formData, extra=extra);
 	form = forms.Project(formData)
 	registerForm = Register(formData)
+	registerCustomerProfileForm = RegisterCustomerProfile(formData)
+
 	loginForm = AuthenticationForm(data=formData)
 
 	subBusinesses = SubBusiness.objects.all();
@@ -46,7 +49,7 @@ def create(r):
 	if r.user.is_authenticated():
 		loggedIn = True
 
-	checkRegister = r.POST.get('auth_mode') == 'register' and registerForm.is_valid()
+	checkRegister = r.POST.get('auth_mode') == 'register' and registerForm.is_valid() and registerCustomerProfileForm.is_valid()
 	checkLogin = r.POST.get('auth_mode') == 'login' and loginForm.is_valid()
 	checkAuthCond = loggedIn or checkRegister or checkLogin
 
@@ -121,8 +124,9 @@ def create(r):
 		'businessForm': businessForm,
 		'questionForm': questionForm, 
 		'registerForm': registerForm,
+		'registerCustomerProfileForm': registerCustomerProfileForm,
 		'loginForm': loginForm,
-		'auth_mode': r.POST.get('auth_mode', 'login')
+		'auth_mode': r.POST.get('auth_mode', 'register')
 	})
 
 def list_project(r):

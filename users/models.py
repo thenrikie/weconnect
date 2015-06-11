@@ -73,7 +73,7 @@ class UserProfile(models.Model):
 
 
 	business_name = models.CharField(max_length=256, verbose_name='business name')
-	mobile_number = models.CharField(max_length=100, blank=True, verbose_name='mobile number')
+	mobile_number = models.CharField(max_length=100, verbose_name='mobile number')
 
 	urlValidator = URLValidator(schemes=['https', 'http'])
 	website = models.CharField(max_length=512, blank=True, validators=[urlValidator])

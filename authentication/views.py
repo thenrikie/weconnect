@@ -49,8 +49,11 @@ def create_customer(user_detail):
 		password=user_detail['password']
 	);
 	
+
 	#Create user profile
-	userProfile = UserProfile(role='CUSTOMER', user=user);
+	mobile_number=user_detail['mobile_number'];
+
+	userProfile = UserProfile(role='CUSTOMER', user=user, mobile_number=mobile_number);
 	userProfile.save()
 
 	user = auth.authenticate(username=user_detail['email'], password=user_detail['password'])
@@ -65,7 +68,8 @@ def register_customer(r):
 
 	if r.method == 'POST':
 		form = forms.Register(r.POST, label_suffix='');
-		if form.is_valid():
+		profileForm = forms.RegisterCustomerProfile(r.POST)
+		if form.is_valid() and profileForm.is_valid():
 			user = create_customer(r.POST)
 			if user is not None and user.is_active:
 				auth.login(r, user)
@@ -74,8 +78,9 @@ def register_customer(r):
 
 	else:
 		form = forms.Register(label_suffix='')
+		profileForm = forms.RegisterCustomerProfile()
 
-	return render(r, 'auth/register_customer.html', {'form' : form})
+	return render(r, 'auth/register_customer.html', {'form' : form, 'profileForm': profileForm})
 
 
 
@@ -94,7 +99,8 @@ def register_business(r):
 
 	if r.method == 'POST':
 
-		if form.is_valid() and businessForm.is_valid() and accountForm.is_valid():
+		atLeastOneSubBusiness = len(r.POST.getlist('sub_business', [])) > 0 
+		if atLeastOneSubBusiness and form.is_valid() and businessForm.is_valid() and accountForm.is_valid():
 			# Create user object
 			user = User.objects.create_user(
 				email=accountForm.cleaned_data['email'], 
@@ -131,5 +137,7 @@ def register_business(r):
 		'form' : form, 
 		'businessForm' : businessForm, 
 		'sub_business_json': sub_business_json,
+		'sub_businesses': r.POST.getlist('sub_business', []),
+		'atLeastOneSubBusiness' : atLeastOneSubBusiness,
 		'accountForm': accountForm
 	})

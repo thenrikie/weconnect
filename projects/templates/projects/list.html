@@ -22,7 +22,7 @@
 	 				{{ project.pitch_count }}
 	 			{% endif %}
 	 		</span> 
-	 		<span class="projects_project_item_sp">{{ project.sub_business.first.role }}</span>
+	 		<span class="projects_project_item_sp">{{ project.sub_business.first.role }}{{ project.pitch_count|pluralize }}</span>
 	 		
 	 		{% if project.awarded %}
 	 		<p class="projects_project_item_text"> Congratulations on hiring a pro! </p>

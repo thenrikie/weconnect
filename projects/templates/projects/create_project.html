@@ -68,10 +68,11 @@
 
 			{% if not user.is_authenticated %}
 				<h3 class="project_create_account_header">
-					<a href="javascript:void(0)" id="login-form-btn">Login</a> or 
-					<a href="javascript:void(0)" id="register-form-btn">Create your account, it's super quick</a></h3>
+					<a href="javascript:void(0)" id="register-form-btn">Create your account</a>
+					<a href="javascript:void(0)" id="login-form-btn">Login</a>
+					</h3>
 
-				<div id="login-form" class="">
+				<div id="login-form" class="hide">
 					{{ loginForm.non_field_errors }}
 					{% if auth_error %}
 					<ul class="errorlist"><li>{{auth_error}}</li></ul>
@@ -80,10 +81,11 @@
 					{{ loginForm.password|bigformrow:'Password' }}
 				</div>
 
-				<div id="register-form" class="hide">
+				<div id="register-form" class="">
 					{{ registerForm.non_field_errors }}
 					{{ registerForm.first_name|bigformrow:'Your Name' }}
 					{{ registerForm.email|bigformrow:'Email' }}
+					{{ registerCustomerProfileForm.mobile_number|bigformrow:'Mobile number' }}
 					{{ registerForm.password|bigformrow:'Password' }}
 				</div>
 				<input id="auth-mode" type="hidden" name="auth_mode" value="{{auth_mode}}">
@@ -253,6 +255,8 @@
 		authMode.val('login')
 		$('#register-form input').prop('disabled', true)
 		$('#login-form input').prop('disabled', false)
+		loginFormBtn.addClass('create_project_auth_selected')
+		registerFormBtn.removeClass('create_project_auth_selected')
 	})
 
 	registerFormBtn.click(function(){
@@ -261,6 +265,8 @@
 		authMode.val('register')
 		$('#login-form input').prop('disabled', true)
 		$('#register-form input').prop('disabled', false)
+		loginFormBtn.removeClass('create_project_auth_selected')
+		registerFormBtn.addClass('create_project_auth_selected')
 	})
 
 	$(function(){	

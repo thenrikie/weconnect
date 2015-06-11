@@ -102,7 +102,7 @@
 			<span>Reply</span>
 		</a>
 	{% if not project.awarded %}
-		<form method="post" action="{% url 'pitches:hire' pitch.id %}" class="pitches_pitch_quotecontent_content_operations">
+		<form method="post" action="{% url 'pitches:hire' pitch.id %}" class="pitches_pitch_quotecontent_content_operations" onsubmit="return confirm('Are you sure?')">
 			{% csrf_token %}
 			<input type="submit" value="Hire" class="btn btn-blue">
 			<input type="button" value="Decline" class="btn btn-grey">

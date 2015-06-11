@@ -1,12 +1,12 @@
 /* Move down content because we have a fixed navbar that is 50px tall */
 html{
-  height: 100%;
+
 }
 body {
   padding-top: 50px; 
   font-size: 16px;   
   color: #1a1a1a;
-  min-height: 100%;
+
 }
 
 h1 {
@@ -1030,4 +1030,28 @@ img.trusted_icon {
     margin: 0;
     vertical-align: middle;
     width: 30px;
+}
+.fixed_bottom{
+    position: fixed;
+    bottom: 0;
+}
+
+.project_create_account_header > a {
+    border: 1px solid #efefef;
+    color: black;
+    padding: 15px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.project_create_account_header > a:hover{
+    text-decoration: none;
+    border-bottom: 3px solid #666666;
+}
+#login-form-btn {
+    margin-left: -6px;
+}
+
+a.create_project_auth_selected {
+    border-bottom: 3px solid #666666;
 }

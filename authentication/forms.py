@@ -33,6 +33,12 @@ class Register(ModelForm):
 		else:
 			return password
 
+class RegisterCustomerProfile(ModelForm):
+	class Meta:
+		model = UserProfile
+		fields = ['mobile_number']
+
+
 class Business(forms.Form):
 	business = forms.ModelChoiceField(queryset=Business.objects.all(), empty_label='')
 	

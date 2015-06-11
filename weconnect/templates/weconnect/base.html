@@ -92,7 +92,7 @@
 
     {% block bighead %}{% endblock %}
 
-    <div class="container">
+    <div class="container main-body">
       {% block content %}
       {% endblock %}
 
@@ -204,5 +204,18 @@
     <!-- Placed at the end of the document so the pages load faster -->
     
     <script src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script>
+      var keepFooterAtBottom = function(){
+        $('footer').removeClass('fixed_bottom');
+        if ($(window).height() > $("html").height()){
+          $('footer').addClass('fixed_bottom');
+        }
+      };
+
+      $(window).on("resize", keepFooterAtBottom);
+
+      $(keepFooterAtBottom);
+      
+    </script>
   </body>
 </html>
