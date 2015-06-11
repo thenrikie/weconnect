@@ -187,7 +187,7 @@
 				{% csrf_token %}
 				{{ form_business_preference.travel_to_customer|hformrow:'I can travel to my customers' }}
 				{{ form_business_preference.travel_distance|hformrow:'Travel distance' }}
-				{{ form_business_preference.customer_travel|hformrow:'Customer usually travel to me' }}
+
 				<input type="hidden" value="preference" name="part">
 				<input id="preference-cancel" type="button" value="Cancel" class="cancel_button btn btn-default pull-right"> 
 				<input type="submit" value="Save" class="btn btn-primary pull-right">

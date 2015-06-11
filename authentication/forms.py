@@ -45,9 +45,9 @@ class Business(forms.Form):
 class RegisterBusiness(ModelForm):
 	class Meta:
 		model = UserProfile
-		fields = ['business_name', 'website', 'mobile_number', 'desc', 'get_sms',
+		fields = ['business_name', 'website', 'mobile_number', 'desc',
 		 'address_1', 'address_2', 'address_3', 'address_4',
-		 'travel_to_customer', 'travel_distance', 'customer_travel'
+		 'travel_to_customer', 'travel_distance'
 		]
 		widgets = {
 			'travel_distance': CheckboxSelectMultiple,

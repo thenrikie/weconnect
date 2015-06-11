@@ -677,7 +677,7 @@ h1 {
 .jumbotron {
     background-color: transparent;
     display: table;
-    height: 700px;
+    height: 650px;
     padding: 48px 0;
     width: 100%;
 /*    background-color: rgba(0, 0, 0, 0.2); */
@@ -754,12 +754,21 @@ footer {
     font-weight: bold;
 }
 .footer_row li {
+    font-size: 14px;
     margin-bottom: 15px;
 }
 .footer_logo {
+    display: inline-block;
     padding: 20px 0;
 }
+.footer_address {
+    font-size: 14px;
+}
 
+.footer_sm {
+    display: inline-block;
+    margin-left: 10px;
+}
 h2, .h2{
     font-size:32px;
     color: #3d7dca;

@@ -35,8 +35,7 @@ class Project(models.Model):
 		('flexible', 'I can be flexible'),
 		('asap', 'As soon as possible'),
 		('week', 'Sometime this week'),
-		('specific', 'Specific date'),
-		('other', 'Other')
+		('specific', 'Specific date')
 	)
 
 	CANCEL_REASON = (
