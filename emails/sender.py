@@ -16,6 +16,10 @@ def send(email, content, subject, template):
 def signup_customer(email, content):
 	send(email, content, 'Welcome to RatedFrog', 'signup_customer')
 
+def signup_customer_with_project(email, content):
+	print ('sending signup email')
+	subject = 'Welcome to RatedFrog, we are already connecting you with ' + content['role'] + '\'s'
+	send(email, content, subject, 'signup_customer_with_project')
 
 def signup_company(email, content):
 	send(email, content, 'Welcome to RatedFrog', 'signup_company')

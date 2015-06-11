@@ -64,7 +64,10 @@ def create(r):
 					user = create_customer(r.POST)
 					if user is not None and user.is_active:
 						auth.login(r, user)
-						sender.signup_customer(user.email, {'name': user.full_name()})
+						sender.signup_customer_with_project(user.email, {
+							'name': user.full_name(),
+							'role': SubBusiness.objects.get(pk=r.POST.get('sub_business')).role
+						})
 					else:
 						return redirect('/')
 				elif checkLogin:
