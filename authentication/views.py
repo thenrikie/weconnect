@@ -97,10 +97,17 @@ def register_business(r):
 	subBusinesses = SubBusiness.objects.all();
 	sub_business_json = json.dumps([ob.as_json() for ob in subBusinesses])
 
+	sub_business_error = False
+
 	if r.method == 'POST':
 
 		atLeastOneSubBusiness = len(r.POST.getlist('sub_business', [])) > 0 
+
+		if not atLeastOneSubBusiness:
+			sub_business_error = True
+			
 		if atLeastOneSubBusiness and form.is_valid() and businessForm.is_valid() and accountForm.is_valid():
+
 			# Create user object
 			user = User.objects.create_user(
 				email=accountForm.cleaned_data['email'], 
@@ -138,6 +145,6 @@ def register_business(r):
 		'businessForm' : businessForm, 
 		'sub_business_json': sub_business_json,
 		'sub_businesses': r.POST.getlist('sub_business', []),
-		'atLeastOneSubBusiness' : atLeastOneSubBusiness,
+		'sub_business_error' : sub_business_error,
 		'accountForm': accountForm
 	})
