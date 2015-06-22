@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, url
-
+from django.conf import settings
 from authentication import views
 
 urlpatterns = patterns('',
@@ -14,7 +14,8 @@ urlpatterns = patterns('',
 			'post_reset_redirect' : '/auth/reset-password/done',
 			'template_name': 'auth/reset_password.html',
 			'email_template_name': 'emails/reset_password.html',
-			'html_email_template_name': 'emails/reset_password.html'
+			'html_email_template_name': 'emails/reset_password.html',
+			'from_email': settings.EMAIL_FROM
 		},
 		name="password_reset"
 	),
