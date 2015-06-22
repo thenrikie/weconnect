@@ -44,7 +44,7 @@ def list_archive(r):
 
 @login_required
 def accept(r, pitch_id):
-	pitch = get_object_or_404(Pitch, pk=pitch_id)
+	pitch = get_object_or_404(Pitch, uniqid=pitch_id)
 
 
 	if pitch.state != 'waiting':
@@ -89,7 +89,7 @@ def accept(r, pitch_id):
 def reject(r, pitch_id):
 
 	if r.method == 'POST':
-		pitch = get_object_or_404(Pitch, pk=pitch_id)
+		pitch = get_object_or_404(Pitch, uniqid=pitch_id)
 
 		if pitch.state != 'waiting':
 			print('project not in waiting state!')
@@ -110,7 +110,7 @@ def reject(r, pitch_id):
 @login_required
 def archive(r, pitch_id):
 	if r.method == 'POST':
-		pitch = get_object_or_404(Pitch, pk=pitch_id)
+		pitch = get_object_or_404(Pitch, uniqid=pitch_id)
 
 		if pitch.state == 'waiting':
 			print('project in waiting state!')
@@ -130,7 +130,7 @@ def archive(r, pitch_id):
 @login_required
 def show(r, pitch_id, messageForm=None):
 
-	pitch = get_object_or_404(Pitch, pk=pitch_id)
+	pitch = get_object_or_404(Pitch, uniqid=pitch_id)
 
 	project = pitch.project
 	messages = pitch.message_set.order_by('-created_at')
@@ -170,7 +170,7 @@ def show(r, pitch_id, messageForm=None):
 def hire(r, pitch_id):
 
 	if r.method == 'POST':
-		pitch = get_object_or_404(Pitch, pk=pitch_id)
+		pitch = get_object_or_404(Pitch, uniqid=pitch_id)
 		project = pitch.project
 
 		if  project.user != r.user:
@@ -197,14 +197,14 @@ def hire(r, pitch_id):
 			'customer_name': pitch.project.user.first_name
 		})
 
-		return HttpResponseRedirect(reverse('pitches:show', args=[pitch.id]))
+		return HttpResponseRedirect(reverse('pitches:show', args=[pitch.uniqid]))
 
 
 @login_required
 def post_message(r, pitch_id):
 
 	if r.method == 'POST':
-		pitch = get_object_or_404(Pitch, pk=pitch_id)
+		pitch = get_object_or_404(Pitch, uniqid=pitch_id)
 
 		if pitch.waiting():
 			print('You cannot leave message while pitching is in waiting state')
@@ -250,7 +250,7 @@ def post_message(r, pitch_id):
 			if r.FILES.get('file'):
 				message.attachment.add(MessageAttachment(file=r.FILES.get('file')))
 
-			return HttpResponseRedirect(reverse('pitches:show', args=[pitch.id]))
+			return HttpResponseRedirect(reverse('pitches:show', args=[pitch.uniqid]))
 		else:
 			print ('not valid message')
 			return show(r, pitch.id, form)
@@ -260,7 +260,7 @@ def post_message(r, pitch_id):
 @login_required
 def download_attachment(r, pitch_id, message_id):
 	from django.conf import settings
-	message = get_object_or_404(Message, pk=message_id)
+	message = get_object_or_404(Message, uniqid=message_id)
 
 	#permission checking
 	if str(message.pitch.id) != pitch_id or (message.pitch.company != r.user and message.pitch.project.user != r.user):

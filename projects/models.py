@@ -2,7 +2,7 @@ from django.db import models
 from users.models import SubBusiness, Business, District
 from authentication.models import User
 from django.db.models import Q
-
+from uniqid import models as UniqidModel
 # Create your models here.
 
 class Question(models.Model):
@@ -28,9 +28,13 @@ class QuestionOption(models.Model):
 	def __str__(self):
 		return self.text
 
+def generateUniqid():
+	return UniqidModel.generateCode(Project.objects.filter, 'uniqid')
+
 class Project(models.Model):
 
-	
+	uniqid = models.CharField(max_length=UniqidModel.LENGTH, editable=False, unique=True, null=True)
+
 	URGENCY = (
 		('flexible', 'I can be flexible'),
 		('asap', 'As soon as possible'),
@@ -54,6 +58,7 @@ class Project(models.Model):
 	business = models.ManyToManyField(Business)
 	sub_business = models.ManyToManyField(SubBusiness)
 	question_option = models.ManyToManyField(QuestionOption)
+
 
 	urgency = models.CharField(max_length=25,
 			verbose_name='When do you need this service?',
@@ -91,6 +96,11 @@ class Project(models.Model):
 	cancelled = models.BooleanField(default=False)
 	cancelled_reason = models.CharField(max_length=25, choices=CANCEL_REASON, null=True, default=None)
 	cancelled_reason_other = models.CharField(max_length=1024, null=True, blank=True)
+
+	def save(self, *args, **kwargs):
+		if not self.uniqid:
+			self.uniqid = generateUniqid()
+		super(Project, self).save(*args, **kwargs)
 
 	def __str__(self):
 		return 'id: ' + str(self.id) + '; creator: ' + self.user.email + '; type: ' + self.sub_business.first().name

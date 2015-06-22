@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import (BaseUserManager, AbstractBaseUser)
+from uniqid import models as UniqidModel
+
 # Create your models here.
 
 class UserManager(BaseUserManager):
@@ -29,12 +31,16 @@ class UserManager(BaseUserManager):
 		user.save(using=self._db)
 		return user
 
+def generateUniqid():
+	return UniqidModel.generateCode(User.objects.filter, 'uniqid')
+
 class User(AbstractBaseUser):
 	email = models.EmailField(max_length=255, unique=True, verbose_name='email address')
 	first_name = models.CharField(max_length=100, verbose_name='First Name')
 	last_name = models.CharField(max_length=100, verbose_name='Last Name', blank=True)
 	is_active = models.BooleanField(default=True)
 	is_admin = models.BooleanField(default=False)
+	uniqid = models.CharField(max_length=UniqidModel.LENGTH, editable=False, unique=True, null=True)
 
 	objects = UserManager()
 
@@ -58,6 +64,10 @@ class User(AbstractBaseUser):
 		else: 
 			return self.email
 
+	def save(self, *args, **kwargs):
+		if not self.uniqid:
+			self.uniqid = generateUniqid()
+		super(User, self).save(*args, **kwargs)
 
 	def has_perm(self, perm, obj=None):
 	    "Does the user have a specific permission?"

@@ -146,7 +146,7 @@ def cancel(r, project_id):
 	if r.method != 'POST':
 		return redirect('/')
 
-	project = get_object_or_404(Project, pk=project_id)
+	project = get_object_or_404(Project, uniqid=project_id)
 	project.cancelled = True
 	form = forms.Cancel(r.POST, instance=project)
 

@@ -33,7 +33,7 @@
 	 		{% endif %}
 
 	 		{% if project.pitch_count > 0 and not project.cancelled %}
-	 		<a href="{% url 'pitches:show' project.ready_pitch.first.id %}" class="projects_project_item_view btn btn-blue">
+	 		<a href="{% url 'pitches:show' project.ready_pitch.first.uniqid %}" class="projects_project_item_view btn btn-blue">
 	 			View Project
 		        {% if project.unread_message_count > 0 %}
 		        <span class="unread_message_pop">{{project.unread_message_count}}<span>

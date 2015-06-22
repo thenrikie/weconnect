@@ -103,7 +103,7 @@ def profile(r):
 
 @login_required
 def pub_profile(r, company_id):
-	user = get_object_or_404(User, pk=company_id)
+	user = get_object_or_404(User, uniqid=company_id)
 	if user.userprofile.role != 'COMPANY':
 		return redirect('/')
 

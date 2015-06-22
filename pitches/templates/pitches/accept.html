@@ -6,7 +6,7 @@
 <h2>Job Request</h2>
 <div class="pitches_company_quote">
 
-	<form action="{% url 'pitches:accept' pitch.id %}" method="post" class="pitches_company_quote_form form-horizontal col-md-7">
+	<form action="{% url 'pitches:accept' pitch.uniqid %}" method="post" class="pitches_company_quote_form form-horizontal col-md-7">
 		{% csrf_token %}
 
 		{{ form.desc|bigformrow:form.desc.label }}

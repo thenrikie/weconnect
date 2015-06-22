@@ -6,7 +6,7 @@
 	<br><br>
 	Take a look at their message, previous customer reviews and portfolio!
 	<br><br>
-	{% url 'pitches:show' pitch.id as url %}
+	{% url 'pitches:show' pitch.uniqid as url %}
 	{% include 'emails/button.html' with btn_text='View Proposal' btn_url=url host_url=host_url  %}
 	<br><br>
 	The RatedFrog Team

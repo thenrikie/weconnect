@@ -11,7 +11,7 @@
 				<h3>
 					You did not win the job for {{  pitch.project.user.first_name }}'s project
 				</h3>
-				<a href="{% url 'pitches:show' pitch.id %}" class="blue-link">View request and quote</a>
+				<a href="{% url 'pitches:show' pitch.uniqid %}" class="blue-link">View request and quote</a>
 			</div>
 			<div class="col-md-4 pitches_pitch_item_quoted_time">
 				{{ pitch.state_changed_at|date:'f'}}{{ pitch.state_changed_at|date:'A, '|lower }}{{ pitch.state_changed_at|date:'j F, Y'}}

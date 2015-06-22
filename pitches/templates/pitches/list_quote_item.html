@@ -17,7 +17,7 @@
 					{% endif %}
 
 				</h3>
-				<a href="{% url 'pitches:show' pitch.id %}" class="blue-link">View request and quote</a>
+				<a href="{% url 'pitches:show' pitch.uniqid %}" class="blue-link">View request and quote</a>
 			</div>
 			<div class="col-md-5 pitches_pitch_item_quoted_time">
 				{{ pitch.accepted_at|date:'f'}}{{ pitch.accepted_at|date:'A, '|lower }}{{ pitch.accepted_at|date:'j F, Y'}}
@@ -25,7 +25,7 @@
 		</div>
 
 		<div class="pitches_pitch_item_button col-md-2">
-			<a href="{% url 'pitches:show' pitch.id %}#message" class="btn btn-blue">	Message             
+			<a href="{% url 'pitches:show' pitch.uniqid %}#message" class="btn btn-blue">	Message             
         	</a>
 		</div>
 		<div class="clearfix"></div>

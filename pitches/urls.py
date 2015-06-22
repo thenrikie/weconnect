@@ -8,14 +8,14 @@ urlpatterns = patterns('',
 	url(r'^hired/$', views.list_hired, name='list_hired'),
 	url(r'^archive/$', views.list_archive, name='list_archive'),
 
-	url(r'^(?P<pitch_id>\d+)/accept/$', views.accept, name='accept'),
-	url(r'^(?P<pitch_id>\d+)/reject/$', views.reject, name='reject'),
-	url(r'^(?P<pitch_id>\d+)/archive/$', views.archive, name='archive'),
-	url(r'^(?P<pitch_id>\d+)/hire/$', views.hire, name='hire'),
+	url(r'^(?P<pitch_id>[0-9A-Z]+)/accept/$', views.accept, name='accept'),
+	url(r'^(?P<pitch_id>[0-9A-Z]+)/reject/$', views.reject, name='reject'),
+	url(r'^(?P<pitch_id>[0-9A-Z]+)/archive/$', views.archive, name='archive'),
+	url(r'^(?P<pitch_id>[0-9A-Z]+)/hire/$', views.hire, name='hire'),
 
-	url(r'^(?P<pitch_id>\d+)/$', views.show, name='show'),
-	url(r'^(?P<pitch_id>\d+)/messages/$', views.post_message, name='post_message'),
-	url(r'^(?P<pitch_id>\d+)/messages/(?P<message_id>\d+)/attachment$', views.download_attachment, name='download_attachment')
+	url(r'^(?P<pitch_id>[0-9A-Z]+)/$', views.show, name='show'),
+	url(r'^(?P<pitch_id>[0-9A-Z]+)/messages/$', views.post_message, name='post_message'),
+	url(r'^(?P<pitch_id>[0-9A-Z]+)/messages/(?P<message_id>\d+)/attachment$', views.download_attachment, name='download_attachment')
 
 
 )

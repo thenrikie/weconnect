@@ -4,9 +4,15 @@ from projects.models import Project
 from datetime import datetime
 from django.db.models import signals
 from emails import sender as emailSender
+from uniqid import models as UniqidModel
+
+def generateUniqid():
+	return UniqidModel.generateCode(Pitch.objects.filter, 'uniqid')
 
 # Create your models here.
 class Pitch(models.Model):
+
+	uniqid = models.CharField(max_length=UniqidModel.LENGTH, editable=False, unique=True, null=True)
 
 	RATE = (
 		('hourly', 'Hourly Rate'),
@@ -51,6 +57,12 @@ class Pitch(models.Model):
 
 	def __str__(self):
 		return 'id: ' + str(self.id) + '; company: ' + self.company.email + ' for project: ' + str(self.project.id)
+
+	def save(self, *args, **kwargs):
+		if not self.uniqid:
+			self.uniqid = generateUniqid()
+		super(Pitch, self).save(*args, **kwargs)
+
 
 	def waiting(self):
 		return self.state == 'waiting'

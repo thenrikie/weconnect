@@ -17,7 +17,7 @@
 					{% endif %}
 
 				</h3>
-				<a href="{% url 'pitches:show' pitch.id %}" class="blue-link">View request and quote</a>
+				<a href="{% url 'pitches:show' pitch.uniqid %}" class="blue-link">View request and quote</a>
 			</div>
 			<div class="col-md-4 pitches_pitch_item_quoted_time">
 				{{ pitch.hired_at|date:'f'}}{{ pitch.hired_at|date:'A, '|lower }}{{ pitch.hired_at|date:'j F, Y'}}
@@ -26,10 +26,10 @@
 
 		<div class="pitches_pitch_item_button col-md-2">
 
-			<a href="{% url 'pitches:show' pitch.id %}#message" class="btn btn-blue">	Message             
+			<a href="{% url 'pitches:show' pitch.uniqid %}#message" class="btn btn-blue">	Message             
         	</a>
 
-			<form method="post" action="{% url 'pitches:archive' pitch.id %}">
+			<form method="post" action="{% url 'pitches:archive' pitch.uniqid %}">
 				{% csrf_token %}
 				<input type="submit" value="Archive" class="btn btn-grey">
 			</form>

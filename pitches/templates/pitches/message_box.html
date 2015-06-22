@@ -2,7 +2,7 @@
 {% load addcss %}
 {% load hformrow %}
 
-<form id="message-form" class="pitches_pitch_message_form {{ message_from_class }}" method="post" enctype="multipart/form-data" action="{% url 'pitches:post_message' pitch.id %}#message" data-parsley-validate>
+<form id="message-form" class="pitches_pitch_message_form {{ message_from_class }}" method="post" enctype="multipart/form-data" action="{% url 'pitches:post_message' pitch.uniqid %}#message" data-parsley-validate>
 	{% csrf_token %}
 	{{ form.non_field_errors }}
 	<div class="pitches_pitch_message_leave">

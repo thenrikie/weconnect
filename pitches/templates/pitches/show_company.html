@@ -13,11 +13,11 @@
 	<div class="pitches_company_operations">
 
 
-		<form class="col-md-5" method="get" action="{% url 'pitches:accept' pitch.id %}" onsubmit="return confirm('Are you sure?')">
+		<form class="col-md-5" method="get" action="{% url 'pitches:accept' pitch.uniqid %}" onsubmit="return confirm('Are you sure?')">
 			<input type="submit" value="I want to work on this project" class="btn btn-blue btn-block">
 		</form>
 
-		<form class="col-md-5" method="post" action="{% url 'pitches:reject' pitch.id %}" onsubmit="return confirm('Are you sure?')">
+		<form class="col-md-5" method="post" action="{% url 'pitches:reject' pitch.uniqid %}" onsubmit="return confirm('Are you sure?')">
 			{% csrf_token %}
 			<input type="submit" value="I will pass on this project" class="btn btn-grey btn-block">
 		</form>

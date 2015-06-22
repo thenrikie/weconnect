@@ -5,7 +5,7 @@
 	<br><br>
 	{{ company_contact }} from {{ company_name }} has sent you a message about your {{ project_type }} project. 
 	<br><br>
-	{% url 'pitches:show' pitch.id as url %}
+	{% url 'pitches:show' pitch.uniqid as url %}
 	{% include 'emails/button.html' with btn_text='View Message' btn_url=url|addstr:'#message-'|addstr:message host_url=host_url  %}
 	<br><br>
 	The RatedFrog Team
