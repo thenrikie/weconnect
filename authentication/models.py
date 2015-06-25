@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import (BaseUserManager, AbstractBaseUser)
+from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, Group
 from uniqid import models as UniqidModel
 
 # Create your models here.
@@ -41,6 +41,7 @@ class User(AbstractBaseUser):
 	is_active = models.BooleanField(default=True)
 	is_admin = models.BooleanField(default=False)
 	uniqid = models.CharField(max_length=UniqidModel.LENGTH, editable=False, unique=True, null=True)
+	groups = models.ManyToManyField(Group)
 
 	objects = UserManager()
 

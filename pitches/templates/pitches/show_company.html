@@ -9,7 +9,7 @@
 
 	{% include 'pitches/project.html' with project=project only %}
 
-	{% if pitch.waiting %}
+	{% if pitch.waiting and not pitch.archived %}
 	<div class="pitches_company_operations">
 
 

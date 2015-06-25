@@ -70,6 +70,9 @@ class Pitch(models.Model):
 	def quoted(self):
 		return self.state == 'accepted' or self.state == 'hired'
 
+	def rejected(self):
+		return self.state == 'rejected'
+		
 	def hired(self):
 		return self.state == 'hired'
 		

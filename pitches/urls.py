@@ -12,6 +12,7 @@ urlpatterns = patterns('',
 	url(r'^(?P<pitch_id>[0-9A-Z]+)/reject/$', views.reject, name='reject'),
 	url(r'^(?P<pitch_id>[0-9A-Z]+)/archive/$', views.archive, name='archive'),
 	url(r'^(?P<pitch_id>[0-9A-Z]+)/hire/$', views.hire, name='hire'),
+	url(r'^(?P<pitch_id>[0-9A-Z]+)/decline/$', views.decline, name='decline'),
 
 	url(r'^(?P<pitch_id>[0-9A-Z]+)/$', views.show, name='show'),
 	url(r'^(?P<pitch_id>[0-9A-Z]+)/messages/$', views.post_message, name='post_message'),

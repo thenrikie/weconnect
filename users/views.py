@@ -20,9 +20,9 @@ def profile_customer(r):
 		if form.is_valid() and profileForm.is_valid():
 			user = User(id=r.user.id)
 			user.first_name = r.POST['first_name']
-			user.last_name =r.POST['last_name']
+			#user.last_name =r.POST['last_name']
 			#save credentials
-			user.save(update_fields=['first_name', 'last_name'])
+			user.save(update_fields=['first_name'])
 			#save profile
 			profileForm.save()
 

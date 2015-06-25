@@ -178,8 +178,9 @@ def hire(r, pitch_id):
 			return redirect('/')
 
 		pitches = project.ready_pitch()
+
 		for this_pitch in pitches:
-			if this_pitch != pitch:
+			if this_pitch != pitch and not this_pitch.rejected():
 				this_pitch.change_state('rejected');
 				this_pitch.archived = True
 				this_pitch.save()
@@ -189,6 +190,18 @@ def hire(r, pitch_id):
 					'customer_name': this_pitch.project.user.first_name
 				})
 
+
+		pitches = project.waiting_pitch()
+		
+		for this_pitch in pitches:
+			if this_pitch != pitch and not this_pitch.rejected():
+				this_pitch.archived = True
+				this_pitch.save()
+				sender.rejected(this_pitch.company.email, {
+					'name' : this_pitch.company.first_name,
+					'customer_name': this_pitch.project.user.first_name
+				})
+		
 		pitch.change_state('hired')
 		pitch.save()
 
@@ -199,6 +212,26 @@ def hire(r, pitch_id):
 
 		return HttpResponseRedirect(reverse('pitches:show', args=[pitch.uniqid]))
 
+@login_required
+def decline(r, pitch_id):
+	if r.method == 'POST':
+		pitch = get_object_or_404(Pitch, uniqid=pitch_id)
+		project = pitch.project
+
+		if  project.user != r.user:
+			print('You have no permission to decline!')
+			return redirect('/')
+
+		pitch.change_state('rejected');
+		pitch.archived = True
+		pitch.save()
+
+		sender.rejected(pitch.company.email, {
+			'name' : pitch.company.first_name,
+			'customer_name': pitch.project.user.first_name
+		})
+
+	return HttpResponseRedirect(reverse('pitches:show', args=[pitch.uniqid]))
 
 @login_required
 def post_message(r, pitch_id):

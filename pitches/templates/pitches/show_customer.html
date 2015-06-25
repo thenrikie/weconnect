@@ -31,6 +31,8 @@
 
 				{% if this_pitch.hired %}
 					<span class="hired">Hired!</span>
+				{% elif this_pitch.rejected %}
+					<span class="declined">Declined</span>
 				{% endif %}
 			</div>
 
@@ -101,13 +103,16 @@
 		<a id="reply-btn" href="javascript:void(0)" class="blue-link"><img src="/static/image/re.png"> 
 			<span>Reply</span>
 		</a>
-	{% if not project.awarded %}
+	{% if not project.awarded and not pitch.rejected %}
 		<form method="post" action="{% url 'pitches:hire' pitch.uniqid %}" class="pitches_pitch_quotecontent_content_operations" onsubmit="return confirm('Are you sure?')">
 			{% csrf_token %}
 			<input type="submit" value="Hire" class="btn btn-blue">
-			<input type="button" value="Decline" class="btn btn-grey">
 		</form>
-		{% endif %}
+		<form method="post" action="{% url 'pitches:decline' pitch.uniqid %}" class="pitches_pitch_quotecontent_content_operations" onsubmit="return confirm('Are you sure?')">
+			{% csrf_token %}
+			<input type="submit" value="Decline" class="btn btn-grey">
+		</form>
+	{% endif %}
 	</div>
 
 	{% include 'pitches/message_box.html' with form=form pitch=pitch message_from_class='hide' %}

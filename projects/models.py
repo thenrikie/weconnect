@@ -111,6 +111,9 @@ class Project(models.Model):
 	def ready_pitch(self):
 		return self.pitch_set.exclude(state__in=['waiting', 'company_rejected'])
 
+	def waiting_pitch(self):
+		return self.pitch_set.filter(state='waiting')
+
 	def awarded(self):
 		if self.pitch_set.filter(state='hired').count() > 0:
 			return True
