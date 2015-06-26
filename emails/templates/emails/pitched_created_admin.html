@@ -1,0 +1,12 @@
+{% extends "emails/base.html" %}
+{% block content %}
+	Hi Froggers,
+	<br><br>
+	Pitch id : <a href="{{ host_url }}/admin/pitches/pitch/{{ pitch_id }}/">{{ pitch_id }}</a>
+	<br><br>
+	{{ company_name }} {{ company_email }} has just submitted a proposal. There is nothing you can do right now, we just have to wait for the customer to accept or decline this pitch.
+	<br><br>
+	Please follow up.
+	<br><br>
+	The RatedFrog Team
+{% endblock %}

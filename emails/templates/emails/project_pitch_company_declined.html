@@ -1,0 +1,12 @@
+{% extends "emails/base.html" %}
+{% block content %}
+	Hi Froggers,
+	<br><br>
+	Project id:  <a href="{{ host_url }}/admin/projects/project/{{ project_id }}/">{{ project_id }}</a> ({{ project_type }})
+	<br>
+	Pitch id : <a href="{{ host_url }}/admin/pitches/pitch/{{ pitch_id }}/">{{ pitch_id }}</a>
+	<br><br>
+	{{ company_name }} {{ company_email }} has just chosen to pass on this project.
+	<br><br>
+	The RatedFrog Team
+{% endblock %}

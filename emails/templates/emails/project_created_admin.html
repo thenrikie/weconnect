@@ -1,0 +1,15 @@
+{% extends "emails/base.html" %}
+{% load addstr %}
+{% block content %}
+	Hi Froggers,
+	<br><br>
+	{{ customer_name }} {{ customer_email }} has just submitted a project - {{ project_type }} - project id: {{ project_id }}. 
+	<br><br>
+	Please follow up.
+	<br><br>
+	{% include 'emails/button.html' with btn_text='View Project' btn_url='/admin'|attstr:'/projects/project/'|attstr:project_id host_url=host_url  %}
+	<br><br>
+	{% include 'emails/button.html' with btn_text='Add Pitch' btn_url='/admin/pitches/pitch/add/' host_url=host_url  %}
+	<br><br>
+	The RatedFrog Team
+{% endblock %}
