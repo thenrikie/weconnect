@@ -81,6 +81,13 @@ def accept(r, pitch_id):
 				'customer_name': pitch.project.user.first_name
 			})
 
+			#send email to notify admin
+			sender.pitch_accepted_admin({
+				'company_email': pitch.company.email,
+				'company_name' : pitch.company.userprofile.business_name,
+				'pitch_id': pitch.id
+			})
+
 			return HttpResponseRedirect(reverse('pitches:list_quote'))
 			
 	return render(r, 'pitches/accept.html', {'pitch': pitch, 'form' : form})
@@ -103,6 +110,16 @@ def reject(r, pitch_id):
 		pitch.archived = True
 		
 		pitch.save()
+
+		#notify admin
+		sender.project_pitch_company_declined({
+			'company_email': pitch.company.email,
+			'company_name' : pitch.company.userprofile.business_name,
+			'pitch_id': pitch.id,
+			'project_type' : pitch.project.sub_business.first(),
+			'project_id' : pitch.project.id
+		})
+
 		return HttpResponseRedirect(reverse('pitches:list_request'))
 
 	return redirect('/')
@@ -210,6 +227,17 @@ def hire(r, pitch_id):
 			'customer_name': pitch.project.user.first_name
 		})
 
+		#notify admin
+		sender.hired_admin({
+			'company_email': pitch.company.email,
+			'company_name' : pitch.company.userprofile.business_name,
+			'pitch_id': pitch.id,
+			'project_type' : pitch.project.sub_business.first(),
+			'project_id' : pitch.project.id,
+			'customer_name': pitch.project.user.full_name(),
+			'customer_email': pitch.project.user.email
+		})
+
 		return HttpResponseRedirect(reverse('pitches:show', args=[pitch.uniqid]))
 
 @login_required
@@ -229,6 +257,17 @@ def decline(r, pitch_id):
 		sender.rejected(pitch.company.email, {
 			'name' : pitch.company.first_name,
 			'customer_name': pitch.project.user.first_name
+		})
+
+		#notify admin
+		sender.project_pitch_customer_declined({
+			'company_email': pitch.company.email,
+			'company_name' : pitch.company.userprofile.business_name,
+			'pitch_id': pitch.id,
+			'project_type' : pitch.project.sub_business.first(),
+			'project_id' : pitch.project.id,
+			'customer_name': pitch.project.user.full_name(),
+			'customer_email': pitch.project.user.email
 		})
 
 	return HttpResponseRedirect(reverse('pitches:show', args=[pitch.uniqid]))

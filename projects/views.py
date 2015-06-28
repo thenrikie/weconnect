@@ -94,7 +94,6 @@ def create(r):
 				)
 			}
 
-			print(whiteListProject)
 
 			project = Project(user=r.user, my_place=form.cleaned_data['my_place'], **whiteListProject)
 			project.save()
@@ -115,6 +114,14 @@ def create(r):
 						project.question_option.add(question)
 				except TypeError:
 					project.question_option.add(question_set)
+
+			#send email to notify admin
+			sender.project_created_admin({
+				'customer_name': r.user.full_name(),
+				'customer_email': r.user.email,
+				'project_id': project.id,
+				'project_type': project.sub_business.first()
+			})
 
 			return redirect('projects:list')
 
@@ -165,6 +172,15 @@ def cancel(r, project_id):
 				'customer_name': project.user.first_name,
 				'project_type': project.sub_business.first()
 			})
+
+
+		#notify admin
+		sender.project_cancel_admin({
+			'customer_name': project.user.full_name(),
+			'customer_email': project.user.email,
+			'project_id': project.id,
+			'project_type': project.sub_business.first()
+		})
 		
 		return redirect('projects:list')
 	else:
