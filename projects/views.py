@@ -24,7 +24,7 @@ def create(r):
 	extra = []
 
 	if r.POST.get('sub_business', None) is not None:
-		questions = Question.objects.filter(sub_business=r.POST['sub_business'])
+		questions = Question.objects.filter(sub_business=r.POST['sub_business']).order_by('rank')
 		for q in questions:
 			extra.append({'question': q.text, 'type': q.type, 'queryset': QuestionOption.objects.filter(question=q)})
 

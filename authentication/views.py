@@ -148,3 +148,7 @@ def register_business(r):
 		'sub_business_error' : sub_business_error,
 		'accountForm': accountForm
 	})
+
+def password_reset_complete(r):
+	form = AuthenticationForm();
+	return render(r, 'auth/reset_password_complete.html', {'form' : form})

@@ -41,7 +41,7 @@ class User(AbstractBaseUser):
 	is_active = models.BooleanField(default=True)
 	is_admin = models.BooleanField(default=False)
 	uniqid = models.CharField(max_length=UniqidModel.LENGTH, editable=False, unique=True, null=True)
-	groups = models.ManyToManyField(Group)
+	groups = models.ManyToManyField(Group, blank=True)
 
 	objects = UserManager()
 

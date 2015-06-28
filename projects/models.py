@@ -15,6 +15,8 @@ class Question(models.Model):
 	sub_business = models.ForeignKey(SubBusiness)
 	type = models.CharField(max_length=25, verbose_name='', choices=TYPE)
 	text = models.CharField(max_length=512)
+	desc_text = models.CharField(max_length=512, null=True, default=None, blank=True)
+	rank = models.IntegerField(null=True, default=None) 
 
 	def __str__(self):
 		return self.text + " <" + self.sub_business.business_set.first().name + ": " + self.sub_business.name + ">"

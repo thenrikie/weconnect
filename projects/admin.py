@@ -8,6 +8,9 @@ class QuestionAdmin(admin.ModelAdmin):
     inlines = [
         QuestionOptionInline,
     ]
+
+    list_filter = ('sub_business', )
+
 admin.site.register(Project)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(QuestionOption)
