@@ -17,12 +17,8 @@
 
 	<p class="pitches_project_header"> 
 		{{ project.user.first_name }} is looking for 
-		<br>
-		<b>{{ project.business.all.first.name }}</b>
-		<br>
-		who does 
-		<br>
-		<b>{{ project.sub_business.first }}</b>
+		{{ project.business.all.first.name|lower }}
+		to help with their {{ project.sub_business.first|lower }} project.
 	</p>
 
 	{% for question in project.sub_business.first.question_set.all %}
@@ -33,7 +29,7 @@
 		<div class="pitches_project_row_value">
 			{% for ans in project.question_option.all %}
 				{% if ans.question.id == question.id %}
-					{{ ans }}<br>
+					{{ ans }}, 
 				{% endif %}
 			{% endfor %}
 		</div>
