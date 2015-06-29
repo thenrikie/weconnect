@@ -17,21 +17,17 @@
 
 	<p class="pitches_project_header"> 
 		{{ project.user.first_name }} is looking for 
-		{{ project.business.all.first.name|lower }}
+		{{ project.sub_business.first.role|lower }}
 		to help with their {{ project.sub_business.first|lower }} project.
 	</p>
 
-	{% for question in project.sub_business.first.question_set.all %}
+	{% for qa in project.question_answer_set %}
 	<div class="pitches_project_row">
 		<div class="pitches_project_row_key">
-			{{ question.text }}
+			{{ qa.question.text }}
 		</div>
 		<div class="pitches_project_row_value">
-			{% for ans in project.question_option.all %}
-				{% if ans.question.id == question.id %}
-					{{ ans }}, 
-				{% endif %}
-			{% endfor %}
+			{{ qa.answer_texts|join:", " }}
 		</div>
 	</div>
 	{% endfor %}

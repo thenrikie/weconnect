@@ -99,11 +99,19 @@ class Project(models.Model):
 	cancelled_reason = models.CharField(max_length=25, choices=CANCEL_REASON, null=True, default=None)
 	cancelled_reason_other = models.CharField(max_length=1024, null=True, blank=True)
 
-	def question_answers(self, question_id):
+	def question_answers(self,question_id):
 		return [a.id for a in self.question_option.filter(question=question_id)]
 
-	def question_answers_text(self, question_id):
+	def question_answer_texts(self,question_id):
 		return [a.text for a in self.question_option.filter(question=question_id)]
+
+	def question_answer_set(self):
+		qas = [{ 'question' : q} for q in self.sub_business.first().question_set.all()]
+		for qa in qas:
+			qa['answer_texts'] = self.question_answer_texts(qa['question'].id)
+
+		return qas
+
 
 	def save(self, *args, **kwargs):
 		if not self.uniqid:
