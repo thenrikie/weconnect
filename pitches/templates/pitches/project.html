@@ -21,10 +21,21 @@
 		to help with their {{ project.sub_business.first|lower }} project.
 	</p>
 
+	{% if project.desc %}
+	<div class="pitches_project_row">
+		<div class="pitches_project_row_key">
+			Job description
+		</div>
+		<div class="pitches_project_row_value">
+			{{ project.desc|linebreaksbr }}
+		</div>
+	</div>
+	{% endif %}
+
 	{% for qa in project.question_answer_set %}
 	<div class="pitches_project_row">
 		<div class="pitches_project_row_key">
-			{{ qa.question.text }}
+			{{ qa.question.desc }}
 		</div>
 		<div class="pitches_project_row_value">
 			{{ qa.answer_texts|join:", " }}
@@ -32,48 +43,24 @@
 	</div>
 	{% endfor %}
 
+	<div class="pitches_project_row grey-top-border "></div>
+
+	{% if project.budget_lower and project.budget_upper %}
 	<div class="pitches_project_row">
-		<div class="pitches_project_row_key">
-			The pro travel to me
+		<div class="pitches_project_row_key_inline">
+			Estimated budget:
 		</div>
-		<div class="pitches_project_row_value">
-			{{ project.my_place}}
+		<div class="pitches_project_row_value_inline">
+			HKD {{ project.budget_lower }} - HKD {{ project.budget_upper }}
 		</div>
 	</div>
+	{% endif %}
 
 	<div class="pitches_project_row">
-		<div class="pitches_project_row_key">
-			I can travel to the pro
+		<div class="pitches_project_row_key_inline">
+			Prefered start date:
 		</div>
-		<div class="pitches_project_row_value">
-			{{ project.travel_to_pro_text }}
-			{% if project.travel_to_pro == 'some_areas' %}
-				<br><br>
-				{{ project.travel_distance.all|join:'<br>' }}
-			{% endif %}
-		</div>
-	</div>
-
-
-
-	<div class="pitches_project_row">
-		<div class="pitches_project_row_key">
-			Budget
-		</div>
-		<div class="pitches_project_row_value">
-			{% if project.budget_lower and project.budget_upper %}
-				HKD {{ project.budget_lower }} - HKD {{ project.budget_upper }}
-			{% else %}
-				No information
-			{% endif %}
-		</div>
-	</div>
-
-	<div class="pitches_project_row">
-		<div class="pitches_project_row_key">
-			Prefered start date
-		</div>
-		<div class="pitches_project_row_value">
+		<div class="pitches_project_row_value_inline">
 			{% if project.urgency == 'specific' %}
 			{{ project.specific_date|date:'d/m/Y'}}
 			{% else %}
@@ -83,15 +70,19 @@
 	</div>
 
 	<div class="pitches_project_row">
-		<div class="pitches_project_row_key">
-			Job description
+		<div class="pitches_project_row_key_inline">
+			Located in:
 		</div>
-		<div class="pitches_project_row_value">
-			{{ project.desc|linebreaksbr }}
+		<div class="pitches_project_row_value_inline">
+			{{ project.my_place}}
 		</div>
 	</div>
 
-
-
-
+	{% if project.type_of_work %}
+	<div class="pitches_project_row">
+		<div class="pitches_project_row_key_inline">Type of work:</div>
+		<div class="pitches_project_row_value_inline"> {{ project.type_of_work.answer }} </div>
+	</div>
+	{% endif %}
 </div>
+

@@ -463,11 +463,24 @@ h1 {
     margin-top: 30px;
 }
 .users_profile_business_service_item_key,
+
 .pitches_project_row_key,
 .pitches_quote_row_key {
     font-weight: bold;
     display: block;
 }
+
+.pitches_project_row_key_inline,
+.pitches_quote_row_key_inline {
+    font-weight: bold;
+    display: inline-block;
+     width: 150px;
+}
+
+.grey-top-border {
+    border-top: 1px solid #e5e5e5;
+}
+
 .users_profile_business_service_item_key_inline{
     font-weight: bold;
     display: inline-block;
@@ -499,6 +512,12 @@ h1 {
     margin-top: 5px;
     display: block;
 }
+
+.pitches_project_row_value_inline,
+.pitches_quote_row_value_inline {
+    display: inline-block;
+}
+
 .users_profile_business_service_item_value_inline{
     margin-left: 10px;
     display: inline-block;

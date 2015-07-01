@@ -16,7 +16,11 @@ class Question(models.Model):
 	type = models.CharField(max_length=25, verbose_name='', choices=TYPE)
 	text = models.CharField(max_length=512)
 	desc_text = models.CharField(max_length=512, null=True, default=None, blank=True)
-	rank = models.IntegerField(null=True, default=None) 
+	rank = models.IntegerField(null=True, default=None, blank=True)
+	tag = models.CharField(max_length=512, null=True, default=None, blank=True)
+
+	def desc(self):
+		return self.desc_text or self.text
 
 	def __str__(self):
 		return self.text + " <" + self.sub_business.business_set.first().name + ": " + self.sub_business.name + ">"
@@ -105,13 +109,19 @@ class Project(models.Model):
 	def question_answer_texts(self,question_id):
 		return [a.text for a in self.question_option.filter(question=question_id)]
 
+
 	def question_answer_set(self):
-		qas = [{ 'question' : q} for q in self.sub_business.first().question_set.all()]
+		qas = [{ 'question' : q} for q in self.sub_business.first().question_set.filter(Q(tag__isnull=True) | Q(tag=''))]
 		for qa in qas:
 			qa['answer_texts'] = self.question_answer_texts(qa['question'].id)
 
 		return qas
 
+	def type_of_work(self):
+		qa = {'question' : self.sub_business.first().question_set.get(tag='type_of_work')}
+		qa['answer'] = self.question_option.get(question=qa['question'].id)
+
+		return qa if qa['question'] else None
 
 	def save(self, *args, **kwargs):
 		if not self.uniqid:
