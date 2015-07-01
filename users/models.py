@@ -28,10 +28,15 @@ class Business(models.Model):
 		return self.name
 
 class District(models.Model):
+
+	rank = models.IntegerField(default=1)
 	text = models.CharField(max_length=512)
 
 	def __str__(self):
 		return self.text
+
+	class Meta:
+		ordering = ["rank"]
 
 
 def upload_filename(path, model, filename):
@@ -85,8 +90,8 @@ class UserProfile(models.Model):
 	address_1 = models.CharField(max_length=512, blank=True, verbose_name='Room/Floor/Block')
 	address_2 = models.CharField(max_length=512, blank=True, verbose_name='Street/Residential address')
 	address_3 = models.CharField(max_length=512, blank=True, verbose_name='')
-	address_4 = models.CharField(max_length=512, blank=True, verbose_name='Area')
-
+	address_4 = models.CharField(max_length=512, blank=True, verbose_name='')
+	address_area = models.ForeignKey(District, related_name='area', verbose_name='Area', null=True)
 	#to be removed
 	can_travel = models.BooleanField(default=False, verbose_name='I can travel to my customers')
 	
@@ -103,7 +108,7 @@ class UserProfile(models.Model):
 	
 	customer_travel = models.BooleanField(default=False, verbose_name='My customer usually travel to me')
 
-	employees = models.IntegerField(verbose_name='Employees number', default=0)
+	employees = models.IntegerField(verbose_name='Employees number', default=1)
 
 	business_since = models.CharField(max_length=255, verbose_name='Business since', null=True)
 

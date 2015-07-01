@@ -19,10 +19,15 @@ class Customer(ModelForm):
 		}
 		
 class Business(ModelForm):
+
+	def __init__(self, *args, **kwargs):
+		super(Business, self).__init__(*args, **kwargs)
+		self.fields['address_area'].empty_label = 'Please select'
+
 	class Meta:
 		model = UserProfile
 		fields = ['business_name', 'website', 'mobile_number', 'desc', 'get_sms',
-		 'address_1', 'address_2', 'address_3', 'address_4',
+		 'address_1', 'address_2', 'address_3', 'address_area',
 		 'can_travel', 'travel_distance', 'customer_travel', 'only_remote',
 		 'employees','facebook', 'linkedin', 'twitter', 'pinterest', 'instagram','logo', 'photo'
 		]
@@ -32,6 +37,11 @@ class Business(ModelForm):
 		}
 
 class BusinessHead(ModelForm):
+
+	def __init__(self, *args, **kwargs):
+		super(BusinessHead, self).__init__(*args, **kwargs)
+		self.fields['address_area'].empty_label = 'Please select'
+		
 	class Meta:
 		model = UserProfile
 		fields = [
@@ -42,7 +52,7 @@ class BusinessHead(ModelForm):
 			'address_1', 
 			'address_2', 
 			'address_3', 
-			'address_4',
+			'address_area',
 			'employees',
 			'business_since',
 			'logo'

@@ -43,10 +43,15 @@ class Business(forms.Form):
 	business = forms.ModelChoiceField(queryset=Business.objects.all(), empty_label='')
 	
 class RegisterBusiness(ModelForm):
+
+	def __init__(self, *args, **kwargs):
+		super(RegisterBusiness, self).__init__(*args, **kwargs)
+		self.fields['address_area'].empty_label = 'Please select'
+		
 	class Meta:
 		model = UserProfile
 		fields = ['business_name', 'website', 'mobile_number', 'desc',
-		 'address_1', 'address_2', 'address_3', 'address_4',
+		 'address_1', 'address_2', 'address_3', 'address_area',
 		 'travel_to_customer', 'travel_distance'
 		]
 		widgets = {

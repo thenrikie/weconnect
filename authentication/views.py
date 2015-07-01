@@ -117,12 +117,22 @@ def register_business(r):
 			)
 			
 			#Create user profile
-			whiteListProfile = {k: r.POST.get(k, False) for k in ('business_name', 'website', 'mobile_number', 'desc', 'get_sms',
-	 			'address_1', 'address_2', 'address_3', 'address_4',
-				'can_travel', 'customer_travel', 'only_remote')
-			}
+			# whiteListProfile = {k: r.POST.get(k, False) for k in ('business_name', 'website', 'mobile_number', 'desc', 'get_sms',
+	 	# 		'address_1', 'address_2', 'address_3', 'address_area',
+			# 	'can_travel', 'customer_travel', 'only_remote')
+			# }
 
-			userProfile = UserProfile(role='COMPANY', user=user, **whiteListProfile);
+			# userProfile = UserProfile(role='COMPANY', user=user, **whiteListProfile);
+			# userProfile.save()
+
+			# userProfile.business.add(businessForm.cleaned_data['business'])
+
+			# for sub_business in r.POST.getlist('sub_business'):
+			# 	userProfile.sub_business.add(sub_business)
+
+			# for d in form.cleaned_data['travel_distance']:
+			# 	userProfile.travel_distance.add(d)
+			userProfile = UserProfile(role='COMPANY', user=user)
 			userProfile.save()
 
 			userProfile.business.add(businessForm.cleaned_data['business'])
@@ -130,8 +140,9 @@ def register_business(r):
 			for sub_business in r.POST.getlist('sub_business'):
 				userProfile.sub_business.add(sub_business)
 
-			for d in form.cleaned_data['travel_distance']:
-				userProfile.travel_distance.add(d)
+			form = forms.RegisterBusiness(r.POST, instance=userProfile)
+			form.save()
+
 
 			user = auth.authenticate(username=accountForm.cleaned_data['email'], password=accountForm.cleaned_data['password'])
 
