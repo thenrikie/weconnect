@@ -61,10 +61,7 @@ h1 {
     border-bottom: 1px solid #e5e5e5;
     padding: 10px;
 }
-.pitches_pitch_item_image {
-    max-height: 100px;
-    max-width: 100px;
-}
+
 .pitches_pitch_item_button {
     line-height: 100px;
 }
@@ -72,6 +69,14 @@ h1 {
     font-size: 14px;
     margin-top: 20px;
     text-align: right;
+}
+
+.pitches_pitch_item_request_time {
+    font-size: 14px;
+    position: absolute;
+    right: 5px;
+    text-align: right;
+    top: 20px;
 }
 .pitch_item_hired .pitches_pitch_item_button{
     line-height: normal;
@@ -841,7 +846,12 @@ h3, .h3{
     font-size: 16px;
     font-weight: bold;
     padding: 14px 40px;
+
 }
+.btn-full-width{
+    width: 100%;
+}
+
 .btn-grey {
     background-color:#e5e5e5;
     border-color: transparent;
@@ -1094,4 +1104,26 @@ img.trusted_icon {
 
 a.create_project_auth_selected {
     border-bottom: 3px solid #666666;
+}
+
+.pitches_pitch_item_image{
+    background-repeat: no-repeat;
+    background-position: 50%;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    vertical-align: middle;
+    background-size: cover;
+}
+
+.pitches_pitch_messge_item_image {
+    background-repeat: no-repeat;
+    background-position: 50%;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+    vertical-align: middle;
+    background-size: cover;
 }

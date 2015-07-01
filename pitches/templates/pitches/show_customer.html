@@ -125,7 +125,7 @@
 		<div class="col-md-12">
 			<div class="pitches_pitch_messge_item_head">
 				{% if pitch.company.userprofile.photo %}
-					<img class="name_card_ppl_photo_img" src="{% static pitch.company.userprofile.photo %}" alt="{{ pitch.company.full_name }}">
+					<div class="pitches_pitch_messge_item_image" style="background-image: url('{% static pitch.company.userprofile.photo %}')"></div>
 				{% endif %}
 				<span class="pitches_pitch_messge_item_head_author">
 					{{  pitch.company.full_name }}

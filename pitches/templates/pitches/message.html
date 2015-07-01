@@ -10,7 +10,7 @@
 		<div class="col-md-12">
 			<div class="pitches_pitch_messge_item_head">
 				{% if message.sender.userprofile.photo %}
-					<img class="name_card_ppl_photo_img" src="{% static message.sender.userprofile.photo %}" alt="{{ message.sender.full_name }}">
+					<div class="pitches_pitch_messge_item_image" style="background-image: url('{% static message.sender.userprofile.photo %}')"></div>
 				{% else %}
 
 				{% endif %}

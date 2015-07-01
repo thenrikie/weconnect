@@ -9,6 +9,8 @@ def business(r):
 		return redirect('/admin')
 	elif r.user.is_authenticated() and r.user.is_customer:
 		return redirect('home_customer')
+	elif r.user.is_authenticated() and r.user.is_company:
+		return redirect('pitches:list')
 
 	form = forms.BusinessIndex()
 	return render(r, 'weconnect/business.html', { 'form': form})

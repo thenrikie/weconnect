@@ -1,18 +1,23 @@
 {% load staticfiles %}
 
-	{% if pitch.project.user.userprofile.photo %}
-	<img class="pitches_pitch_item_image col-md-2" src="{% static pitch.project.user.userprofile.photo %}" alt="{{ pitch.project.user.full_name }}">
-	{% else %}
-	<img class="pitches_pitch_item_image col-md-2" src="/static/image/no-image.png" alt="{{ pitch.project.user.full_name  }}">
-	{% endif %}
+		{% if pitch.project.user.userprofile.photo %}
+		<div class="pitches_pitch_item_image col-md-2" style="background-image: url('{% static pitch.project.user.userprofile.photo %}')"></div>
+		{% else %}
+		<div class="pitches_pitch_item_image col-md-2" style="background-image: url('/static/image/no-image.png')"></div>
+		{% endif %}
 
 	<div class="pitches_pitch_item_text col-md-8">
-		<h3>
-			{{ pitch.project.user.full_name }} is looking for {{ pitch.project.business.first.name|lower }}
-		</h3>
-		<p>
-			{{ pitch.project.user.first_name }} is looking for someone with your skills to help them with their project
-		</p>
+		<div class="">
+			<h3>
+				{{ pitch.project.user.full_name }} is looking for {{ pitch.project.sub_business.first.role|lower }}
+			</h3>
+			<p>
+				{{ pitch.project.user.first_name }} is looking for someone with your skills to help them with their project
+			</p>
+		</div>
+		<div class=" pitches_pitch_item_request_time">
+			{{ pitch.created_at|date:'f'}}{{ pitch.created_at|date:'A, '|lower }}{{ pitch.created_at|date:'j F, Y'}}
+		</div>
 	</div>
 
 	<div class="pitches_pitch_item_button col-md-2">

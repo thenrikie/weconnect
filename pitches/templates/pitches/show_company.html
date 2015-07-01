@@ -54,9 +54,9 @@
 
 			<div class="pitches_quote_row">
 				{% if pitch.company.userprofile.photo %}
-					<img class="pitches_quote_ppl_photo_img" src="{% static pitch.company.userprofile.photo %}" alt="{{ pitch.company.full_name }}">
+					<div class="pitches_pitch_messge_item_image" style="background-image: url('{% static pitch.company.userprofile.photo %}')"></div>
 				{% else %}
-					<div class="pitches_quote_head_ppl_photo">?</div>
+					<div class="pitches_pitch_messge_item_image" style="background-image: url('/static/image/no-image.png')"></div>
 				{% endif %}
 
 				<div class="pitches_quote_row_key">

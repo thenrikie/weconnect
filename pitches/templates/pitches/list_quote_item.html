@@ -1,9 +1,9 @@
 {% load staticfiles %}
 
 		{% if pitch.project.user.userprofile.photo %}
-		<img class="pitches_pitch_item_image col-md-2" src="{% static pitch.project.user.userprofile.photo %}" alt="{{ pitch.project.user.full_name }}">
+		<div class="pitches_pitch_item_image col-md-2" style="background-image: url('{% static pitch.project.user.userprofile.photo %}')"></div>
 		{% else %}
-		<img class="pitches_pitch_item_image col-md-2" src="/static/image/no-image.png" alt="{{ pitch.project.user.full_name  }}">
+		<div class="pitches_pitch_item_image col-md-2" style="background-image: url('/static/image/no-image.png')"></div>
 		{% endif %}
 
 		<div class="pitches_pitch_item_text col-md-8">
