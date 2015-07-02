@@ -78,9 +78,9 @@ h1 {
     text-align: right;
     top: 20px;
 }
-.pitch_item_hired .pitches_pitch_item_button{
+/*.pitch_item_hired .pitches_pitch_item_button{
     line-height: normal;
-}
+}*/
 .projects_project_ul {
     list-style-type: none;
 }
@@ -822,8 +822,8 @@ h3, .h3{
     font-weight: bold;
 }
 
-.index-h2{
-    margin: 50px 0px;
+.index-h2 {
+    margin: 50px 0 40px;
 }
 .index-step-title {
     height: 50px;
@@ -1126,4 +1126,7 @@ a.create_project_auth_selected {
     display: inline-block;
     vertical-align: middle;
     background-size: cover;
+}
+.pitches_pitch_item_archive{
+    margin-left: 25px;
 }

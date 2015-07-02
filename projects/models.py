@@ -92,7 +92,7 @@ class Project(models.Model):
 	company_travel = models.BooleanField(default=False, verbose_name='They travel to me')
 
 	travel_distance = models.ManyToManyField(District, related_name='project_travel_distance_set', blank=True)
-	my_place = models.ForeignKey(District, related_name='my_place', verbose_name='The pro travel to me')
+	my_place = models.ForeignKey(District, related_name='my_place', verbose_name='I am located')
 
 	desc = models.CharField(max_length=1024, blank=True, verbose_name='Anything else they should know')
 	

@@ -68,7 +68,7 @@
 		<span class="pitches_pitch_contact_item_icon">
 			<img src="/static/image/contact-name.png" alt="Contact Name">
 		</span>
-		<span class="pitches_pitch_contact_text">{{ pitch.company.userprofile.business_name }}</span>
+		<span class="pitches_pitch_contact_text">{{ pitch.company.full_name }}</span>
 	</div>
 
 	<div class="pitches_pitch_contact_item">
@@ -100,9 +100,7 @@
 
 <div class="pitches_pitch_right col-md-9">
 	<div>
-		<a id="reply-btn" href="javascript:void(0)" class="blue-link"><img src="/static/image/re.png"> 
-			<span>Reply</span>
-		</a>
+
 	{% if not project.awarded and not pitch.rejected %}
 		<form method="post" action="{% url 'pitches:hire' pitch.uniqid %}" class="pitches_pitch_quotecontent_content_operations" onsubmit="return confirm('Are you sure?')">
 			{% csrf_token %}
@@ -115,7 +113,7 @@
 	{% endif %}
 	</div>
 
-	{% include 'pitches/message_box.html' with form=form pitch=pitch message_from_class='hide' %}
+	{% include 'pitches/message_box.html' with form=form pitch=pitch message_from_class='' %}
 	<div class="pitches_pitch_message" id="message">
 		{% include 'pitches/message.html' with messages=messages pitch=pitch %}
 	</div>
@@ -186,9 +184,7 @@
 		$('#modal-cancel-project').modal()
 	})
 
-	$('#reply-btn').click(function(){
-		$('#message-form').removeClass('hide')
-	})
+
 </script>
 {% endblock %}
 

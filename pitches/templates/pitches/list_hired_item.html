@@ -18,6 +18,9 @@
 
 				</h3>
 				<a href="{% url 'pitches:show' pitch.uniqid %}" class="blue-link">View request and quote</a>
+				{% if not pitch.archived %}
+				<a href="javascript:void(0)" id="{{ pitch.uniqid }}-archive-submit" class="pitches_pitch_item_archive blue-link">Archive</a>
+				{% endif %}
 			</div>
 			<div class="col-md-4 pitches_pitch_item_quoted_time">
 				{{ pitch.hired_at|date:'f'}}{{ pitch.hired_at|date:'A, '|lower }}{{ pitch.hired_at|date:'j F, Y'}}
@@ -29,9 +32,15 @@
 			<a href="{% url 'pitches:show' pitch.uniqid %}#message" class="btn btn-blue">	Message             
         	</a>
 
-			<form method="post" action="{% url 'pitches:archive' pitch.uniqid %}">
-				{% csrf_token %}
-				<input type="submit" value="Archive" class="btn btn-grey">
-			</form>
 		</div>
 		<div class="clearfix"></div>
+
+		<form id="{{ pitch.uniqid }}-archive" method="post" action="{% url 'pitches:archive' pitch.uniqid %}" class="hide">
+			{% csrf_token %}
+		</form>
+
+		<script type="text/javascript">
+			$('#{{ pitch.uniqid }}-archive-submit').click(function(){
+				$('#{{ pitch.uniqid }}-archive').submit();
+			})
+		</script>

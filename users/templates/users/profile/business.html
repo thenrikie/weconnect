@@ -23,7 +23,7 @@
 				{% if userprofile.logo %}
 					<img class="{{ css_prefix }}s_head_logo_img" src="{% static userprofile.logo %}" alt="{{ userprofile.business_name }}">
 				{% else %}
-					<div class="{{ css_prefix }}s_head_logo">Add your logo</div>
+					<a href="javascript:void(0)" class="{{ css_prefix }}s_head_logo blue-link" id="add-your-logo">Add your logo</a>
 				{% endif %}
 			</div>
 
@@ -90,8 +90,8 @@
 				{{ form_business_head.mobile_number|hformrow:'Mobile number'}}
 				{{ form_business_head.employees|hformrow:'No. of employees' }}
 				{{ form_business_head.business_since|hformrow:'Business started' }}
-				{{ form_business_head.address_1|hformrow:'Address' }}
-				{{ form_business_head.address_2|hformrow:'' }}
+				{{ form_business_head.address_1|hformrow:'Room/Floor/Block' }}
+				{{ form_business_head.address_2|hformrow:'Street/Residential address' }}
 				{{ form_business_head.address_3|hformrow:'' }}
 				{{ form_business_head.address_area|hformrow:'Area' }}
 				<input type="hidden" value="head" name="part">
@@ -296,6 +296,11 @@
 
 <script>
 	var edit = {
+		'add-your-logo':{
+			btn: $('#add-your-logo'),
+			display: $('#head-display'),
+			form: $('#head-form')		
+		},
 		'head' : {
 			btn: $('#head'),
 			cancelBtn: $('#head-cancel'),
@@ -344,14 +349,18 @@
 		item.btn.click(function(){
 			item.display.addClass('hide')
 			item.form.removeClass('hide')
-			item.btn.addClass('hide')
+			if(item.cancelBtn){
+				item.btn.addClass('hide')
+			}
 		})
 
-		item.cancelBtn.click(function(){
-			item.display.removeClass('hide')
-			item.form.addClass('hide')
-			item.btn.removeClass('hide')
-		})
+		if(item.cancelBtn){
+			item.cancelBtn.click(function(){
+				item.display.removeClass('hide')
+				item.form.addClass('hide')
+				item.btn.removeClass('hide')
+			})
+		}
 	})
 
 	$('#company-social-add').click(function(){
