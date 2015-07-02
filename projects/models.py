@@ -118,8 +118,14 @@ class Project(models.Model):
 		return qas
 
 	def type_of_work(self):
-		qa = {'question' : self.sub_business.first().question_set.get(tag='type_of_work')}
-		qa['answer'] = self.question_option.get(question=qa['question'].id)
+		return self.get_question_by_tag('type_of_work')
+
+	def type_of_service(self):
+		return self.get_question_by_tag('type_of_service')
+
+	def get_question_by_tag(self, tag):
+		qa = {'question' : self.sub_business.first().question_set.get(tag=tag)}
+		qa['answer'] = self.question_option.filter(question=qa['question'].id)
 
 		return qa if qa['question'] else None
 

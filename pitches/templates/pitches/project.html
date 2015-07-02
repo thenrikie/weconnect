@@ -21,6 +21,15 @@
 		to help with their {{ project.sub_business.first|lower }} project.
 	</p>
 
+	{% if project.type_of_service %}
+	<div class="pitches_project_row">
+		<div class="pitches_project_row_key">
+			What type of service {{ project.user.first_name }} is looking for?
+		</div>
+		<div class="pitches_project_row_value"> {{ project.type_of_service.answer|join:", " }} </div>
+	</div>
+	{% endif %}
+
 	{% if project.desc %}
 	<div class="pitches_project_row">
 		<div class="pitches_project_row_key">
@@ -81,7 +90,7 @@
 	{% if project.type_of_work %}
 	<div class="pitches_project_row">
 		<div class="pitches_project_row_key_inline">Type of work:</div>
-		<div class="pitches_project_row_value_inline"> {{ project.type_of_work.answer }} </div>
+		<div class="pitches_project_row_value_inline"> {{ project.type_of_work.answer.0 }} </div>
 	</div>
 	{% endif %}
 </div>
