@@ -17,31 +17,35 @@ class ProjectQuestion(forms.Form):
 		super(ProjectQuestion, self).__init__(*args, **kwargs)
 
 
-		for i, item in enumerate(extra):
+		for item in extra:
 			kwargs = {
-				'label': item.get('question'),
+				'label': item.get('question').text,
 				'queryset': item['queryset']
 			}
 
-			if item.get('type') == 'CheckboxSelectMultiple':
+			if item.get('question').type == 'CheckboxSelectMultiple':
 				field = forms.ModelMultipleChoiceField
 				kwargs['widget'] = forms.CheckboxSelectMultiple
 
-			elif item.get('type') == 'RadioSelect':
+			elif item.get('question').type == 'RadioSelect':
 				field = forms.ModelChoiceField
 				kwargs['widget'] = forms.RadioSelect
 				kwargs['empty_label'] = None
 
-			elif item.get('type') == 'Select':
+			elif item.get('question').type == 'Select':
 				field = forms.ModelChoiceField
 				kwargs['widget'] = forms.Select
 				kwargs['empty_label'] = None
+
+			elif item.get('question').type == 'Text':
+				field = forms.CharField
+				kwargs.pop('queryset')
 
 			else:
 				raise ValueError('Unsupported question type. Must be CheckboxSelectMultiple, RadioSelect or Select')
 
 
-			self.fields['business_question_' + str(i)] = field(**kwargs)
+			self.fields['business_question_' + str(item.get('question').id)] = field(**kwargs)
 
 class Cancel(forms.ModelForm):
 	class Meta:

@@ -5,11 +5,14 @@ from django.db.models import Q
 from uniqid import models as UniqidModel
 # Create your models here.
 
+
+
 class Question(models.Model):
 	TYPE = (
 		('CheckboxSelectMultiple', 'CheckboxSelectMultiple'),
 		('Select', 'Select'),
-		('RadioSelect', 'RadioSelect')
+		('RadioSelect', 'RadioSelect'),
+		('Text', 'Text')
 	)
 
 	sub_business = models.ForeignKey(SubBusiness)
@@ -167,3 +170,10 @@ class Project(models.Model):
 		from pitches.models import Message
 		return Message.objects.filter(read=False, pitch__project=self, recipient=self.user).count()
 
+class QuestionAnswer(models.Model):
+	text = models.CharField(max_length=512)
+	project = models.ForeignKey(Project)
+	question = models.ForeignKey(Question)
+
+	def __str__(self):
+		return self.text

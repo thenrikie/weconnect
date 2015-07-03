@@ -4,7 +4,7 @@ from pitches.forms import Message as MessageForm
 from authentication.forms import Register
 from authentication.forms import RegisterCustomerProfile
 from authentication.views import create_customer
-from projects.models import Project, Question, QuestionOption
+from projects.models import Project, Question, QuestionOption, QuestionAnswer
 from users.models import Business, SubBusiness
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
@@ -26,7 +26,7 @@ def create(r):
 	if r.POST.get('sub_business', None) is not None:
 		questions = Question.objects.filter(sub_business=r.POST['sub_business']).order_by('rank')
 		for q in questions:
-			extra.append({'question': q.text, 'type': q.type, 'queryset': QuestionOption.objects.filter(question=q)})
+			extra.append({'question': q, 'queryset': QuestionOption.objects.filter(question=q)})
 
 	formData = r.POST or None
 	if r.POST.get('no_validate'):
@@ -54,7 +54,12 @@ def create(r):
 	checkAuthCond = loggedIn or checkRegister or checkLogin
 
 	if r.method == 'POST':
-		
+		# if questionForm.is_valid():
+		# 	for key, val in questionForm.cleaned_data.items():
+		# 		print(key)
+		# 		print(val)
+		# 		print(isinstance(val, QuestionOption))
+
 		if businessForm.is_valid() and form.is_valid() and questionForm.is_valid() and checkAuthCond:
 			print('passed')
 
@@ -108,12 +113,18 @@ def create(r):
 				project.travel_distance.add(var)
 
 			#save question option
+
 			for key, question_set in questionForm.cleaned_data.items():
 				try: 
 					for question in question_set:
 						project.question_option.add(question)
 				except TypeError:
-					project.question_option.add(question_set)
+					if isinstance(question_set, QuestionOption):
+						project.question_option.add(question_set)
+					else:
+						#create question answer
+						answer = QuestionAnswer(question=1, text=question_set, project=project)
+						answer.save()
 
 			#send email to notify admin
 			sender.project_created_admin({
