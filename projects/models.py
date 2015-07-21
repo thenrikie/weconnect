@@ -22,6 +22,9 @@ class Question(models.Model):
 	rank = models.IntegerField(null=True, default=None, blank=True)
 	tag = models.CharField(max_length=512, null=True, default=None, blank=True)
 
+	from_other_option = False
+	parent_id = None
+
 	def desc(self):
 		return self.desc_text or self.text
 
@@ -33,6 +36,7 @@ class QuestionOption(models.Model):
 	
 	question = models.ForeignKey(Question)
 	text = models.CharField(max_length=512)
+	other = models.BooleanField(default=False, verbose_name='This is an other option', blank=False)
 
 	def __str__(self):
 		return self.text

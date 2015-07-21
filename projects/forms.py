@@ -19,33 +19,38 @@ class ProjectQuestion(forms.Form):
 
 		for item in extra:
 			kwargs = {
-				'label': item.get('question').text,
-				'queryset': item['queryset']
+				'label': item.get('question').text
 			}
 
 			if item.get('question').type == 'CheckboxSelectMultiple':
 				field = forms.ModelMultipleChoiceField
 				kwargs['widget'] = forms.CheckboxSelectMultiple
+				kwargs['queryset'] = item['queryset']
 
 			elif item.get('question').type == 'RadioSelect':
 				field = forms.ModelChoiceField
 				kwargs['widget'] = forms.RadioSelect
+				kwargs['queryset'] = item['queryset']
 				kwargs['empty_label'] = None
 
 			elif item.get('question').type == 'Select':
 				field = forms.ModelChoiceField
 				kwargs['widget'] = forms.Select
+				kwargs['queryset'] = item['queryset']
 				kwargs['empty_label'] = None
 
 			elif item.get('question').type == 'Text':
 				field = forms.CharField
-				kwargs.pop('queryset')
 
 			else:
-				raise ValueError('Unsupported question type. Must be CheckboxSelectMultiple, RadioSelect or Select')
+				raise ValueError('Unsupported question type. Must be CheckboxSelectMultiple, RadioSelect, Select or Text')
 
 
-			self.fields['business_question_' + str(item.get('question').id)] = field(**kwargs)
+			if item.get('question').parent_id:
+				self.fields['business_question_other_' + str(item.get('question').parent_id)] = field(**kwargs)
+			else:
+				self.fields['business_question_' + str(item.get('question').id)] = field(**kwargs)
+			
 
 class Cancel(forms.ModelForm):
 	class Meta:

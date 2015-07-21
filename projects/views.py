@@ -26,7 +26,15 @@ def create(r):
 	if r.POST.get('sub_business', None) is not None:
 		questions = Question.objects.filter(sub_business=r.POST['sub_business']).order_by('rank')
 		for q in questions:
-			extra.append({'question': q, 'queryset': QuestionOption.objects.filter(question=q)})
+			question_options = QuestionOption.objects.filter(question=q)
+			extra.append({'question': q, 'queryset': question_options})
+
+			for option in question_options:
+				if option.other:
+					question_other = Question(type="Text", text="")
+					question_other.parent_id = q.id
+					question_other.from_other_option = True
+					extra.append({'question': question_other});
 
 	formData = r.POST or None
 	if r.POST.get('no_validate'):
