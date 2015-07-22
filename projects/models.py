@@ -3,6 +3,7 @@ from users.models import SubBusiness, Business, District
 from authentication.models import User
 from django.db.models import Q
 from uniqid import models as UniqidModel
+from django import forms
 # Create your models here.
 
 
@@ -24,6 +25,55 @@ class Question(models.Model):
 
 	from_other_option = False
 	parent_id = None
+
+
+	def field_name(self):
+		if self.from_other_option and self.parent_id:
+			return 'business_question_other_' + str(self.parent_id)
+		else:
+			return 'business_question_' + str(self.id)
+
+	def make_field(self):
+		kwargs = {
+			'label': self.text
+		}
+
+		if self.type == 'CheckboxSelectMultiple':
+			field = forms.ModelMultipleChoiceField
+			kwargs['widget'] = forms.CheckboxSelectMultiple
+			kwargs['queryset'] = QuestionOption.objects.filter(question=self)
+
+		elif self.type == 'RadioSelect':
+			field = forms.ModelChoiceField
+			kwargs['widget'] = forms.RadioSelect
+			kwargs['queryset'] = QuestionOption.objects.filter(question=self)
+			kwargs['empty_label'] = None
+
+		elif self.type == 'Select':
+			field = forms.ModelChoiceField
+			kwargs['widget'] = forms.Select
+			kwargs['queryset'] = QuestionOption.objects.filter(question=self)
+			kwargs['empty_label'] = None
+
+		elif self.type == 'Text':
+			field = forms.CharField
+
+		else:
+			raise ValueError('Unsupported question type. Must be CheckboxSelectMultiple, RadioSelect, Select or Text')
+
+
+		return field(**kwargs)
+
+	#generate question and text field for "Other" in the select option
+	def make_other_question(self):
+		#only expect one question option is "Other"
+		if QuestionOption.objects.filter(question=self, other=True).count() > 0:
+			question_other = Question(type="Text", text="")
+			question_other.parent_id = self.id
+			question_other.from_other_option = True
+			return question_other
+
+		return None
 
 	def desc(self):
 		return self.desc_text or self.text

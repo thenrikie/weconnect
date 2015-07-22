@@ -32,6 +32,13 @@
 				{{ field|bigformrow:field.label }}
 			{% endfor %}
 			
+			<div id="other_answers">
+			{{ questionOtherForm.non_field_errors }}
+			{% for field in questionOtherForm %}
+				{{ field|bigformrow:field.label }}
+			{% endfor %}
+			</div>
+
 			{{ form.non_field_errors }}
 
 			<div class="form-group {%if form.budget_lower.errors or form.budget_upper.errors %}has-error{% endif %}">

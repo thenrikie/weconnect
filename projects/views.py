@@ -22,19 +22,15 @@ def create(r):
 	#get question set based on business selected
 
 	extra = []
-
+	extra_other = []
 	if r.POST.get('sub_business', None) is not None:
 		questions = Question.objects.filter(sub_business=r.POST['sub_business']).order_by('rank')
 		for q in questions:
-			question_options = QuestionOption.objects.filter(question=q)
-			extra.append({'question': q, 'queryset': question_options})
-
-			for option in question_options:
-				if option.other:
-					question_other = Question(type="Text", text="")
-					question_other.parent_id = q.id
-					question_other.from_other_option = True
-					extra.append({'question': question_other});
+			extra.append({'question': q})
+			
+			other_question = q.make_other_question()
+			if other_question:
+				extra_other.append({'question': other_question})
 
 	formData = r.POST or None
 	if r.POST.get('no_validate'):
@@ -43,6 +39,7 @@ def create(r):
 	#forms
 	businessForm = forms.Business(r.POST or None)
 	questionForm = forms.ProjectQuestion(formData, extra=extra);
+	questionOtherForm = forms.ProjectQuestion(formData, extra=extra_other);
 	form = forms.Project(formData)
 	registerForm = Register(formData)
 	registerCustomerProfileForm = RegisterCustomerProfile(formData)
@@ -68,7 +65,7 @@ def create(r):
 		# 		print(val)
 		# 		print(isinstance(val, QuestionOption))
 
-		if businessForm.is_valid() and form.is_valid() and questionForm.is_valid() and checkAuthCond:
+		if businessForm.is_valid() and form.is_valid() and questionForm.is_valid() and questionOtherFormis_valid() and checkAuthCond:
 			print('passed')
 
 			if not loggedIn:
@@ -91,6 +88,7 @@ def create(r):
 						return render(r, 'projects/create_project.html', {
 							'form' : form, 
 							'questionForm': questionForm, 
+							'questionOtherForm': questionOtherForm,
 							'registerForm': registerForm,
 							'loginForm': loginForm,
 							'auth_mode': r.POST.get('auth_mode', 'login'),
@@ -131,7 +129,8 @@ def create(r):
 						project.question_option.add(question_set)
 					else:
 						#create question answer
-						answer = QuestionAnswer(question=1, text=question_set, project=project)
+						question_number = int(key.split("_").pop())
+						answer = QuestionAnswer(question=question_number, text=question_set, project=project)
 						answer.save()
 
 			#send email to notify admin
@@ -152,6 +151,7 @@ def create(r):
 		'sub_business' : r.POST.get('sub_business'),
 		'businessForm': businessForm,
 		'questionForm': questionForm, 
+		'questionOtherForm': questionOtherForm,
 		'registerForm': registerForm,
 		'registerCustomerProfileForm': registerCustomerProfileForm,
 		'loginForm': loginForm,
