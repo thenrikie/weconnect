@@ -25,7 +25,7 @@ class Question(models.Model):
 
 	from_other_option = False
 	parent_id = None
-
+	field = None
 
 	def field_name(self):
 		if self.from_other_option and self.parent_id:
@@ -34,6 +34,11 @@ class Question(models.Model):
 			return 'business_question_' + str(self.id)
 
 	def make_field(self):
+
+		if self.field:
+			print('Getting field from cache')
+			return self.field
+
 		kwargs = {
 			'label': self.text
 		}
@@ -61,8 +66,11 @@ class Question(models.Model):
 		else:
 			raise ValueError('Unsupported question type. Must be CheckboxSelectMultiple, RadioSelect, Select or Text')
 
-
-		return field(**kwargs)
+		if self.from_other_option:
+			kwargs['required'] = False
+			
+		self.field = field(**kwargs)
+		return self.field
 
 	#generate question and text field for "Other" in the select option
 	def make_other_question(self):

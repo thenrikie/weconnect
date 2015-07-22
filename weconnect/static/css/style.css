@@ -1130,3 +1130,8 @@ a.create_project_auth_selected {
 .pitches_pitch_item_archive{
     margin-left: 25px;
 }
+
+.form-input-other-text{
+    display:inline-block;
+    width:auto;
+}

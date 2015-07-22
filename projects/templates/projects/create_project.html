@@ -32,10 +32,10 @@
 				{{ field|bigformrow:field.label }}
 			{% endfor %}
 			
-			<div id="other_answers">
+			<div id="other_answers" class="hide">
 			{{ questionOtherForm.non_field_errors }}
 			{% for field in questionOtherForm %}
-				{{ field|bigformrow:field.label }}
+				{{ field|bigformrowother:field.label }}
 			{% endfor %}
 			</div>
 
@@ -299,6 +299,16 @@
 
 	})
 
+
+	var inputItem
+	{% for field in have_other_fields %}
+		inputItem = $('#form-group-{{ field.parent.id_for_label }} ul:first li:last input').clone()
+		$('#form-group-{{ field.parent.id_for_label }} ul:first li:last').empty().append(inputItem).append($('#form-group-{{ field.child_other.id_for_label }}'));
+	{% endfor %}
+
 </script>
+
+
+
 
 {% endblock %}

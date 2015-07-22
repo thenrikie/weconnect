@@ -65,3 +65,16 @@ def bigformrow(field, name):
 		str += '			</div>'
 		str += '</div>'
 	return mark_safe(str)
+
+@register.filter(name='bigformrowother', is_safe=True)
+def bigformrowother(field, name):
+	error_class = ''
+
+	if field.errors:
+		error_class = 'has-error'
+	
+	str =  '<span id="form-group-' + field.id_for_label + '" class="' + error_class + '">'
+	str += field.as_widget(attrs={"class":"form-control form-input-other-text", "placeholder": "Other"})
+	str += '</span>'
+
+	return mark_safe(str)

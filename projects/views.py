@@ -23,12 +23,14 @@ def create(r):
 
 	extra = []
 	extra_other = []
+
 	if r.POST.get('sub_business', None) is not None:
 		questions = Question.objects.filter(sub_business=r.POST['sub_business']).order_by('rank')
 		for q in questions:
+
 			extra.append({'question': q})
-			
 			other_question = q.make_other_question()
+
 			if other_question:
 				extra_other.append({'question': other_question})
 
@@ -49,6 +51,17 @@ def create(r):
 	subBusinesses = SubBusiness.objects.all();
 	sub_business_json = json.dumps([ob.as_json() for ob in subBusinesses])
 
+	#keep track the field with other option
+	have_other_fields = []
+	if r.POST.get('sub_business', None) is not None:
+		for q in questions:
+			other_question = q.make_other_question()
+			if other_question:
+				have_other_fields.append({
+					'parent': questionForm[q.field_name()],
+					'child_other': questionOtherForm[other_question.field_name()]
+				})
+
 	#check if logged in
 	loggedIn = False
 	if r.user.is_authenticated():
@@ -59,13 +72,8 @@ def create(r):
 	checkAuthCond = loggedIn or checkRegister or checkLogin
 
 	if r.method == 'POST':
-		# if questionForm.is_valid():
-		# 	for key, val in questionForm.cleaned_data.items():
-		# 		print(key)
-		# 		print(val)
-		# 		print(isinstance(val, QuestionOption))
 
-		if businessForm.is_valid() and form.is_valid() and questionForm.is_valid() and questionOtherFormis_valid() and checkAuthCond:
+		if businessForm.is_valid() and form.is_valid() and questionForm.is_valid() and questionOtherForm.is_valid() and checkAuthCond:
 			print('passed')
 
 			if not loggedIn:
@@ -91,6 +99,7 @@ def create(r):
 							'questionOtherForm': questionOtherForm,
 							'registerForm': registerForm,
 							'loginForm': loginForm,
+							'have_other_fields': have_other_fields,
 							'auth_mode': r.POST.get('auth_mode', 'login'),
 							'auth_error' : 'Only user with customer role can create a project'
 						})			
@@ -120,18 +129,23 @@ def create(r):
 
 			#save question option
 
-			for key, question_set in questionForm.cleaned_data.items():
+			# save question option - other - text
+			def saveQuestionOtherAnswer(question_option):
+				answer = QuestionAnswer(question=question_option.question, text=questionOtherForm.cleaned_data['business_question_other_' + str(question_option.question.id)], project=project)
+				answer.save()
+
+			for key, question_option_set in questionForm.cleaned_data.items():
 				try: 
-					for question in question_set:
-						project.question_option.add(question)
+					for question_option in question_option_set:
+						project.question_option.add(question_option)
+
+						if question_option.other:
+							saveQuestionOtherAnswer(question_option)
 				except TypeError:
-					if isinstance(question_set, QuestionOption):
-						project.question_option.add(question_set)
-					else:
-						#create question answer
-						question_number = int(key.split("_").pop())
-						answer = QuestionAnswer(question=question_number, text=question_set, project=project)
-						answer.save()
+					project.question_option.add(question_option_set)
+
+					if question_option_set.other:
+						saveQuestionOtherAnswer(question_option_set)
 
 			#send email to notify admin
 			sender.project_created_admin({
@@ -145,6 +159,7 @@ def create(r):
 
 		#print("post not passed")
 
+
 	return render(r, 'projects/create_project.html', {
 		'form' : form, 
 		'sub_business_json': sub_business_json,
@@ -152,6 +167,7 @@ def create(r):
 		'businessForm': businessForm,
 		'questionForm': questionForm, 
 		'questionOtherForm': questionOtherForm,
+		'have_other_fields': have_other_fields,
 		'registerForm': registerForm,
 		'registerCustomerProfileForm': registerCustomerProfileForm,
 		'loginForm': loginForm,
