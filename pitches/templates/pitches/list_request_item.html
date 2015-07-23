@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load anora %}
 
 		{% if pitch.project.user.userprofile.photo %}
 		<div class="pitches_pitch_item_image col-md-2" style="background-image: url('{% static pitch.project.user.userprofile.photo %}')"></div>
@@ -9,7 +10,7 @@
 	<div class="pitches_pitch_item_text col-md-8">
 		<div class="">
 			<h3>
-				{{ pitch.project.user.full_name }} is looking for {{ pitch.project.sub_business.first.role|lower }}
+				{{ pitch.project.user.full_name }} is looking for {{ pitch.project.sub_business.first.role|anora }} {{ pitch.project.sub_business.first.role|lower }}
 			</h3>
 			<p>
 				{{ pitch.project.user.first_name }} is looking for someone with your skills to help them with their project
