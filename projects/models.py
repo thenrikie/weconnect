@@ -168,8 +168,11 @@ class Project(models.Model):
 		return [a.id for a in self.question_option.filter(question=question_id)]
 
 	def question_answer_texts(self,question_id):
-		return [a.text for a in self.question_option.filter(question=question_id)]
-
+		answer_texts = [a.text for a in self.question_option.filter(question=question_id) if not a.other]
+		for a in self.question_option.filter(question=question_id):
+			if a.other:
+				answer_texts.append(QuestionAnswer.objects.get(project=self, question=a.question).text)
+		return answer_texts
 
 	def question_answer_set(self):
 		qas = [{ 'question' : q} for q in self.sub_business.first().question_set.filter(Q(tag__isnull=True) | Q(tag=''))]
@@ -186,7 +189,7 @@ class Project(models.Model):
 
 	def get_question_by_tag(self, tag):
 		qa = {'question' : self.sub_business.first().question_set.get(tag=tag)}
-		qa['answer'] = self.question_option.filter(question=qa['question'].id)
+		qa['answer'] = self.question_answer_texts(qa['question'].id)
 
 		return qa if qa['question'] else None
 
