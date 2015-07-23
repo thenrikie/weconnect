@@ -32,7 +32,7 @@ def create(r):
 			other_question = q.make_other_question()
 
 			if other_question:
-				extra_other.append({'question': other_question})
+				extra_other.append({'question': other_question, 'required': False})
 
 	formData = r.POST or None
 	if r.POST.get('no_validate'):
@@ -73,9 +73,23 @@ def create(r):
 
 	if r.method == 'POST':
 
-		if businessForm.is_valid() and form.is_valid() and questionForm.is_valid() and questionOtherForm.is_valid() and checkAuthCond:
-			print('passed')
+		if questionForm.is_valid():
+			for key, question_option_set in questionForm.cleaned_data.items():
+				try: 
+					for question_option in question_option_set:
+						if question_option.other:
+							#reset the questionOtherForm validation condition
+							extra_item = next(item for item in extra_other if item['question'].parent_id == question_option.question.id)
+							extra_item['required'] =True
+				except TypeError:
+					if question_option_set.other:
+							#reset the questionOtherForm validation condition
+							extra_item = next(item for item in extra_other if item['question'].parent_id == question_option_set.question.id)
+							extra_item['required'] =True
 
+			questionOtherForm = forms.ProjectQuestion(formData, extra=extra_other);
+
+		if businessForm.is_valid() and form.is_valid() and questionForm.is_valid() and questionOtherForm.is_valid() and checkAuthCond:
 			if not loggedIn:
 				if checkRegister:
 					print('Not logged in, create user first')

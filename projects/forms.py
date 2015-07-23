@@ -17,7 +17,7 @@ class ProjectQuestion(forms.Form):
 		super(ProjectQuestion, self).__init__(*args, **kwargs)
 
 		for item in extra:
-			self.fields[item.get('question').field_name()] = item.get('question').make_field()
+			self.fields[item.get('question').field_name()] = item.get('question').make_field(item.get('required', True))
 			
 class Cancel(forms.ModelForm):
 	class Meta:
