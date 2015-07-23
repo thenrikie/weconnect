@@ -9,6 +9,9 @@ body {
 
 }
 
+.container.main-body{
+    min-height: 550px;
+}
 h1 {
     font-size: 40px;
 }
