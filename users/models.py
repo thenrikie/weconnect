@@ -152,3 +152,19 @@ class UserProfile(models.Model):
 	def __str__(self):
 		return self.user.email
 
+class ShowCase(models.Model):
+	user_profile = models.ForeignKey(UserProfile)
+	title =  models.CharField(max_length=1024)
+
+def upload_filename(model, filename):
+	#nameparts = filename.split(".")
+	return 'showcases/' + str(model.showcase.id) + '/' + filename
+
+class ShowCaseAttachment(models.Model):
+	showcase = models.ForeignKey(ShowCase, related_name='attachment')
+	caption = models.CharField(max_length=1024, blank=True)
+	file = models.FileField(upload_to=upload_filename, null=True, blank=True)
+
+
+
+

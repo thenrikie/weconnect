@@ -42,6 +42,19 @@ def profile_business(r):
 	form_business_company_social = forms.BusinessCompanySocial(r.POST or None, instance=r.user.userprofile)
 	form_business_work = forms.BusinessWorkImage(r.POST or None, r.FILES or None, instance=r.user.userprofile)
 
+	# get show case -> get showcase attachment -> showcase-xxx-id
+	form_business_showcases = []
+
+	attIds=(8, 7)
+	form_business_showcases.append({
+		'form': forms.ShowCase(r.POST or None, r.FILES or None, attIds=attIds, new_count=2, form_name="0"),
+		'showcase': 99
+	})
+
+	form_business_showcases.append({
+		'form': forms.ShowCase(r.POST or None, r.FILES or None, attIds=attIds, form_name="1")
+	})
+
 	view_values = {
 	#	'form' : form, 
 		'userprofile' : r.user.userprofile,
@@ -52,8 +65,11 @@ def profile_business(r):
 		'form_business_preference' : form_business_preference,
 		'form_business_company_detail' : form_business_company_detail,
 		'form_business_company_social' : form_business_company_social,
-		'form_business_work' : form_business_work
+		'form_business_work' : form_business_work,
+		'form_business_showcases': form_business_showcases,
+		'form_business_showcase_template': forms.ShowCase(None, None, attIds=[], new_count=1, form_name="___form_name___")
 	}
+
 
 	part = {
 		'head' : {'forms' : [form_business_head, form_credential], 'error' : 'form_business_head_error'},
@@ -62,7 +78,7 @@ def profile_business(r):
 		'preference' : {'forms' : [form_business_preference], 'error' : 'form_business_preference_error'},
 		'company_detail' : {'forms' : [form_business_company_detail], 'error' : 'form_business_company_detail_error'},
 		'company_social' : {'forms' : [form_business_company_social], 'error' : 'form_business_company_social_error'},
-		'work' : {'forms' : [form_business_work], 'error': 'form_business_work_error'}
+		'work' : {'forms' : form_business_showcases, 'error': 'form_business_work_error'}
 	}
 
 	if r.method == 'POST':
@@ -75,6 +91,7 @@ def profile_business(r):
 			allFormValid = True
 
 			for form in part_forms:
+				print(form)
 				allFormValid = allFormValid and form.is_valid() 
 
 			if allFormValid:

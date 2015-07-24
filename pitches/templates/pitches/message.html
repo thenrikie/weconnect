@@ -28,7 +28,7 @@
 			</p>
 
 			{% if message.attachment.first %}
-			<div class="pitches_pitch_messge_item_attach"><a href="{% url 'pitches:download_attachment' pitch.uniqid message.id %}">Download Attachment</a> ({{message.attachment.first.file.size|filesizeformat }})</div>
+			<div class="pitches_pitch_messge_item_attach"><a href="{% url 'pitches:download_attachment' pitch.uniqid message.id %}">Download attachment</a> ({{ message.attachment.first.filename }} {{message.attachment.first.file.size|filesizeformat }})</div>
 			{% endif %}
 
 		</div>

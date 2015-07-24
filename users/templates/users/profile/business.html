@@ -269,6 +269,55 @@
 		
 		</div>
 		<div id="work-form" class="hide">
+			
+			{% for form_business_showcase in form_business_showcases %}
+			{% with form=form_business_showcase.form%}
+			<form id="form-showcase-{{ form.form_name }}" action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data" class="">
+				{% csrf_token %}
+				<div id="form-group-{{ form.title.id_for_label }}" class="form-group {{ form.title.errors|yesno:'has-errors,' }}">
+					<label for="{{ form.title.id_for_label }}" class="control-label">Project title</label>
+					<a href="javascript:void(0)" class="pull-right delete-project" >Delete project</a>
+					<div class="">
+						{{ form.title.as_widget }}
+						{{ form.title.errors }}
+					</div>
+				</div>
+
+				<div class="showcase-atts">
+					{% for row in form.get_file_rows %}
+					<div class="form-group">
+						<div class="col-md-5">
+							<span class="hide">{{ row.file.as_widget }}</span>
+							<input type="button" value="Choose file" class="btn btn-primary upload-proxy" id="{{ row.file.id_for_label }}-proxy">
+						</div>
+						<div class="col-md-5">
+							{{ row.caption.as_widget }}
+						</div>
+						<div class="col-md-2">
+							<div id="{{ row.file.id_for_label }}-delete" class="cross"></div>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					{% endfor %}
+				</div>
+
+				<div><a href="javascript:void(0)" id="{{ form.form_name }}-add-file">+ Add another file</a></div>
+
+				<input type="hidden" value="work" name="part">
+				<input type="hidden" value="{{ form.new_count }}" name="new_count">
+				<input type="hidden" value="{{ form.form_name }}" name="form_name">
+
+				{% if form_business_showcase.showcase %}
+				<input type="hidden" value="{{ form_business_showcase.showcase }}" name="showcase">
+				{% endif %}
+				<input type="submit" value="Save" class="btn btn-primary pull-right">
+				<div class="clearfix"></div>
+			</form>
+			{% endwith %}
+			{% endfor %}
+
+			
+			<!--
 			<form action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data" class="form-horizontal">
 				{% csrf_token %}
 				{{ form_business_work.work_image_1|hformrow:'Image'}}
@@ -278,22 +327,54 @@
 				<input id="work-cancel" type="button" value="Cancel" class="cancel_button btn btn-default pull-right">
 				<input type="submit" value="Save" class="btn btn-primary pull-right">
 			</form>
+		-->
 		</div>
 	</div>
 </div>
 
-<!--
-<form action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data">
-	{% csrf_token %}
-	<ul>
-		{{ form.as_ul }}
-		<li>
-			<input type="submit" value="Save">
-		</li>
-	</ul>
-</form>
--->
+<div id="template-cave" class="hide">
+	<div id="showcase">
+		{% with form=form_business_showcase_template%}
+		<form id="form-showcase-{{ form.form_name }}" action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data" class="">
+			{% csrf_token %}
+			<div id="form-group-{{ form.title.id_for_label }}" class="form-group {{ form.title.errors|yesno:'has-errors,' }}">
+				<label for="{{ form.title.id_for_label }}" class="control-label">Project title</label>
+				<a href="javascript:void(0)" class="pull-right delete-project" >Delete project</a>
+				<div class="">
+					{{ form.title.as_widget }}
+				</div>
+			</div>
 
+			<div class="showcase-atts">
+				{% for row in form.get_file_rows %}
+				<div class="form-group">
+					<div class="col-md-5">
+						<span class="hide">{{ row.file.as_widget }}</span>
+						<input type="button" value="Choose file" class="btn btn-primary upload-proxy" id="{{ row.file.id_for_label }}-proxy">
+					</div>
+					<div class="col-md-5">
+						{{ row.caption.as_widget }}
+					</div>
+					<div class="col-md-2">
+						<div id="{{ row.file.id_for_label }}-delete" class="cross"></div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				{% endfor %}
+			</div>
+
+			<div><a href="javascript:void(0)" id="{{ form.form_name }}-add-file">+ Add another file</a></div>
+
+			<input type="hidden" value="work" name="part">
+			<input type="hidden" value="{{ form.form_name }}" name="form_name">
+			<input type="hidden" value="{{ form.new_count }}" name="new_count">
+
+			<input type="submit" value="Save" class="btn btn-primary pull-right">
+			<div class="clearfix"></div>
+		</form>
+		{% endwith %}
+	</div>
+</div>
 <script>
 	var edit = {
 		'add-your-logo':{
@@ -429,6 +510,86 @@
 	$(function(){
 		travelToCustomerSelect.trigger('change')
 	})
+
+	var showcaseAtts = [];
+	var showcases = [];
+
+	{% for form_business_showcase in form_business_showcases %}
+	{% with form=form_business_showcase.form %}
+
+	showcases.push({
+		'formName': '{{ form.form_name}}',
+		'form': 'form-showcase-{{ form.form_name }}',
+		'showcaseAtt': $("#form-showcase-{{ form.form_name }} .showcase-atts"),
+		'new_count': $("#form-showcase-{{ form.form_name }} input[name=new_count]"),
+		'addAtt': $('#{{ form.form_name }}-add-file')
+	})
+
+		{% for row in form.get_file_rows %}
+		
+		showcaseAtts.push({  
+		   'file' : $('#{{row.file.id_for_label}}'), 
+		   'fileProxy' : $('#{{row.file.id_for_label}}-proxy'), 
+		   'delete': $('#{{row.file.id_for_label}}-delete'),
+		   'caption' : $('#{{row.caption.id_for_label}}')
+	    });
+
+		{% endfor %}
+	{% endwith %}
+	{% endfor %}
+
+	function attachShowcaseAttEvent(showcaseAtts){
+		_.each(showcaseAtts, function(showcaseAtt){
+
+			showcaseAtt.fileProxy.click(function(){
+				showcaseAtt.file.click();
+			});
+
+			showcaseAtt.file.change(function(){
+				showcaseAtt.fileProxy.val(showcaseAtt.file.val());
+			});
+		});
+	}
+
+	attachShowcaseAttEvent(showcaseAtts);
+
+	function changeTemplateElId(el, formName, count){
+		var new_id = el.attr('id');
+		new_id = new_id.replace("0", count);
+		new_id = new_id.replace("___form_name___", formName);
+		el.attr('id', new_id);
+	}
+
+	_.each(showcases, function(showcase){
+
+
+		showcase.addAtt.click(function(){
+			var row = $('#showcase form:first .showcase-atts div:first').clone();
+			var inputs = row.find('input');
+			var count = parseInt(showcase.new_count.val());
+
+
+			for(var i=0; i<inputs.length; i++){
+				changeTemplateElId(inputs.eq(i), showcase.formName, count);
+			}
+
+			var cross = row.find('div.cross')
+			changeTemplateElId(cross, showcase.formName, count);
+
+			count++;
+			showcase.new_count.val(count);
+
+			showcase.showcaseAtt.append(row);
+
+			attachShowcaseAttEvent([{
+			   'file' : $('#' + row.find('input[type=file]').attr('id')), 
+			   'fileProxy' : $('#' + row.find('input.upload-proxy').attr('id')), 
+			   'delete': $('#' + cross.attr('id'))
+			}]);
+
+		});
+	});
+
 </script>
 
 {% endwith %}

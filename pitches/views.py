@@ -332,10 +332,10 @@ def post_message(r, pitch_id):
 @login_required
 def download_attachment(r, pitch_id, message_id):
 	from django.conf import settings
-	message = get_object_or_404(Message, uniqid=message_id)
+	message = get_object_or_404(Message, id=message_id)
 
 	#permission checking
-	if str(message.pitch.id) != pitch_id or (message.pitch.company != r.user and message.pitch.project.user != r.user):
+	if str(message.pitch.uniqid) != pitch_id or (message.pitch.company != r.user and message.pitch.project.user != r.user):
 		return redirect("/")
 
 	filename = message.attachment.first().file.name.split("/")

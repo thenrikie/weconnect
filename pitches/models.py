@@ -132,3 +132,7 @@ def upload_filename(model, filename):
 class MessageAttachment(models.Model):
 	message = models.ForeignKey(Message, related_name='attachment')
 	file = models.FileField(upload_to=upload_filename, null=True, blank=True)
+
+	def filename(self):
+		name = self.file.name.split("/")
+		return name[-1]

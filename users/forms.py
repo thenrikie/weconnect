@@ -1,7 +1,7 @@
 from authentication.models import User
 from users.models import UserProfile, Business, SubBusiness
 from django.forms import ModelForm, PasswordInput, Textarea, CheckboxSelectMultiple
-
+from django import forms
 
 
 class Credential(ModelForm):
@@ -102,3 +102,51 @@ class BusinessWorkImage(ModelForm):
 	class Meta:
 		model = UserProfile
 		fields = ['work_image_1', 'work_image_2', 'work_image_3']
+		
+class ShowCase(forms.Form):
+
+	title = forms.CharField(required=True, max_length=1024, widget=forms.TextInput(attrs={"class":"form-control"}))
+	attIds = []
+	new_count = 0
+	new_field_prefix = "new_"
+
+	def __init__(self, *args, **kwargs):
+		attIds = kwargs.pop('attIds')
+		new_count = kwargs.pop('new_count', 0)
+		self.form_name = kwargs.pop('form_name')
+
+		super(ShowCase, self).__init__(*args, **kwargs)
+
+		self.attIds = attIds
+		self.new_count = new_count
+
+		for attId in attIds:
+			self._add_field('',str(attId))
+
+		for i in range(new_count):
+			self._add_field(self.new_field_prefix, str(i))
+
+	def _add_field(self, prefix, id):
+		self.fields[self.form_name + '_' + prefix + 'caption_' + id] = forms.CharField(
+			max_length=1024,
+			widget=forms.TextInput(attrs={"class":"form-control", "placeholder":"Add Caption"}),
+			required=False
+		)
+		self.fields[self.form_name + '_' + prefix + 'file_' + id] = forms.FileField(required=False)
+
+	def get_file_rows(self):
+		rows = []
+		for attId in self.attIds: 
+			rows.append({
+				'caption' : self[self.form_name + '_caption_' + str(attId)], 
+				'file': self[self.form_name + '_file_' + str(attId)],
+				'attId': attId
+			})
+
+		for i in range(self.new_count): 
+			rows.append({
+				'caption' : self[self.form_name + '_' + self.new_field_prefix + 'caption_' + str(i)], 
+				'file': self[self.form_name + '_' + self.new_field_prefix + 'file_' + str(i)],
+			})
+
+		return rows
