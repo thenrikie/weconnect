@@ -161,7 +161,7 @@ def upload_filename(model, filename):
 	return 'showcases/' + str(model.showcase.id) + '/' + filename
 
 class ShowCaseAttachment(models.Model):
-	showcase = models.ForeignKey(ShowCase, related_name='attachment')
+	showcase = models.ForeignKey(ShowCase, related_name='attachments')
 	caption = models.CharField(max_length=1024, blank=True)
 	file = models.FileField(upload_to=upload_filename, null=True, blank=True)
 

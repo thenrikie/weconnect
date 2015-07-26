@@ -105,7 +105,7 @@ class BusinessWorkImage(ModelForm):
 		
 class ShowCase(forms.Form):
 
-	title = forms.CharField(required=True, max_length=1024, widget=forms.TextInput(attrs={"class":"form-control"}))
+	title = forms.CharField(required=True, max_length=1024, widget=forms.TextInput(attrs={"class":"form-control", "required":""}))
 	attIds = []
 	new_count = 0
 	new_field_prefix = "new_"
@@ -129,7 +129,7 @@ class ShowCase(forms.Form):
 	def _add_field(self, prefix, id):
 		self.fields[self.form_name + '_' + prefix + 'caption_' + id] = forms.CharField(
 			max_length=1024,
-			widget=forms.TextInput(attrs={"class":"form-control", "placeholder":"Add Caption"}),
+			widget=forms.TextInput(attrs={"class":"form-control", "placeholder":"Add Caption", "required":""}),
 			required=False
 		)
 		self.fields[self.form_name + '_' + prefix + 'file_' + id] = forms.FileField(required=False)
