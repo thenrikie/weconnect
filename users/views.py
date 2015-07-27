@@ -108,8 +108,11 @@ def profile_business(r):
 
 			form_name = r.POST.get('form_name')
 			att_count = int(r.POST.get('new_count'))
-
-			attachments = showcase.attachments.all()
+			attachments = []
+			
+			if(r.POST.get('showcase')):
+				showcase = ShowCase.objects.get(id=int(r.POST.get('showcase')))
+				attachments = showcase.attachments.all()
 
 			showcase_form = forms.ShowCase(
 				r.POST, 
@@ -124,8 +127,6 @@ def profile_business(r):
 
 				if(r.POST.get('showcase')):
 					print('existing showcase')
-					showcase = ShowCase.objects.get(id=int(r.POST.get('showcase')))
-
 					if not showcase or showcase.user_profile != r.user.userprofile:
 						print('No permission to update showcase id=' + r.POST.get('showcase'))
 						return redirect('/')
@@ -205,9 +206,9 @@ def delete_showcase(r, showcase_id):
 
 
 @login_required
-def delete_showcase_attachment(r, showcase_att_id):
+def delete_showcase_attachment(r, showcase_attachment_id):
 	if r.method == 'POST':
-		att = get_object_or_404(ShowCaseAttachment, id=showcase_att_id)
+		att = get_object_or_404(ShowCaseAttachment, id=showcase_attachment_id)
 		if att.showcase.user_profile != r.user.userprofile:
 			return HttpResponse(status=400)
 

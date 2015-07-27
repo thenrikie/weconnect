@@ -274,7 +274,7 @@
 
 				<div class="showcase-atts">
 					{% for row in form.get_file_rows %}
-					<div class="form-group">
+					<div class="form-group" id="att-row-{{ row.attId }}">
 						<div class="col-md-5">
 							<span class="hide">{{ row.file.as_widget }}</span>
 							<input type="button" value="{{ row.file.value.name|filename }}" class="btn btn-primary upload-proxy" id="{{ row.file.id_for_label }}-proxy">
@@ -299,7 +299,8 @@
 				{% if business_showcase.showcase %}
 				<input type="hidden" value="{{ business_showcase.showcase }}" name="showcase">
 				{% endif %}
-				<input type="submit" value="Save" class="btn btn-primary pull-right">
+				<input type="submit" value="Save" class="btn btn-primary">
+				<input type="button" value="Cancel" class="btn btn-default cancel">
 				<div class="clearfix"></div>
 			</form>
 			{% endwith %}
@@ -324,10 +325,11 @@
 <div id="template-cave" class="hide">
 	<div id="showcase">
 		{% with form=form_business_showcase_template%}
-		<form  autocomplete="off" id="form-showcase-{{ form.form_name }}" action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data" class="">
+		<form  autocomplete="off" id="form-showcase-{{ form.form_name }}" action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data" class=""  >
 			{% csrf_token %}
 			<div id="form-group-{{ form.title.id_for_label }}" class="form-group {{ form.title.errors|yesno:'has-errors,' }}">
 				<label for="{{ form.title.id_for_label }}" class="control-label">Project title</label>
+				<a href="javascript:void(0)" class="pull-right delete-project" >Delete project</a>
 				<div class="">
 					{{ form.title.as_widget }}
 				</div>
@@ -357,7 +359,8 @@
 			<input type="hidden" value="{{ form.form_name }}" name="form_name">
 			<input type="hidden" value="{{ form.new_count }}" name="new_count">
 
-			<input type="submit" value="Save" class="btn btn-primary pull-right">
+			<input type="submit" value="Save" class="btn btn-primary">
+			<input type="button" value="Cancel" class="btn btn-default cancel">
 			<div class="clearfix"></div>
 		</form>
 		{% endwith %}
@@ -499,174 +502,259 @@
 		travelToCustomerSelect.trigger('change')
 	})
 
-	var showcaseAtts = [];
-	var showcases = [];
+	$(function projectShowcase(){
 
-	{% for business_showcase in business_showcases %}
-	{% with form=business_showcase.form %}
+		var InEditMode = false
+		var showcaseAtts = [];
+		var showcases = [];
 
-	showcases.push({
-		'deleteUrl': "{% url 'users:delete_showcase' business_showcase.showcase %}",
-		'display': $('#showcase-display-{{ form.form_name }}'),
-		'edit': $('#showcase-display-{{ form.form_name }}-edit'),
-		'formName': '{{ form.form_name}}',
-		'form': $('#form-showcase-{{ form.form_name }}'),
-		'showcaseAtt': $("#form-showcase-{{ form.form_name }} .showcase-atts"),
-		'new_count': $("#form-showcase-{{ form.form_name }} input[name=new_count]"),
-		'addAtt': $('#{{ form.form_name }}-add-file'),
-		'delete': $('#form-showcase-{{ form.form_name }} .delete-project'),
-	})
+		{% for business_showcase in business_showcases %}
+		{% with form=business_showcase.form %}
 
-		{% for row in form.get_file_rows %}
-		
-		showcaseAtts.push({  
-		   'file' : $('#{{row.file.id_for_label}}'), 
-		   'fileProxy' : $('#{{row.file.id_for_label}}-proxy'), 
-		   'delete': $('#{{row.file.id_for_label}}-delete'),
-		   'caption' : $('#{{row.caption.id_for_label}}')
-	    });
+		showcases.push({
+			'deleteUrl': "{% url 'users:delete_showcase' business_showcase.showcase %}",
+			'display': $('#showcase-display-{{ form.form_name }}'),
+			'edit': $('#showcase-display-{{ form.form_name }}-edit'),
+			'formName': '{{ form.form_name}}',
+			'form': $('#form-showcase-{{ form.form_name }}'),
+			'showcaseAtt': $("#form-showcase-{{ form.form_name }} .showcase-atts"),
+			'new_count': $("#form-showcase-{{ form.form_name }} input[name=new_count]"),
+			'addAtt': $('#{{ form.form_name }}-add-file'),
+			'delete': $('#form-showcase-{{ form.form_name }} .delete-project'),
+			'cancel': $('#form-showcase-{{ form.form_name }} .cancel'),
+		})
 
+			{% for row in form.get_file_rows %}
+			
+			showcaseAtts.push({  
+				'deleteUrl': "{% url 'users:delete_showcase_attachment' row.attId %}",
+			   'file' : $('#{{row.file.id_for_label}}'), 
+			   'fileProxy' : $('#{{row.file.id_for_label}}-proxy'), 
+			   'delete': $('#{{row.file.id_for_label}}-delete'),
+			   'caption' : $('#{{row.caption.id_for_label}}'),
+			   'row' : $('#att-row-{{ row.attId }}')
+		    });
+
+			{% endfor %}
+
+		{% endwith %}
 		{% endfor %}
-	{% endwith %}
-	{% endfor %}
 
-	function attachShowcaseAttEvent(showcaseAtts){
-		_.each(showcaseAtts, function(showcaseAtt){
+		function attachShowcaseAttEvent(showcaseAtts){
+			_.each(showcaseAtts, function(showcaseAtt){
 
-			showcaseAtt.fileProxy.click(function(){
-				showcaseAtt.file.click();
+				showcaseAtt.fileProxy.click(function(){
+					showcaseAtt.file.click();
+				});
+
+				showcaseAtt.file.change(function(){
+					showcaseAtt.fileProxy.val(showcaseAtt.file.val());
+				});
+
+				showcaseAtt.delete.click(function(){
+					if(confirm('Are you sure?')){
+
+						if (!showcaseAtt.deleteUrl){
+							showcaseAtt.row.remove();
+						} else {
+							$.post(showcaseAtt.deleteUrl, function(){
+								showcaseAtt.row.remove();
+							});
+						}
+					}
+				});
+			});
+		}
+
+		attachShowcaseAttEvent(showcaseAtts);
+
+		function changeTemplateElId(el, formName, count){
+
+			var new_id = el.attr('id');
+
+			if(new_id){
+				if(typeof count === "number"){
+					new_id = new_id.replace("0", count);
+				}
+
+				new_id = new_id.replace("___form_name___", formName);
+				el.attr('id', new_id);
+			}
+
+
+			var new_name = el.attr('name');
+
+			if(new_name){
+				if(typeof count === "number"){
+					new_name = new_name.replace("0", count);
+				}
+
+				new_name = new_name.replace("___form_name___", formName);
+				el.attr('name', new_name);
+			}
+
+			var new_val = el.val();
+
+			if(new_val){
+				if(typeof count === "number"){
+					new_val = new_val.replace("0", count);
+				}
+
+				new_val = new_val.replace("___form_name___", formName);
+				el.val(new_val);
+			}
+		}
+
+
+		function addAttEvent(showcase){
+			return function(){
+				var row = $('#showcase form:first .showcase-atts div:first').clone();
+				var inputs = row.find('input');
+				var count = parseInt(showcase.new_count.val());
+
+
+				for(var i=0; i<inputs.length; i++){
+					changeTemplateElId(inputs.eq(i), showcase.formName, count);
+				}
+
+				var cross = row.find('div.cross')
+				changeTemplateElId(cross, showcase.formName, count);
+
+				count++;
+				showcase.new_count.val(count);
+
+				showcase.showcaseAtt.append(row);
+
+				attachShowcaseAttEvent([{
+					'row': row,
+				   'file' : $('#' + row.find('input[type=file]').attr('id')), 
+				   'fileProxy' : $('#' + row.find('input.upload-proxy').attr('id')), 
+				   'delete': $('#' + cross.attr('id'))
+				}]);
+			};
+		}
+
+
+		function validateShowCaseForm(form){
+
+			if (this.isValid()) {
+			  return;
+			}
+
+			// else stop form submission
+			this.submitEvent.preventDefault();
+			
+			inputs = form.find('input');
+			inputs.each(function(){
+				if(!$(this).parsley().isValid()){
+					$(this).parent().addClass('has-error');
+				}
+
+				if($(this).attr('type') === "file" && !$(this).val()){
+					form.find('.upload-proxy').addClass('btn-danger').removeClass('btn-primary')
+				}
 			});
 
-			showcaseAtt.file.change(function(){
-				showcaseAtt.fileProxy.val(showcaseAtt.file.val());
+			return false;
+			
+		}
+
+		_.each(showcases, function(showcase){
+
+			showcase.edit.click(function(){
+				if(InEditMode){
+					return alert('Please Save or Cancel your current changes first.')
+				}
+				InEditMode = true;
+				showcase.display.addClass('hide');
+				showcase.form.removeClass('hide');
 			});
+
+			showcase.delete.click(function(){
+				if(confirm('Are you sure')){
+					$.post(showcase.deleteUrl, function(){
+						InEditMode = false;
+						showcase.form.remove();
+						showcase.display.remove();
+					});
+				}
+			});
+
+			showcase.cancel.click(function(){
+				InEditMode = false;
+				showcase.display.removeClass('hide');
+				showcase.form.addClass('hide');
+			});
+
+			showcase.addAtt.click(addAttEvent(showcase));
+
+			//showcase.form.parsley().on(validateShowCaseForm(showcase.form));
 		});
-	}
 
-	attachShowcaseAttEvent(showcaseAtts);
 
-	function changeTemplateElId(el, formName, count){
-
-		var new_id = el.attr('id');
-
-		if(new_id){
-			if(typeof count === "number"){
-				new_id = new_id.replace("0", count);
+		$('#add-new-project').click(function(){
+			if(InEditMode){
+				return alert('Please Save or Cancel your current changes first.')
 			}
 
-			new_id = new_id.replace("___form_name___", formName);
-			el.attr('id', new_id);
-		}
+			InEditMode=true;
 
+			var form = $('#showcase form').clone();
+			var formName = Math.random().toString(36).substr(2, 5);
+			changeTemplateElId(form, formName);
 
-		var new_name = el.attr('name');
-
-		if(new_name){
-			if(typeof count === "number"){
-				new_name = new_name.replace("0", count);
-			}
-
-			new_name = new_name.replace("___form_name___", formName);
-			el.attr('name', new_name);
-		}
-
-		var new_val = el.val();
-
-		if(new_val){
-			if(typeof count === "number"){
-				new_val = new_val.replace("0", count);
-			}
-
-			new_val = new_val.replace("___form_name___", formName);
-			el.val(new_val);
-		}
-	}
-
-
-	function addAttEvent(showcase){
-		return function(){
-			console.log('clicked');
-			var row = $('#showcase form:first .showcase-atts div:first').clone();
-			var inputs = row.find('input');
-			var count = parseInt(showcase.new_count.val());
-
-
+			var inputs = form.find('input');
 			for(var i=0; i<inputs.length; i++){
-				changeTemplateElId(inputs.eq(i), showcase.formName, count);
+				changeTemplateElId(inputs.eq(i), formName);
 			}
 
-			var cross = row.find('div.cross')
-			changeTemplateElId(cross, showcase.formName, count);
+			var del = form.find('#id____form_name____new_file_0-delete')
+			changeTemplateElId(del, formName);
 
-			count++;
-			showcase.new_count.val(count);
+			var add = form.find('#___form_name___-add-file');
+			changeTemplateElId(add, formName);
 
-			showcase.showcaseAtt.append(row);
+			form.appendTo($('#showcases'));
+
+			form.find('input[type=file]').attr('required', true);
+
+			form.parsley().on('form:validate', function(){
+				return validateShowCaseForm.bind(this)(form);
+			});
 
 			attachShowcaseAttEvent([{
-			   'file' : $('#' + row.find('input[type=file]').attr('id')), 
-			   'fileProxy' : $('#' + row.find('input.upload-proxy').attr('id')), 
-			   'delete': $('#' + cross.attr('id'))
+				'row': form.find('.showcase-atts div:first'),
+			   'file' : form.find('input[type=file]'), 
+			   'fileProxy' : form.find('input.upload-proxy'), 
+			   'delete': form.find('div.cross')
 			}]);
-		};
-	}
 
-	_.each(showcases, function(showcase){
+			add.click(addAttEvent({
+				'formName': formName,
+				'showcaseAtt': form.find(".showcase-atts"),
+				'new_count': form.find("input[name=new_count]"),
+			}));
 
-		showcase.edit.click(function(){
-			showcase.display.addClass('hide');
-			showcase.form.removeClass('hide');
-		});
-
-		showcase.delete.click(function(){
-			$.post(showcase.deleteUrl, function(){
-				showcase.form.remove();
-				showcase.display.remove();
+			form.find('.delete-project').click(function(){
+				if(confirm('Are you sure?')){
+					form.remove();
+				}
 			});
+
+			form.find('.cancel').click(function(){
+				InEditMode = false;
+				form.remove();
+			});
+
 		});
-
-		showcase.addAtt.click(addAttEvent(showcase));
 	});
 
-	$('#add-new-project').click(function(){
 
-		var form = $('#showcase form').clone();
-		var formName = Math.random().toString(36).substr(2, 5);
-		changeTemplateElId(form, formName);
-
-		var inputs = form.find('input');
-		for(var i=0; i<inputs.length; i++){
-			changeTemplateElId(inputs.eq(i), formName);
-		}
-
-		var del = form.find('#id____form_name____new_file_0-delete')
-		changeTemplateElId(del, formName);
-
-		var add = form.find('#___form_name___-add-file');
-		changeTemplateElId(add, formName);
-
-		form.appendTo($('#showcases'));
-
-		form.parsley();
-
-		attachShowcaseAttEvent([{
-		   'file' : form.find('input[type=file]'), 
-		   'fileProxy' : form.find('input.upload-proxy'), 
-		   'delete': form.find('div.cross')
-		}]);
-
-		add.click(addAttEvent({
-			'formName': formName,
-			'showcaseAtt': form.find(".showcase-atts"),
-			'new_count': form.find("input[name=new_count]"),
-		}));
+	$.ajaxSetup({
+	  beforeSend: function(xhr, settings) {
+	    xhr.setRequestHeader("X-CSRFToken", '{{csrf_token}}');
+	  }
 	});
-
-  $.ajaxSetup({
-      beforeSend: function(xhr, settings) {
-        xhr.setRequestHeader("X-CSRFToken", '{{csrf_token}}');
-      }
-  });
 
 </script>
 
