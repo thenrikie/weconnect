@@ -165,6 +165,13 @@ class ShowCaseAttachment(models.Model):
 	caption = models.CharField(max_length=1024, blank=True)
 	file = models.FileField(upload_to=upload_filename, null=True, blank=True)
 
+	def is_image(self):
+		name = self.file.name.split("/")
+		print(name)
+		print(name[-1].split(".")[-1])
+		return name[-1].split(".")[-1] in ['jpg','jpeg','gif','png']
+
+
 
 
 

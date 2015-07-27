@@ -19,6 +19,7 @@
     "bootstrap": "~3.3.2",
     "lodash": "~3.6.0",
     "parsleyjs": "~2.1.2",
-    "jquery-ui": "~1.11.4"
+    "jquery-ui": "~1.11.4",
+    "slick.js": "~1.5.8"
   }
 }

@@ -62,7 +62,7 @@ def profile_business(r):
 
 		business_showcases.append({
 			'form': forms.ShowCase(showcase_populate, showcase_populate, attIds=attIds, new_count=0, form_name=str(showcase.id)),
-			'showcase': showcase.id
+			'showcase': showcase
 		})
 
 	# attIds=(8, 7)

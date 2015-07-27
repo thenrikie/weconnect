@@ -1164,3 +1164,30 @@ a.create_project_auth_selected {
 .upload-proxy {
     width:100%;
 }
+.showcase-caption {
+    background-color: rgba(1, 1, 1, 0.5);
+    color: white;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 3px 10px;
+}
+
+.showcase-image {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    height: 200px;
+    max-width: 100%;
+    width: 100%;
+}
+.showcase-file {
+    display: block;
+    line-height: 200px;
+    height: 200px;
+    width: 100%;
+    text-align:center;
+}
+
+.slick-prev::before, .slick-next::before{
+    color:black !important;
+}
