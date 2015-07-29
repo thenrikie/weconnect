@@ -203,6 +203,7 @@
       </div>
     </div>
     <div class="clearfix"></div>
+    <a href="javascript:void(0)" class="footer_contact_us" id="contact-us">Contact Us</a>
     <p class="footer_copyright">&copy; RatedFrog 2015 </p>
   </footer>
     <!-- Bootstrap core JavaScript
@@ -223,5 +224,90 @@
       $(keepFooterAtBottom);
       
     </script>
+
+<div class="modal fade" id="modal-contact-us">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="contact-us-form">
+        <h3 class="text-center">Contact Us</h3>
+        <div class="modal-body">
+          <div class="form-group "> 
+            <label class=" control-label" for="id_cs_email">Email</label>
+            <div class="create_project_answers">
+              <input type="text" name="email" id="id_cs_email" class="form-control" value="{{ user.email }}" required >
+            </div>
+          </div>
+
+          <div class="form-group "> 
+            <label class=" control-label" for="id_cs_message">Message</label>
+            <div class="create_project_answers">
+              <textarea rows="8" name="message" maxlength="1024" id="id_cs_message" cols="40" class="form-control" required></textarea>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="submit"  class="btn btn-blue">Send</button>
+        </div>
+      </form>
+      <div id="contact-us-done" class="hide">
+        <h3 class="text-center">Contact Us</h3>
+        <div class="text-center" style="margin:40px 0">
+          Thank you for your message
+        </div>
+        <div class="modal-footer">
+          <button type="button"  data-dismiss="modal" class="btn btn-blue">Close</button>
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+  <script>
+    //contact-us form
+    $(function(){
+      var form = $( "#contact-us-form" );
+      form.parsley();
+      form.submit(function( event ) {
+
+        $.postJSON("{% url 'contacts:create' %}", {
+            email : $('#id_cs_email').val(),
+            message: $('#id_cs_message').val()
+        });
+
+        form.addClass('hide');
+        $('#contact-us-done').removeClass('hide');
+        event.preventDefault();
+        
+      });
+
+      $('#contact-us').click(function(){
+        form[0].reset()
+        $('#modal-contact-us').modal();
+        form.removeClass('hide');
+        $('#contact-us-done').addClass('hide');
+      });
+    });
+
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+          xhr.setRequestHeader("X-CSRFToken", '{{csrf_token}}');
+        }
+    });
+
+    jQuery.extend({
+      postJSON : function(url, data, callback){
+         $.ajax({
+          url:url,
+          type:"POST",
+          data: JSON.stringify(data),
+          contentType:"application/json; charset=utf-8",
+          dataType:"json",
+          success: callback
+          })
+        }
+    });
+
+  </script>
   </body>
 </html>

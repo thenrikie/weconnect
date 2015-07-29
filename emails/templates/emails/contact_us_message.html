@@ -1,0 +1,12 @@
+{% extends "emails/base.html" %}
+{% block content %}
+	Hi Froggers,
+	<br><br>
+	{{ email }} just leave us a message through contact us box, here is the message:
+	<br><br>
+	<pre>
+		{{message}}
+	</pre>
+	<br><br>
+	The RatedFrog Team
+{% endblock %}

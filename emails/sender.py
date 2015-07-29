@@ -92,3 +92,6 @@ def hired_admin(content):
 def project_cancel_admin(content):
 	subject = content['customer_name'] + ' <' +  content['customer_email'] + '> has cancelled their project'
 	send_admin(content, subject, 'project_cancel_admin')	
+
+def contact_us_message(content):
+	send_admin(content, "Someone just leave us a message", 'contact_us_message')	

@@ -1203,3 +1203,15 @@ a.create_project_auth_selected {
     margin-top: 20px;
     text-align: center;
 }
+
+.footer_contact_us {
+    color: white;
+    display: block;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.footer_contact_us:hover, .footer_contact_us:focus {
+    color: white;
+    text-decoration: none;
+}
