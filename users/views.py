@@ -65,15 +65,6 @@ def profile_business(r):
 			'showcase': showcase
 		})
 
-	# attIds=(8, 7)
-	# business_showcases.append({
-	# 	'form': forms.ShowCase({'99_caption_7': 'Fuck off'}, r.FILES or None, attIds=attIds, new_count=2, form_name="99"),
-	# 	'showcase': 99
-	# })
-
-	# business_showcases.append({
-	# 	'form': forms.ShowCase(r.POST or None, r.FILES or None, attIds=attIds, form_name="1")
-	# })
 
 	view_values = {
 		'userprofile' : r.user.userprofile,
@@ -162,7 +153,9 @@ def profile_business(r):
 
 			else:
 				print('showcase invalid!')
-
+				print(showcase_form.non_field_errors)
+				for field in showcase_form:
+					print(field.errors)
 				part_form_error = part[r.POST.get('part')]['error']
 				view_values[part_form_error] = True
 
@@ -234,4 +227,7 @@ def pub_profile(r, company_id):
 	if user.userprofile.role != 'COMPANY':
 		return redirect('/')
 
-	return render(r, 'users/profile/business_pub.html', {'userprofile' : user.userprofile})
+	return render(r, 'users/profile/business_pub.html', {
+		'userprofile' : user.userprofile, 
+		'business_showcases': [{'showcase': item } for item in user.userprofile.showcase_set.all()]
+	})

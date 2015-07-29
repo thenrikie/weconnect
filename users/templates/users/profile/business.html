@@ -3,11 +3,12 @@
     <link rel="stylesheet" href="/static/bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css">
     <link rel="stylesheet" href="/static/bower_components/slick.js/slick/slick.css">
     <link rel="stylesheet" href="/static/bower_components/slick.js/slick/slick-theme.css">
+    <link rel="stylesheet" href="/static/bower_components/fancybox/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
 {% endblock %}
 {% block js %}
 	<script src="/static/bower_components/jquery-ui/jquery-ui.min.js"></script>
 	<script src="/static/bower_components/slick.js/slick/slick.min.js"></script>
-
+	<script type="text/javascript" src="/static/bower_components/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 {% endblock %}
 {% load staticfiles %}
 {% load sinceyear %}
@@ -183,11 +184,12 @@
 				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.travel_distance.all|join:"<br>" }}</span>
 			</div>
 			{% endif %}
+			<!--
 			<div class="{{ css_prefix }}_service_item">
 				<span class="{{ css_prefix }}_service_item_key">Customer usually travel to me</span>
 				<span class="{{ css_prefix }}_service_item_value">{{ userprofile.customer_travel|yesno }}</span>
 			</div>
-
+			-->
 		</div>
 		<div id="preference-form" class="hide">
 			<form action="{% url 'users:profile' %}" method="post" class="form-horizontal">
@@ -261,14 +263,14 @@
 		
 			{% for business_showcase in business_showcases %}
 			{% with form=business_showcase.form%}
-			<div id="showcase-display-{{ form.form_name }}">
+			<div id="showcase-display-{{ form.form_name }}" class="showcase-display">
 				<a href="javascript:void(0)" class="pull-right {{ css_prefix }}_edit_btn blue-link" id="showcase-display-{{ form.form_name }}-edit" ><img alt="Edit" src="/static/image/edit.png"> Edit</a>
-				<h3>{{ business_showcase.showcase.title }}</h3>
+				<h4>{{ business_showcase.showcase.title }}</h4>
 				<div class="carousel">
 					{% for att in business_showcase.showcase.attachments.all %}
 					<div>
 						{% if att.is_image %}
-						<div class="showcase-image" style="background-image: url('{% static att.file %}')"></div>
+						<a class="showcase-image" style="background-image: url('{% static att.file %}')" href="{% static att.file %}" title="{{ att.caption }}"></a>
 						{% else %}
 						<a class="showcase-file" href="{% static att.file %}" target="_blank">Download {{ att.file.name|filename }}</a>
 						{% endif %}
@@ -277,8 +279,9 @@
 					</div>
 					{% endfor %}
 				</div>
+				<div class="clearfix"></div>
 			</div>
-			<form autocomplete="off" id="form-showcase-{{ form.form_name }}" action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data" class="hide">
+			<form autocomplete="off" id="form-showcase-{{ form.form_name }}" action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data" class="hide showcase-form">
 				{% csrf_token %}
 				<div id="form-group-{{ form.title.id_for_label }}" class="form-group {{ form.title.errors|yesno:'has-errors,' }}">
 					<label for="{{ form.title.id_for_label }}" class="control-label">Project title</label>
@@ -307,7 +310,7 @@
 					{% endfor %}
 				</div>
 
-				<div><a href="javascript:void(0)" id="{{ form.form_name }}-add-file">+ Add another file</a></div>
+				<div  class="add-another-button-row"><a href="javascript:void(0)" id="{{ form.form_name }}-add-file">+ Add another file</a></div>
 
 				<input type="hidden" value="work" name="part">
 				<input type="hidden" value="{{ form.new_count }}" name="new_count">
@@ -316,25 +319,16 @@
 				{% if business_showcase.showcase %}
 				<input type="hidden" value="{{ business_showcase.showcase.id }}" name="showcase">
 				{% endif %}
-				<input type="submit" value="Save" class="btn btn-primary">
-				<input type="button" value="Cancel" class="btn btn-default cancel">
+				<div class="showcase-buttons">
+					<input type="submit" value="Save" class="btn btn-primary">
+					<input type="button" value="Cancel" class="btn btn-default cancel">
+				</div>
 				<div class="clearfix"></div>
 			</form>
 			{% endwith %}
 			{% endfor %}
 
 			
-			<!--
-			<form action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data" class="form-horizontal">
-				{% csrf_token %}
-				{{ form_business_work.work_image_1|hformrow:'Image'}}
-				{{ form_business_work.work_image_2|hformrow:'Image'}}
-				{{ form_business_work.work_image_3|hformrow:'Image'}}
-				<input type="hidden" value="work" name="part">
-				<input id="work-cancel" type="button" value="Cancel" class="cancel_button btn btn-default pull-right">
-				<input type="submit" value="Save" class="btn btn-primary pull-right">
-			</form>
-		-->
 		</div>
 	</div>
 </div>
@@ -342,7 +336,7 @@
 <div id="template-cave" class="hide">
 	<div id="showcase">
 		{% with form=form_business_showcase_template%}
-		<form  autocomplete="off" id="form-showcase-{{ form.form_name }}" action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data" class=""  >
+		<form  autocomplete="off" id="form-showcase-{{ form.form_name }}" action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data" class="showcase-form"  >
 			{% csrf_token %}
 			<div id="form-group-{{ form.title.id_for_label }}" class="form-group {{ form.title.errors|yesno:'has-errors,' }}">
 				<label for="{{ form.title.id_for_label }}" class="control-label">Project title</label>
@@ -370,19 +364,22 @@
 				{% endfor %}
 			</div>
 
-			<div><a href="javascript:void(0)" id="{{ form.form_name }}-add-file">+ Add another file</a></div>
+			<div class="add-another-button-row"><a href="javascript:void(0)" id="{{ form.form_name }}-add-file">+ Add another file</a></div>
 
 			<input type="hidden" value="work" name="part">
 			<input type="hidden" value="{{ form.form_name }}" name="form_name">
 			<input type="hidden" value="{{ form.new_count }}" name="new_count">
-
-			<input type="submit" value="Save" class="btn btn-primary">
-			<input type="button" value="Cancel" class="btn btn-default cancel">
+			<div class="showcase-buttons">
+				<input type="submit" value="Save" class="btn btn-primary">
+				<input type="button" value="Cancel" class="btn btn-default cancel">
+			</div>
 			<div class="clearfix"></div>
 		</form>
 		{% endwith %}
 	</div>
 </div>
+
+
 <script>
 	var edit = {
 		'add-your-logo':{
@@ -485,7 +482,7 @@
 	{% endif %}
 
 	{% if form_business_work_error %}
-		edit['work'].btn.trigger('click')
+		
 	{% endif %}
 
 	$('#id_business_since').datepicker({ dateFormat: 'yy-mm-dd' })
@@ -783,6 +780,15 @@
 	  	"dots": true
 	  });
 	});
+
+	// fancybox
+	$('.showcase-image').fancybox({
+    	helpers : {
+    		title : {
+    			type : 'over'
+    		}
+    	}
+    });
 
 	$.ajaxSetup({
 	  beforeSend: function(xhr, settings) {

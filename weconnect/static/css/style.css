@@ -1179,6 +1179,8 @@ a.create_project_auth_selected {
     height: 200px;
     max-width: 100%;
     width: 100%;
+
+    display: block;
 }
 .showcase-file {
     display: block;
@@ -1190,4 +1192,14 @@ a.create_project_auth_selected {
 
 .slick-prev::before, .slick-next::before{
     color:black !important;
+}
+
+.showcase-form, .showcase-display{
+    border-top: 1px solid #e5e5e5;
+    padding: 20px 0px;
+}
+
+.showcase-buttons {
+    margin-top: 20px;
+    text-align: center;
 }

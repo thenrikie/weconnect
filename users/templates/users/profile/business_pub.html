@@ -1,8 +1,18 @@
 {% extends "weconnect/base.html" %}
+{% block css %}
+    <link rel="stylesheet" href="/static/bower_components/slick.js/slick/slick.css">
+    <link rel="stylesheet" href="/static/bower_components/slick.js/slick/slick-theme.css">
+    <link rel="stylesheet" href="/static/bower_components/fancybox/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
+{% endblock %}
+{% block js %}
+	<script src="/static/bower_components/slick.js/slick/slick.min.js"></script>
+	<script type="text/javascript" src="/static/bower_components/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+{% endblock %}
 {% load staticfiles %}
 {% load sinceyear %}
 {% load hformrow %}
 {% block content %}
+{% load filename %}
 {% with "users_profile_business" as css_prefix %}
 
 <h3 class="profile_header">Company Profile</h3>
@@ -143,19 +153,33 @@
 
 	<div class="{{ css_prefix }}_work">
 		<div id="work-display">
-			<h3 class="company-profile-right-head">Work</h3>
-
-			{% if userprofile.work_image_1 %}
-			<img class="{{ css_prefix }}_work_image" src="{% static userprofile.work_image_1 %}">
-			{% endif %}
+			<h3 class="company-profile-right-head">Projects</h3>
+			<div id="showcases">
 			
-			{% if userprofile.work_image_2 %}
-			<img  class="{{ css_prefix }}_work_image" src="{% static userprofile.work_image_2 %}">
-			{% endif %}
+				{% for business_showcase in business_showcases %}
+				{% with form=business_showcase.form%}
+				<div id="showcase-display-{{ form.form_name }}" class="showcase-display">
+					<h4>{{ business_showcase.showcase.title }}</h4>
+					<div class="carousel">
+						{% for att in business_showcase.showcase.attachments.all %}
+						<div>
+							{% if att.is_image %}
+							<a class="showcase-image" style="background-image: url('{% static att.file %}')" href="{% static att.file %}" title="{{ att.caption }}"></a>
+							{% else %}
+							<a class="showcase-file" href="{% static att.file %}" target="_blank">Download {{ att.file.name|filename }}</a>
+							{% endif %}
+							<div class="showcase-caption">{{ att.caption }}</div>
 
-			{% if userprofile.work_image_3 %}
-			<img class="{{ css_prefix }}_work_image" src="{% static userprofile.work_image_3 %}">
-			{% endif %}
+						</div>
+						{% endfor %}
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				{% endwith %}
+				{% endfor %}
+
+				
+			</div>
 		</div>
 	</div>
 </div>
@@ -172,6 +196,26 @@
 </form>
 -->
 
+<script type="text/javascript">
+	$(document).ready(function(){
+	  $('.carousel').slick({
+	  	"arrows": true,
+	  	"accessibility": true,
+	  	"adaptiveHeight": true,
+	  	"autoplay": true,
+	  	"dots": true
+	  });
+	});
+
+	// fancybox
+	$('.showcase-image').fancybox({
+    	helpers : {
+    		title : {
+    			type : 'over'
+    		}
+    	}
+    });
+</script>
 
 
 {% endwith %}

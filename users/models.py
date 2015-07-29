@@ -167,8 +167,6 @@ class ShowCaseAttachment(models.Model):
 
 	def is_image(self):
 		name = self.file.name.split("/")
-		print(name)
-		print(name[-1].split(".")[-1])
 		return name[-1].split(".")[-1] in ['jpg','jpeg','gif','png']
 
 
