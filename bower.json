@@ -20,6 +20,7 @@
     "lodash": "~3.6.0",
     "parsleyjs": "~2.1.2",
     "jquery-ui": "~1.11.4",
-    "slick.js": "~1.5.8"
+    "slick.js": "~1.5.8",
+    "fancybox": "~2.1.5"
   }
 }
