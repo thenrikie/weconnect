@@ -1,0 +1,19 @@
+{% extends "emails/base.html" %}
+{% block content %}
+	Hi {{ name }},
+	<br><br>
+	It’s been 21 days since we sent you proposals for your {{ project_type }} project and sadly we haven’t heard back from you. 
+	<br><br>
+	If we don’t hear from you in the next 48 hours we’ll assume you no longer wish to work on this project and we will let the professionals know the project has been cancelled.
+	<br><br>
+	<b>Already working with someone we introduced you to?</b>
+	<br>
+	If you are already working with a professional we introduced you to then <a href="{{ host_url }}{% url 'pitches:show' pitch.uniqid %}">go to the project</a> and select 'hire' on the company you are working with. 
+	<br><br>
+	<b>No longer need help?</b>
+	<br>
+	Please <a href="{{ host_url }}{% url 'pitches:show' pitch.uniqid %}?cancel=yes">let us know</a> so we can inform the professionals who provided you with proposals. 
+	<br><br>
+	The RatedFrog Team
+{% endblock %}
+

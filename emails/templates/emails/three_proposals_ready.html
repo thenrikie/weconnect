@@ -1,0 +1,27 @@
+{% extends "emails/base.html" %}
+{% block content %}
+	Hi {{ name }},
+	<br><br>
+	You have received 3 proposals from professionals that want to help you with your {{ project_type }} project.  
+	<br><br>
+	Take a look at their proposals, previous customer reviews and portfolios!
+	<br><br>
+	{% url 'pitches:show' pitch.uniqid as url %}
+	{% include 'emails/button.html' with btn_text='View Proposal' btn_url=url host_url=host_url  %}
+	<br><br>
+	<b>Already working with someone we introduced you to?</b>
+	<br>
+	If you are already working with a professional we introduced you to then <a href="{{ host_url }}{% url 'pitches:show' pitch.uniqid %}">go to the project</a> and select 'hire' on the company you are working with. 
+	<br><br>
+	<b>No longer need help?</b>
+	<br> 
+	Please <a href="{{ host_url }}{% url 'pitches:show' pitch.uniqid %}?cancel=yes">let us know</a> so we can inform the professionals who provided you with proposals. 
+	<br><br>
+	The RatedFrog Team
+{% endblock %}
+
+
+
+
+
+

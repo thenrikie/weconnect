@@ -95,3 +95,27 @@ def project_cancel_admin(content):
 
 def contact_us_message(content):
 	send_admin(content, "Someone just leave us a message", 'contact_us_message')	
+
+def three_proposals_ready(content):
+	#send 24 hours after 3 pitch ok
+	#48, 48, 48
+	subject = "You have 3 pending proposals for your " + content['project_type'] + " project"
+	send(email, content, subject, 'three_proposals_ready')
+
+def final_reminder_project(content):
+	#14 after 3 ready
+	subject = "Final Reminder: 3 " + content['role'] + " are still waiting to hear from you."
+	send(email, content, subject, 'final_reminder_project')
+
+def cancel_warning_project(content):
+	#21 after 3 ready and auto cancel after 48hrs
+	subject = "We will cancel your project in the next 48 hours"
+	send(email, content, subject, 'cancel_warning_project')
+
+def request_for_service_12hrs(content):
+	subject = 'Job request from ' + content['customer_name']
+	send(email, content, subject, 'request_for_service_12hrs')
+
+def send_a_message_to_project(content):
+	subject = 'We suggest sending a message to ' + content['customer_name']
+	send(email, content, subject, 'send_a_message_to_project')

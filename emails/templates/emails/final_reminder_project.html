@@ -1,0 +1,17 @@
+{% extends "emails/base.html" %}
+{% block content %}
+	Hi {{ name }},
+	<br><br>
+	It’s been 14 days since we you received 3 propsoals for your {{ project_type }} project and we haven’t heard back from you. Please give us an update! 
+	<br><br>
+	<b>Already working with someone we introduced you to?</b>
+	<br>
+	If you are already working with a professional we introduced you to then <a href="{{ host_url }}{% url 'pitches:show' pitch.uniqid %}">go to the project</a> and select 'hire' on the company you are working with. 
+	<br><br>
+	<b>No longer need help?</b>
+	<br>
+	Please <a href="{{ host_url }}{% url 'pitches:show' pitch.uniqid %}?cancel=yes">let us know</a> so we can inform the professionals who provided you with proposals. 
+	<br><br>
+	The RatedFrog Team
+{% endblock %}
+

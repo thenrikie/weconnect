@@ -184,6 +184,11 @@
 		$('#modal-cancel-project').modal()
 	})
 
+	{% if popup_cancel %}
+	$(function(){
+		$('#cancel-project').click();
+	});
+	{% endif %}
 
 </script>
 {% endblock %}

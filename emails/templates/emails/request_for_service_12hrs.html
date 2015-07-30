@@ -1,0 +1,13 @@
+{% extends "emails/base.html" %}
+{% block content %}
+	Hi {{ name }},
+	<br><br>
+	It has been 12 hours since we sent you the lead for {{ customer_name }}’s {{ project_type }} project, please select the link below and tell us if you want to work on this project.
+	<br><br>
+	{% url 'pitches:show' pitch.uniqid as url %}
+	{% include 'emails/button.html' with btn_text='View Project Details' btn_url=url %}
+	<br><br>
+	If we haven't heard from you soon we’ll need to offer this lead to another professional.
+	<br><br>
+	The RatedFrog Team
+{% endblock %}

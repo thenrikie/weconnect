@@ -176,7 +176,8 @@ def show(r, pitch_id, messageForm=None):
 			'pitches': pitches, 
 			'form': messageForm, 
 			'messages': messages, 
-			'cancel_form' : cancel_form
+			'cancel_form' : cancel_form,
+			'popup_cancel': r.GET.get('cancel', None)
 		})
 	else:
 		print('No Access to this project')
