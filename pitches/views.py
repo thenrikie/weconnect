@@ -2,11 +2,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from pitches import forms
 from projects import forms as project_forms
 from pitches.models import Pitch, Message, MessageAttachment
-from datetime import datetime
+import datetime
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from pitches.forms import Message as MessageForm
 from emails import sender
+from emails.models import Queue
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -88,6 +89,17 @@ def accept(r, pitch_id):
 				'pitch_id': pitch.id
 			})
 
+			#if this is the thrid pitch, add reminder to email queue
+			q = Queue(
+				item_id=pitch.project.id,
+				item_object='project',
+				start_at = datetime.datetime.now() + datetime.timedelta(hours=24)
+				before_at = datetime.datetime.now() + datetime.timedelta(hours=48),
+				action = 'three_proposals_ready'
+			)
+			
+			q.save()
+
 			return HttpResponseRedirect(reverse('pitches:list_quote'))
 			
 	return render(r, 'pitches/accept.html', {'pitch': pitch, 'form' : form})
@@ -156,7 +168,7 @@ def show(r, pitch_id, messageForm=None):
 		messageForm = MessageForm()
 
 	#mark messages as read
-	Message.objects.filter(read=False, pitch=pitch, recipient=r.user).update(read=True, updated_at=datetime.now())
+	Message.objects.filter(read=False, pitch=pitch, recipient=r.user).update(read=True, updated_at=datetime.datetime.now())
 	#print(pitch.message_set.first().attachment.first())
 
 	if pitch.company == r.user:
