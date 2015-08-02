@@ -1,10 +1,11 @@
 from django.db import models
 from authentication.models import User
 from projects.models import Project
-from datetime import datetime
+import datetime
 from django.db.models import signals
 from emails import sender as emailSender
 from uniqid import models as UniqidModel
+from emails.models import Queue
 
 def generateUniqid():
 	return UniqidModel.generateCode(Pitch.objects.filter, 'uniqid')
@@ -70,6 +71,9 @@ class Pitch(models.Model):
 	def quoted(self):
 		return self.state == 'accepted' or self.state == 'hired'
 
+	def accepted(self):
+		return self.state == 'accepted'
+
 	def rejected(self):
 		return self.state == 'rejected'
 		
@@ -87,11 +91,11 @@ class Pitch(models.Model):
 			raise ValueError('Not a valid state')
 		else:
 			self.state = state
-			self.state_changed_at = datetime.now()
+			self.state_changed_at = datetime.datetime.now()
 			if self.state == 'hired':
-				self.hired_at = datetime.now()
+				self.hired_at = datetime.datetime.now()
 			elif self.state == 'accepted':
-				self.accepted_at = datetime.now()
+				self.accepted_at = datetime.datetime.now()
 
 	def company_unread_message_count(self):
 		return self.message_set.filter(read=False, recipient=self.company, pitch=self).count()
@@ -111,6 +115,18 @@ def create_pitch(sender, instance, created, **kwargs):
 			'project_type':  pitch.project.sub_business.first(),
 			'pitch' : pitch
 		})
+
+		#enqueue reminder to user if no action after 12 hours
+		q = Queue(
+			item_id=pitch.id,
+			item_object='pitch',
+			start_at = datetime.datetime.now() + datetime.timedelta(hours=12),
+			before_at = datetime.datetime.now() + datetime.timedelta(hours=24),
+			action = 'request_for_service_12hrs'
+		)
+
+		q.save()
+
 
 signals.post_save.connect(create_pitch, sender=Pitch, dispatch_uid="create_new_pitch")
 

@@ -11,6 +11,17 @@ class QuestionAdmin(admin.ModelAdmin):
 
     list_filter = ('sub_business', )
 
-admin.site.register(Project)
+class ProjectAdmin(admin.ModelAdmin):
+	search_fields = ('user__email', )
+	list_display = ('id', 'uniqid', 'email', 'project_type')
+	list_filter = ('sub_business',)
+
+	def email(self, obj):
+		return obj.user.email
+
+	def project_type(self, obj):
+		return obj.sub_business.first().name
+
+admin.site.register(Project, ProjectAdmin)
 admin.site.register(Question, QuestionAdmin)
-admin.site.register(QuestionOption)
+admin.site.register(QuestionOption,)

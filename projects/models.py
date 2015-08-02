@@ -100,6 +100,9 @@ def generateUniqid():
 
 class Project(models.Model):
 
+	class Meta:
+		ordering=['-created_at']
+
 	uniqid = models.CharField(max_length=UniqidModel.LENGTH, editable=False, unique=True, null=True)
 
 	URGENCY = (
@@ -134,7 +137,7 @@ class Project(models.Model):
 	)
 
 	specific_date = models.DateField(null=True, blank=True, verbose_name='Date')
-	deadline = models.DateTimeField(null=True)
+	deadline = models.DateTimeField(null=True, blank=True)
 	user = models.ForeignKey(User)
 
 	budget_lower = models.FloatField(blank=True, null=True)

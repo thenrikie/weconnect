@@ -8,7 +8,7 @@ class Queue(models.Model):
 	action = models.CharField(max_length=255)
 	start_at = models.DateTimeField()
 	before_at = models.DateTimeField()
-	finished_at = models.DateTimeField(default=None)
+	finished_at = models.DateTimeField(default=None, null=True)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 
@@ -22,3 +22,9 @@ class Queue(models.Model):
 			choices=STATE,
 			default='waiting'
 	)
+
+	def __str__(self):
+		return self.action
+
+	class Meta:
+		ordering = ["-created_at"]

@@ -2,6 +2,7 @@ from django.db import models
 from authentication.models import User
 from  django.core.validators import URLValidator
 
+
 # Create your models here.
 class SubBusiness(models.Model):
 	name = models.CharField(max_length=255)

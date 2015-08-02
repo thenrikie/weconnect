@@ -2,10 +2,10 @@
 {% block content %}
 	Hi {{ name }},
 	<br><br>
-	{{ customer_name }} is still reviewing propoals, we receommend sending them a short message to see if there is anything that you can help with. 
+	{{ customer_name }} is still reviewing propoals, we receommend sending {{ customer_name }} a short message to see if there is anything that you can help with. 
 	<br><br>
 	{% url 'pitches:show' pitch.uniqid as url %}
-	{% include 'emails/button.html' with btn_text='Send {{ customer_name }} a message' btn_url=url %}
+	{% include 'emails/button.html' with btn_text='Send a message' btn_url=url %}
 	<br><br>
 	The RatedFrog Team
 {% endblock %}

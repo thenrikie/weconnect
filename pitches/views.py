@@ -90,17 +90,40 @@ def accept(r, pitch_id):
 			})
 
 			#if this is the third pitch, add reminder to email queue
-
+			print("pitch count:: " + str(pitch.project.pitch_count()))
 			if pitch.project.pitch_count() >= 3:
-				q = Queue(
-					item_id=pitch.project.id,
-					item_object='project',
-					start_at = datetime.datetime.now() + datetime.timedelta(hours=24),
-					before_at = datetime.datetime.now() + datetime.timedelta(hours=48),
-					action = 'three_proposals_ready'
+
+				email_items = (
+					{'day': 1, 'action': 'three_proposals_ready'},
+					{'day': 3, 'action': 'three_proposals_ready'},
+					{'day': 5, 'action': 'three_proposals_ready'},
+					{'day': 7, 'action': 'three_proposals_ready'},
+					{'day': 14, 'action': 'final_reminder_project'},
+					{'day': 21, 'action': 'cancel_warning_project'},
 				)
-				
-				q.save()
+
+				for email_item in email_items:
+					q = Queue(
+						item_id=pitch.project.id,
+						item_object='project',
+						start_at = datetime.datetime.now() + datetime.timedelta(days=email_item['day']),
+						before_at = datetime.datetime.now() + datetime.timedelta(days=email_item['day']+1),
+						action = email_item['action']
+					)
+					
+					q.save()
+
+
+				for pitch in pitch.project.ready_pitch():
+					q = Queue(
+						item_id=pitch.id,
+						item_object='pitch',
+						start_at = datetime.datetime.now() + datetime.timedelta(days=3),
+						before_at = datetime.datetime.now() + datetime.timedelta(days=4),
+						action = 'send_a_message_to_project'
+					)
+
+					q.save()
 
 			return HttpResponseRedirect(reverse('pitches:list_quote'))
 			
