@@ -42,10 +42,6 @@
           <a class="navbar-brand" href="/"><img src="/static/image/logo.png" alt="RatedFrog"></a>
         </div>
 
-        {% if not user.is_authenticated %}
-        {% block headerbutton %}
-        {% endblock %}
-        {% endif %}
         
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav pull-right">
@@ -81,8 +77,11 @@
 			{% else %}
 	            <li class="active"><a href="{% url 'auth:register' %}">Sign up</a></li>
 	            <li><a href="{% url 'auth:login' %}">Login</a></li>
-	            
-	            </li>
+
+              {% if not user.is_authenticated %}
+              {% block headerbutton %}
+              {% endblock %}
+              {% endif %}
 			{% endif %}
 
           </ul>
@@ -309,5 +308,7 @@
     });
 
   </script>
+
+  {% block xtra_script %}{% endblock %}
   </body>
 </html>

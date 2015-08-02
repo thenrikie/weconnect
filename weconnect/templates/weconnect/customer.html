@@ -12,10 +12,23 @@ RatedFrog: Find trusted and rated professionals to help you with your projects
   body-index
 {% endblock %}
 
+{% block xtra_script %}
+<script>
+  $('.navbar-toggle').click(function(){
+    var nav = $('#nav');
+    if(nav.hasClass('navbar-inverse')){
+      nav.removeClass('navbar-inverse')
+    } else {
+      nav.addClass('navbar-inverse')
+    }
+  });
+</script>
+{% endblock %}
+
 {% block headerbutton %}
-        <div>
+        <li>
           <a class="btn pull-right btn-tran" href="{% url 'home_business' %}">For Business</a>
-        </div>
+        </li>
 {% endblock %}
 
 {% block bighead %}

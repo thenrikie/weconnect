@@ -880,14 +880,14 @@ h3, .h3{
 .btn-tran {
     border: 1px solid white;
     border-radius: 3px;
-    color: white;
-    font-size: 14px;
+    color: white !important;
+    font-size: 14px !important;
     margin-top: 10px;
-    padding: 5px 25px;
+    padding: 5px 25px !important;
 }
 .btn-tran:hover {
-    background: white;
-    color: #1a1a1a;
+    background: white !important;
+    color: #1a1a1a !important;
 }
 .modal-footer {
     border-top: medium none;
@@ -1214,4 +1214,12 @@ a.create_project_auth_selected {
 .footer_contact_us:hover, .footer_contact_us:focus {
     color: white;
     text-decoration: none;
+}
+
+.body-index  .navbar-toggle{
+    border: 1px solid white;
+}
+
+.body-index .icon-bar{
+    background-color: white;
 }
