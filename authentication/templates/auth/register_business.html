@@ -3,7 +3,7 @@
 {% load hformrow %}
 <h2>Sign up</h2>
 <div class="col-md-7 auth_register">
-	<form action="{% url 'auth:register_business' %}" method="post" class="form-horizontal">
+	<form action="{% url 'auth:register_business' %}" method="post" class="form-horizontal" data-parsley-validate>
 		{% csrf_token %}
 		{{ businessForm.non_field_errors }}
 		{{ businessForm.business|hformrow:'Business' }}
@@ -28,6 +28,14 @@
 		{{ accountForm.first_name|hformrow:'Your Name' }}
 		{{ accountForm.email|hformrow:'Email' }}
 		{{ accountForm.password|hformrow:'Password' }}
+
+		<div class="form-group">
+			<div class="col-sm-offset-3 col-sm-9">
+				<div>
+					<input type="checkbox" value="1" id="tos" required data-parsley-error-message="You must agree to continue"> By continuing you agree to the <a href="/static/files/RatedFrogtermsAug12.pdf" target="blank">Terms and Conditions</a>.
+				</div>
+			</div>
+		</div>
 
 		<div class="form-group">
 			<div class="col-sm-offset-3 col-sm-9">
