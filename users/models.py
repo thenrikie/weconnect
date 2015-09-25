@@ -40,12 +40,12 @@ class District(models.Model):
 		ordering = ["rank"]
 
 
-def upload_filename(path, model, filename):
+def user_upload_filename(path, model, filename):
 	nameparts = filename.split(".")
 	return path + str(model.user.id) + '.' + nameparts[len(nameparts) - 1]
 
 def logo_filename(model, filename):
-	return upload_filename('logos/companies/', model, filename)
+	return user_upload_filename('logos/companies/', model, filename)
 
 def workimage_filename(model, filename):
 	return 'work_images/companies/' + str(model.id) + '/' + filename
@@ -55,7 +55,7 @@ def workattach_filename(model, filename):
 
 
 def person_filename(model, filename):
-	return upload_filename('photos/people/', model, filename)
+	return user_upload_filename('photos/people/', model, filename)
 
 class UserProfile(models.Model):
 
