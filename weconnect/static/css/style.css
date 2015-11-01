@@ -924,8 +924,13 @@ h3, .h3{
 }
 .navbar-brand {
     padding: 9px 0 0;
-    margin-left:10px;
+    margin-left:35px;
 }
+
+.navbar-toggle{
+    margin-right: 25px;
+}
+
 #id_cancelled_reason_other {
     width: 100%;
 }
@@ -1222,4 +1227,47 @@ a.create_project_auth_selected {
 
 .body-index .icon-bar{
     background-color: white;
+}
+
+.index-step-no {
+    border: 3px solid #3d7dca;
+    border-radius: 99px;
+    float: none;
+    font-weight: bold;
+    height: 35px;
+    line-height: 31px;
+    margin: 5px auto;
+    text-align: center;
+    width: 35px;
+}
+
+.index-step-no.extra-top-margin {
+    margin-top:50px;
+}
+
+.trusted_icon.center {
+    display: block;
+    margin: auto;
+}
+
+.trusted_icon.extra-top-margin {
+    margin-top:50px;
+}
+
+@media (max-width: 992px) {
+    .test-title {
+        text-align: center;
+    }
+
+    .footer_row {
+        text-align: center;
+    }
+
+    .footer_row ul {
+        padding-left: 0;
+    }
+
+    .footer_row.extra-top-margin {
+        margin-top: 50px;
+    }
 }

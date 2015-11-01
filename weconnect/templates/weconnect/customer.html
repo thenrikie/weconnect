@@ -41,12 +41,12 @@ RatedFrog: Find trusted and rated professionals to help you with your projects
     			<form id="contact-form" class="index-action-form form-horizontal" action="{% url 'projects:create' %}" method="post" data-parsley-validate>
                 {% csrf_token %}
     	        	<div class="form-group">
-                  <div class="col-md-9 no-padding">
+                  <div class="col-md-12 no-padding">
                     {{ form.business|addattrs:'class=form-control big-control,required=required,data-parsley-error-message=Please select a business type'}}
                   </div>
-                  <div class="col-md-3 no-padding">
+                  <!--<div class="col-md-3 no-padding">
                     <input type="submit" class="btn btn-blue btn-full-width" value="Continue">
-                  </div>
+                  </div>-->
 
                 </div>
               
@@ -65,8 +65,9 @@ RatedFrog: Find trusted and rated professionals to help you with your projects
       </h2>
       <div class="row index-desc-flow">
         <div class="col-md-3">
-          <h3 class="index-step-title">
-            <span class="blue index-step-number col-md-1">1.</span> 
+          <div class="index-step-no hidden-md hidden-lg">1</div>
+          <h3 class="index-step-title text-center">
+            <span class="blue index-step-number col-md-1 hidden-xs hidden-sm">1.</span> 
             Tell us what you are looking for
           </h3>
           <img src="/static/image/customer-1.png">
@@ -76,11 +77,12 @@ RatedFrog: Find trusted and rated professionals to help you with your projects
         <div class="col-md-9">
           <div class="row">
 
-            <div class="col-md-2 arror-right"><img src="/static/image/arrow-right.png"></div>
+            <div class="col-md-2 arror-right hidden-xs hidden-sm"><img src="/static/image/arrow-right.png"></div>
 
             <div class="col-md-4">
-              <h3 class="index-step-title">
-                <span class="blue index-step-number col-md-1">2.</span> 
+              <div class="index-step-no extra-top-margin hidden-md hidden-lg">2</div>
+              <h3 class="index-step-title text-center">
+                <span class="blue index-step-number col-md-1 hidden-xs hidden-sm">2.</span> 
                 Receive 3 proposals within 24 hours
               </h3>
               <img src="/static/image/customer-2.png">
@@ -88,11 +90,12 @@ RatedFrog: Find trusted and rated professionals to help you with your projects
      
            </div>
 
-           <div class="col-md-2 arror-right"><img src="/static/image/arrow-right.png"></div>
+           <div class="col-md-2 arror-right hidden-xs hidden-sm"><img src="/static/image/arrow-right.png"></div>
 
             <div class="col-md-4">
-              <h3 class="index-step-title">
-                <span class="blue index-step-number col-md-1">3.</span> 
+              <div class="index-step-no extra-top-margin hidden-md hidden-lg">3</div>
+              <h3 class="index-step-title text-center">
+                <span class="blue index-step-number col-md-1 hidden-xs hidden-sm">3.</span> 
                 Compare and decide who to work with
               </h3>
               <img src="/static/image/customer-3.png">
@@ -108,84 +111,57 @@ RatedFrog: Find trusted and rated professionals to help you with your projects
 
       </div>
 
-<!--
-      <div class="clearfix"></div>
-      <h2 class="text-center index-h2">
-        We can help you find many types of professionals
-      </h2>
-      <div class="row index-desc-flow">
-        <div class="col-md-4">
-
-          <h3 class="index-step-title">
-            Developers and Designers
-          </h3>
-
-          <p>Find talented developers and designers for your persona projects.</p>
- 
-    
-        </div>
-        <div class="col-md-4">
-
-          <h3 class="index-step-title">
-            Marketing
-          </h3>
-
-          <p>Get expert marketing advice, strategy and execution for your product or service.</p>
- 
-    
-        </div>
-        <div class="col-md-4">
-
-          <h3 class="index-step-title">
-            Photography
-          </h3>
-
-          <p>Creative photographers for your event, wedding or product.</p>
- 
-    
-        </div>
-      </div>
--->
-
       <div class="clearfix"></div>
       <h2 class="text-center index-h2">
         Why trust RatedFrog?
       </h2>
       <div class="row index-desc-flow">
         <div class="col-md-6">
-          <h3 class="index-step-title">
-            <img src="/static/image/icon-1.png" class="trusted_icon">
+          <h3 class="index-step-title hidden-xs hidden-sm">
+            <img src="/static/image/icon-1.png" class="trusted_icon hidden-xs hidden-sm" >
             <span class="trusted_title"> Save time and let us do the work </span>
           </h3>
+
+          <img src="/static/image/icon-1.png" class="trusted_icon center hidden-md hidden-lg">
+          <h3 class="index-step-title text-center hidden-md hidden-lg"> Save time and let us do the work </h3>
           <p>
             We take your project needs and search through our growing community to find pro's who are interested in working on your project.
           </p>
         </div>
         <div class="col-md-6">
-          <h3 class="index-step-title">
-            <img src="/static/image/icon-2.png" class="trusted_icon">
+          <h3 class="index-step-title hidden-xs hidden-sm">
+            <img src="/static/image/icon-2.png" class="trusted_icon hidden-xs hidden-sm">
             <span class="trusted_title"> Its free, you'll never pay to find Pro's </span>
           </h3>
+
+          <img src="/static/image/icon-2.png" class="trusted_icon center extra-top-margin hidden-md hidden-lg">
+          <h3 class="index-step-title text-center hidden-md hidden-lg"> Its free, you'll never pay to find Pro's </h3>
           <p>
             There is absolutely no cost for receiving quotes from Pro's through RatedFrog. Simply submit a project request and wait for your personal quotes.
           </p>
         </div>
 
         <div class="col-md-6">
-          <h3 class="index-step-title">
-            <img src="/static/image/icon-3.png" class="trusted_icon">
+          <h3 class="index-step-title  hidden-xs hidden-sm">
+            <img src="/static/image/icon-3.png" class="trusted_icon hidden-xs hidden-sm">
             <span class="trusted_title"> Trusted and Verified </span>
           </h3>
+
+          <img src="/static/image/icon-3.png" class="trusted_icon center extra-top-margin hidden-md hidden-lg">
+          <h3 class="index-step-title text-center hidden-md hidden-lg"> Trusted and Verified </h3>
           <p>
             We personally verify all of the Pro's within our community to ensure they are trustworthy and have the experience required to deliver the best work.
           </p>
         </div>
 
         <div class="col-md-6">
-          <h3 class="index-step-title">
-            <img src="/static/image/icon-4.png" class="trusted_icon">
+          <h3 class="index-step-title hidden-xs hidden-sm">
+            <img src="/static/image/icon-4.png" class="trusted_icon hidden-xs hidden-sm">
             <span class="trusted_title">Your details are safe with us</span>
           </h3>
+
+          <img src="/static/image/icon-4.png" class="trusted_icon center extra-top-margin hidden-md hidden-lg">
+          <h3 class="index-step-title text-center hidden-md hidden-lg"> Your details are safe with us </h3>
           <p>
             Your details are always safe with us, we never give your private details to anyone.
           </p>
@@ -194,11 +170,11 @@ RatedFrog: Find trusted and rated professionals to help you with your projects
 
       <div class="clearfix"></div>
       <h2 class="text-center index-h2">
-        Customer Stories
+        What people are saying
       </h2>
       <div class="row index-desc-flow">
         <div class="col-md-6">
-          <h3 class="index-step-title">
+          <h3 class="index-step-title test-title">
             <span>New iPhone game app</span>
           </h3>
           <p>
@@ -217,7 +193,7 @@ RatedFrog!"
           <p>David Wong, HK Island</p>
         </div>
         <div class="col-md-6">
-          <h3 class="index-step-title">
+          <h3 class="index-step-title test-title">
             <span>Photography for my launch</span>
           </h3>
           <p>
@@ -252,6 +228,11 @@ RatedFrog!"
     }
   });
 
+  $('#id_business').change(function(){
+    $('#contact-form').submit();
+  });
+  
+  
   $.ajaxSetup({
       beforeSend: function(xhr, settings) {
         xhr.setRequestHeader("X-CSRFToken", '{{csrf_token}}');

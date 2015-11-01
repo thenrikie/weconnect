@@ -43,12 +43,12 @@ RatedFrog: Grow your business by meeting new customers
         <div>
     			<form id="contact-form" class="index-action-form form-horizontal" action="{% url 'auth:register_business' %}" method="get" data-parsley-validate>
     	        	<div class="form-group">
-                  <div class="col-md-9 no-padding">
+                  <div class="col-md-12 no-padding">
                     {{ form.business|addattrs:'class=form-control big-control,required=required,data-parsley-error-message=Please select a business type'}}
                   </div>
-                  <div class="col-md-3 no-padding">
+<!--                   <div class="col-md-3 no-padding">
                     <input type="submit" class="btn btn-blue btn-full-width" value="Get Started">
-                  </div>
+                  </div> -->
 
                 </div>
               
@@ -67,8 +67,9 @@ RatedFrog: Grow your business by meeting new customers
       </h2>
       <div class="row index-desc-flow">
         <div class="col-md-3">
-          <h3 class="index-step-title">
-            <span class="blue index-step-number col-md-1">1.</span> 
+          <div class="index-step-no hidden-md hidden-lg">1</div>
+          <h3 class="index-step-title text-center">
+            <span class="blue index-step-number col-md-1 hidden-xs hidden-sm">1.</span> 
             We send you job leads
           </h3>
           <img src="/static/image/1.png">
@@ -77,11 +78,12 @@ RatedFrog: Grow your business by meeting new customers
 
         <div class="col-md-9">
           <div class="row">
-            <div class="col-md-2 arror-right"><img src="/static/image/arrow-right.png"></div>
+            <div class="col-md-2 arror-right  hidden-xs hidden-sm"><img src="/static/image/arrow-right.png"></div>
 
             <div class="col-md-4">
-              <h3 class="index-step-title">
-                <span class="blue index-step-number col-md-1">2.</span> 
+              <div class="index-step-no hidden-md hidden-lg extra-top-margin">2</div>
+              <h3 class="index-step-title text-center">
+                <span class="blue index-step-number col-md-1 hidden-xs hidden-sm">2.</span> 
                 Introduce yourself and provide a quote
               </h3>
               <img src="/static/image/2.png">
@@ -89,11 +91,12 @@ RatedFrog: Grow your business by meeting new customers
      
            </div>
 
-           <div class="col-md-2 arror-right"><img src="/static/image/arrow-right.png"></div>
+           <div class="col-md-2 arror-right  hidden-xs hidden-sm"><img src="/static/image/arrow-right.png"></div>
 
             <div class="col-md-4">
-              <h3 class="index-step-title">
-                <span class="blue index-step-number col-md-1">3.</span> 
+              <div class="index-step-no hidden-md hidden-lg extra-top-margin">3</div>
+              <h3 class="index-step-title text-center">
+                <span class="blue index-step-number col-md-1 hidden-xs hidden-sm">3.</span> 
                 Win jobs, get rated and grow your profile
               </h3>
               <img src="/static/image/3.png">
@@ -158,6 +161,10 @@ RatedFrog: Grow your business by meeting new customers
 
       $('#modal-email-success').modal()
     }
+  });
+
+  $('#id_business').change(function(){
+    $('#contact-form').submit();
   });
 
   $.ajaxSetup({
