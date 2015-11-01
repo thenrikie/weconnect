@@ -1271,6 +1271,10 @@ a.create_project_auth_selected {
     margin-top:50px;
 }
 
+.action-btn {
+    float: right ;
+}
+
 @media (max-width: 992px) {
     .test-title {
         text-align: center;
@@ -1286,6 +1290,19 @@ a.create_project_auth_selected {
 
     .footer_row.extra-top-margin {
         margin-top: 50px;
+    }
+
+    .action-btn{
+        float:none ;
+    }
+
+    .xs-center-unwidth{
+        text-align: center;
+    }
+
+    .container{
+        padding-left: 30px;
+        padding-right: 30px;
     }
 }
 
