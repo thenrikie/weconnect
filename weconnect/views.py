@@ -13,7 +13,7 @@ def business(r):
 		return redirect('pitches:list')
 
 	form = forms.BusinessIndex()
-	return render(r, 'weconnect/business.html', { 'form': form})
+	return render(r, 'weconnect/business.html', { 'form': form, 'role': 'business'})
 
 def customer(r):
 	if r.user.is_authenticated() and r.user.is_admin:
@@ -22,7 +22,7 @@ def customer(r):
 		return redirect('home_business')
 
 	form = forms.Business()
-	return render(r, 'weconnect/customer.html', { 'form': form})
+	return render(r, 'weconnect/customer.html', { 'form': form, 'role': 'customer'})
 
 def index(r):
 	if r.user.is_authenticated() and r.user.is_admin:

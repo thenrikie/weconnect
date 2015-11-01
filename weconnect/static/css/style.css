@@ -2,6 +2,8 @@
 html{
 
 }
+
+
 body {
   padding-top: 50px; 
   font-size: 16px;   
@@ -927,7 +929,17 @@ h3, .h3{
     margin-left:35px;
 }
 
-.navbar-toggle{
+
+.navbar-toggle-btn{
+    background-color: transparent;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    float: right;
+    margin-bottom: 8px;
+    margin-top: 8px;
+    padding: 9px 10px;
+    position: relative;
     margin-right: 25px;
 }
 
@@ -1221,12 +1233,17 @@ a.create_project_auth_selected {
     text-decoration: none;
 }
 
-.body-index  .navbar-toggle{
+.navbar-toggle-btn{
     border: 1px solid white;
 }
 
-.body-index .icon-bar{
+.icon-bar{
     background-color: white;
+    border-radius: 1px;
+    display: block;
+    height: 2px;
+    width: 22px;
+    margin-top: 3px;
 }
 
 .index-step-no {
@@ -1270,4 +1287,50 @@ a.create_project_auth_selected {
     .footer_row.extra-top-margin {
         margin-top: 50px;
     }
+}
+
+/*
+ * Off Canvas
+ * --------------------------------------------------
+ */
+.navbar-collapse {
+  max-height: 100%;
+}
+@media screen and (max-width: 768px) {
+  .row-offcanvas {
+    position: relative;
+  }
+  .row-offcanvas-right .sidebar-offcanvas {
+    right: -50%;
+  
+    margin-right: 0px;
+    background-color: black;
+  }
+  .row-offcanvas-left .sidebar-offcanvas {
+    left: -50%; 
+  }
+  .row-offcanvas-right.active {
+    right: 50%;  
+  }
+  .row-offcanvas-left.active {
+    left: 50%;  
+  }
+  .sidebar-offcanvas {
+    position: absolute;
+    top: 0;
+    width: 50%;  
+    height: 100%;
+    display: none;
+  
+  }
+
+  .sidebar-nav a {
+    color:white;
+    font-size: 15px;
+  }
+
+  .sidebar-nav a:hover {
+    color:white;
+    background-color: black !important;
+  }
 }

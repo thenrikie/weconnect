@@ -28,12 +28,12 @@
 
   </head>
 
-  <body class="{% block xtra_body_class %}{% endblock %}">
+  <body class="{% block xtra_body_class %}{% endblock %} row-offcanvas row-offcanvas-right">
 
-    <nav id="nav" class="navbar {% block xtra_nav_class %}navbar-inverse navbar-fixed-top {% endblock %}">
+    <nav id="nav" class="navbar {% block xtra_nav_class %} navbar-inverse navbar-fixed-top {% endblock %}">
       <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <button type="button" class="navbar-toggle-btn  visible-xs"  data-toggle="offcanvas" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -47,8 +47,8 @@
           <ul class="nav navbar-nav pull-right">
 
 
-			{% if user.is_authenticated %}
-				{% if user.userprofile.is_customer %}
+			       {% if user.is_authenticated %}
+				      {% if user.userprofile.is_customer %}
               <li><a href="{% url 'projects:create' %}">+ New Project</a></li>
 	            <li><a href="{% url 'projects:list' %}">
                     Project Board
@@ -74,20 +74,71 @@
 	                <li><a href="{% url 'auth:logout' %}">Logout</a></li>
 	              </ul>
 	            </li>
-			{% else %}
-	            <li class="active"><a href="{% url 'auth:register' %}">Sign up</a></li>
+			       {% else %}
+	            <li><a href="{% url 'auth:register' %}">Sign up</a></li>
 	            <li><a href="{% url 'auth:login' %}">Login</a></li>
 
               {% if not user.is_authenticated %}
               {% block headerbutton %}
               {% endblock %}
               {% endif %}
-			{% endif %}
+			       {% endif %}
 
           </ul>
         </div> 
       </div>
     </nav>
+    <div class=" visible-xs">
+      <div class="col-xs-6 col-sm-3 sidebar-offcanvas showhide navbar-collapse" id="sidebar" role="navigation" style="">
+        <div class="sidebar-nav">
+          <ul class="nav navbar-nav">
+             {% if user.is_authenticated %}
+              {% if user.userprofile.is_customer %}
+              <li><a href="{% url 'projects:create' %}">+ New Project</a></li>
+              <li><a href="{% url 'projects:list' %}">
+                    Project Board
+                    {% if user.userprofile.unread_message_count > 0 %}
+                    <span class="unread_message_pop">{{user.userprofile.unread_message_count}}<span>
+                    {% endif %}
+                  </a>
+              </li>
+              {% endif %}
+
+              {% if user.userprofile.is_company %}
+              <li><a href="{% url 'pitches:list' %}"><span>Job Requests</span> 
+                {% if user.userprofile.unread_message_count > 0 %}
+                <span class="unread_message_pop">{{user.userprofile.unread_message_count}}</span>
+                {% endif %}
+              </a></li>
+              {% endif %}
+
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ user.full_name }} <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="{% url 'users:profile' %}">My Profile</a></li>
+                  <li><a href="{% url 'auth:logout' %}">Logout</a></li>
+                </ul>
+              </li>
+             {% else %}
+              <li><a href="{% url 'auth:register' %}">Sign up</a></li>
+              <li><a href="{% url 'auth:login' %}">Login</a></li>
+
+              {% if not user.is_authenticated %}
+              {% if role == 'business'%}
+              <li>
+                <a href="{% url 'home_customer' %}">For Customer</a>
+              </li>
+              {% elif role == 'customer' %}
+              <li>
+                <a href="{% url 'home_business' %}">For Business</a>
+              </li>
+              {% endif %}
+              {% endif %}
+             {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
 
     {% block bighead %}{% endblock %}
 
@@ -307,6 +358,16 @@
         }
     });
 
+    $('[data-toggle=offcanvas]').click(function() {
+      $('.row-offcanvas').toggleClass('active');
+      $('.showhide').toggle();
+
+      {% block alt_navbtn_script %}
+        $('body').toggleClass('body-index');
+        $('#nav').toggleClass('navbar-fixed-top');
+      {% endblock %}
+
+    });
   </script>
 
   {% block xtra_script %}{% endblock %}

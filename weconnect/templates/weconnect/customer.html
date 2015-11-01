@@ -8,6 +8,9 @@ RatedFrog: Find trusted and rated professionals to help you with your projects
   navbar-index
 {% endblock %}
 
+{% block alt_navbtn_script %}
+{% endblock %}
+
 {% block xtra_body_class %}
   body-index
 {% endblock %}
@@ -198,7 +201,7 @@ RatedFrog!"
           </h3>
           <p>
             "I spent ages trying to find a photographer until I finally discovered RatedFrog. I received quotes from 3 photographers and ended up working with one to shoot at the launch event of my new company."          </p>
-          <p>Sarah Lee, Tsim Sha Tsui</p>
+          <p>Sarah Lee, Tsim Sha Tsui </p>
         </div>
       </div>
 
@@ -232,7 +235,7 @@ RatedFrog!"
     $('#contact-form').submit();
   });
   
-  
+
   $.ajaxSetup({
       beforeSend: function(xhr, settings) {
         xhr.setRequestHeader("X-CSRFToken", '{{csrf_token}}');
