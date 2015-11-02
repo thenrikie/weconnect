@@ -1276,6 +1276,11 @@ a.create_project_auth_selected {
 }
 
 @media (max-width: 992px) {
+    .auth_register_mode {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
     .test-title {
         text-align: center;
     }
@@ -1303,6 +1308,11 @@ a.create_project_auth_selected {
     .container{
         padding-left: 30px;
         padding-right: 30px;
+    }
+
+    .navbar-header {
+        margin-left: -15px;
+        margin-right: 0px !important;
     }
 }
 
