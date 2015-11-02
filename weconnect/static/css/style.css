@@ -1112,6 +1112,7 @@ img.trusted_icon {
     padding: 15px;
     text-decoration: none;
     cursor: pointer;
+    display: inline-block;
 }
 
 .project_create_account_header > a:hover{
